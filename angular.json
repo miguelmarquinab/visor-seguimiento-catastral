@@ -36,14 +36,10 @@
             ],
             "styles": [
               "src/styles.scss",
-              "@angular/material/prebuilt-themes/indigo-pink.css",
-              "./node_modules/leaflet/dist/leaflet.css",
-              "./node_modules/leaflet-draw/dist/leaflet.draw.css",
-              "node_modules/ngx-toastr/toastr.css",
               "src/styles.css"
             ],
             "scripts": []
-          },
+          }
           "configurations": {
             "production": {
               "budgets": [
@@ -100,10 +96,6 @@
             ],
             "styles": [
               "src/styles.scss",
-              "@angular/material/prebuilt-themes/indigo-pink.css",
-              "./node_modules/leaflet/dist/leaflet.css",
-              "./node_modules/leaflet-draw/dist/leaflet.draw.css",
-              "node_modules/ngx-toastr/toastr.css",
               "src/styles.css"
             ],
             "scripts": []
