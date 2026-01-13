@@ -1,8 +1,7 @@
-<div style="display:flex; height:100vh;">
-                  <app-sidebar (logout)="logout()"></app-sidebar>
+<div class="layout">
+  <app-sidebar (logout)="doLogout()"></app-sidebar>
 
-  <div style="flex:1; padding:16px;">
-    <h3>Bienvenido al sistema</h3>
-    <p>Aquí va tu mapa/dashboard.</p>
-  </div>
+  <main class="content">
+    <router-outlet></router-outlet>
+  </main>
 </div>

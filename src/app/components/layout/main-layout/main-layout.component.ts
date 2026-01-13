@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
+import {Router, RouterOutlet} from '@angular/router';
 import {SidebarComponent} from '../sidebar/sidebar.component';
 import { AuthService } from '../../../core/auth/auth.service';
 
 @Component({
   selector: 'app-main-layout',
   standalone : true,
-  imports: [SidebarComponent],
+  imports: [SidebarComponent, RouterOutlet],
   templateUrl: './main-layout.component.html',
-  styleUrl: './main-layout.component.scss'
+  styleUrl: './main-layout.component.css'
 })
 export class MainLayoutComponent {
 
@@ -17,9 +17,9 @@ export class MainLayoutComponent {
     private router: Router
   ) {}
 
-  logout(): void {
+  doLogout(): void {
     this.auth.logout();
-    this.router.navigate(['/login']);
+    this.router.navigateByUrl('/login');
   }
 
 

@@ -1,0 +1,39 @@
+<div class="page">
+  <div class="toolbar">
+    <input
+      class="search"
+      placeholder="Buscar Distrito"
+      [formControl]="search"
+      (keydown)="onEnter($event)"
+    />
+    <button class="btn" (click)="onBuscar()">Buscar</button>
+  </div>
+
+  <div class="grid" *ngIf="!loading; else loadingTpl">
+    <button class="card" *ngFor="let d of items" type="button">
+      <!-- Logo opcional -->
+      <div class="logo">
+        <img *ngIf="d.logo" [src]="d.logo" alt="logo" />
+      </div>
+
+      <!-- Nombre visible (distrito) -->
+      <div class="name">{{ d.distrito }}</div>
+
+      <!-- Subtexto -->
+      <div class="sub">{{ d.provincia }} - {{ d.departamento }}</div>
+
+      <!-- Ubigeo -->
+      <div class="meta">Ubigeo: {{ d.codigoUbigeo }}</div>
+    </button>
+  </div>
+
+  <ng-template #loadingTpl>
+    <div class="loading">Cargando…</div>
+  </ng-template>
+
+  <div class="pager">
+    <button class="btn ghost" (click)="prev()" [disabled]="page === 0">Anterior</button>
+    <span class="pageinfo">Página {{ page + 1 }} de {{ totalPages }}</span>
+    <button class="btn ghost" (click)="next()" [disabled]="page + 1 >= totalPages">Siguiente</button>
+  </div>
+</div>

@@ -12,3 +12,9 @@ ng g s core/auth/token-storage --skip-tests
 ng g guard core/auth/auth --functional --skip-tests
 ng g interceptor core/http/auth-token --functional --skip-tests
 
+ng g c components/pages/distritos/distritos --standalone --style css --skip-tests
+
+ng g service services/distritos
+
+ng g service services/distritos --skip-tests
+

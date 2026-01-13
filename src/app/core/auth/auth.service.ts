@@ -1,30 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
-import { BehaviorSubject, Observable, catchError, tap, throwError } from 'rxjs';
+import { Observable, catchError, tap, throwError } from 'rxjs';
 import { TokenStorageService} from './token-storage.service';
 import {environment} from '../../../environments/environment';
-
-export interface LoginRequest{
-  username: string,
-  password: string,
-}
-
-export interface LoginResponse{
-  access_token: string;
-  tokenTye?: string;
-  expiresIn: number;
-  roles?: string[];
-}
+import {LoginResponse} from '../../interfaces/LoginResponse';
+import {LoginRequest} from '../../interfaces/LoginRequest';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor(
-    private http: HttpClient,
-    private tokenStorage: TokenStorageService
-  ) { }
+  constructor(private http: HttpClient, private tokenStorage: TokenStorageService) { }
 
   login(req: LoginRequest): Observable<LoginResponse> {
     const clientId = environment.clientIdSICUAccess;
@@ -45,7 +32,7 @@ export class AuthService {
 
     return this.http.post<LoginResponse>(`${environment.urlWebApiAuthenticate}oauth2/token`, body, HTTP_OPTIONS)
       .pipe(
-        tap(res => this.tokenStorage.setToken(res.access_token)),
+        tap(res => this.tokenStorage.set(res.access_token)),
         catchError(this.handleError)
       );
   }
@@ -68,7 +55,7 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    return this.tokenStorage.hasToken();
+    return this.tokenStorage.has();
   }
 
 }

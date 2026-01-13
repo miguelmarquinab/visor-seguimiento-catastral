@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {Form, FormGroup, FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
+import {FormGroup, FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService} from '../../../core/auth/auth.service';
 
@@ -9,7 +9,7 @@ import { AuthService} from '../../../core/auth/auth.service';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+  styleUrl: './login.component.css'
 })
 export class LoginComponent {
   loading: boolean = false;
