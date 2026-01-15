@@ -1,0 +1,25 @@
+<div style="max-width:360px;margin:60px auto;" >
+  <h2>Iniciar sesión</h2>
+
+  <form [formGroup]="form" (ngSubmit)="submit()" >
+    <div>
+      <label>Usuario</label>
+      <input formControlName="username">
+    </div>
+
+    <div style="margin-top:12px;">
+      <label>Contraseña</label>
+      <input type="password" formControlName="password">
+    </div>
+
+    <div style="margin-top:16px">
+      <button type="submit" [disabled]="loading||form.invalid" >
+        {{loading ? 'Ingresando....' : 'Ingresar'}}
+      </button>
+    </div>
+
+    <p *ngIf="error" style="color:red;margin-top:10px;">
+      {{error}}
+    </p>
+  </form>
+</div>
