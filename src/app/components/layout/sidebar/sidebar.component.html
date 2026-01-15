@@ -1,13 +1,25 @@
-<aside style="width:260px;background:#0b3d91;color:white;padding:16px;">
-  <h4>SICU - Seguimiento</h4>
+<!--<aside style="width:260px;background:#0b3d91;color:white;padding:16px;">-->
+<!--  <h4>SICU - Seguimiento</h4>-->
 
-  <nav style="margin-top:18px; display:flex; flex-direction:column; gap:10px;">
-    <button>Dashboard</button>
-    <button>Mapa</button>
-    <button>Reportes</button>
+<!--  <nav style="margin-top:18px; display:flex; flex-direction:column; gap:10px;">-->
+<!--    <button>Dashboard</button>-->
+<!--    <button>Mapa</button>-->
+<!--    <button>Reportes</button>-->
+<!--  </nav>-->
+
+<!--  <div style="margin-top:24px;">-->
+<!--    <button (click)="logout.emit()">Cerrar sesión</button>-->
+<!--  </div>-->
+<!--</aside>-->
+
+<aside class="sidebar">
+  <div class="brand">SICU - Seguimiento</div>
+
+  <nav class="nav">
+    <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+    <a routerLink="/mapa" routerLinkActive="active">Mapa</a>
+    <a routerLink="/reportes" routerLinkActive="active">Reportes</a>
   </nav>
 
-  <div style="margin-top:24px;">
-    <button (click)="logout.emit()">Cerrar sesión</button>
-  </div>
+  <button class="logout" (click)="logout.emit()">Cerrar sesión</button>
 </aside>
