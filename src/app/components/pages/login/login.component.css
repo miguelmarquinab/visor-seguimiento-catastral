@@ -1,0 +1,227 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui, helvetica neue, helvetica, Ubuntu, roboto, noto, arial, sans-serif;
+  font-size: 1rem;
+  line-height: 1.4;
+  color: #3c3c3c;
+  background-color: #fafafa;
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: 0.012em;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  overflow-y: scroll;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  line-height: 1.2;
+}
+.body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+.map{
+    background-image: url(../../../../assets/images/map.jpg);
+    height: 100%;
+    background-position: center;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+}
+.form__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 360px;
+    height: auto;
+    padding: 2rem;
+    background-color: white;
+    border-radius: 20px;
+    margin: 0 auto;
+}
+
+.content-logos {
+  display: flex;
+}
+.logo-MVCS {
+  background-image: url(../../../../assets/images/svg/logo-mvcs.svg);
+  width: 100%;
+  height: 30px;
+  background-position: center;
+  background-size: cover;
+  margin-right: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.logo-cofopri {
+  background-image: url(../../../../assets/images/svg/logo-cofopri.svg);
+  width: 100%;
+  height: 35px;
+  background-position: center;
+  background-size: cover;
+  margin-right: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.logo-urbano {
+  background-image: url(../../../../assets/images/svg/logo-urbano.svg);
+  width: 70%;
+  height: 53px;
+  background-position: center;
+  background-size: cover;
+  margin-right: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.form__content__header {
+  text-align: center;
+  margin: 0 0 2rem;
+}
+.form_content_heading {
+  font-weight: 600;
+  margin: 0 0 6px !important;
+}
+.form__content__description {
+  font-size: 1.5rem;
+  color: #194a8b;
+  font-weight: 600;
+}
+
+.icon-svg-person {
+  display: inline-block;
+  width: 28px !important;
+  height: 28px !important;
+  background-image: url('../../../../assets/images/svg/person.svg');
+  background-size: cover;
+  margin: 0 !important;
+}
+.icon-svg-key {
+  display: inline-block;
+  width: 28px !important;
+  height: 28px !important;
+  background-image: url('../../../../assets/images/svg/key.svg');
+  background-size: cover;
+  margin: 0 !important;
+}
+
+.form__submit {
+  text-align: center;
+}
+.form__field {
+  margin-bottom: 2rem;
+}
+
+.form__field:last-child {
+  margin-bottom: 0;
+}
+.btn_aceptar {
+    font-size: 16px;
+    display: flex;
+    width: 100%;
+    font-family: inherit;
+    background: #E8B835 !important;
+    color: #fff !important;
+    border: 0;
+    border-radius: 0.25rem;
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    font-weight: 500 !important;
+    letter-spacing: inherit;
+    margin-bottom: 0.5rem;
+    text-align: center;
+    justify-content: center;
+}
+
+.btn_aceptar:hover,
+.btn_aceptar:focus {
+  background: #c29927;
+  outline: none !important;
+}
+.full-width {
+  width: 100%;
+}
+@media (min-width: 48rem) {
+  .body {
+    flex-direction: column;
+  }
+
+  .form {
+    margin: 0;
+    box-shadow: none;
+  }
+
+  .form__content {
+    width: 25rem;
+    margin: 0 auto;
+  }
+
+  .cta__content {
+    max-width: 32rem;
+    margin: auto;
+  }
+}
+
+@media (max-width: 400px) {
+  .form__content {
+    width: 300px!important;
+    margin: 0 auto;
+  }
+.content-logos {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.logo-MVCS {
+    width: 60%;
+}
+.logo-cofopri {
+    width: 60%;
+}
+.logo-urbano {
+    width: 36%;
+}
+
+}
+::ng-deep .mat-sm-login>.mat-mdc-text-field-wrapper {
+  height: 36px !important;
+}
+
+::ng-deep .mat-sm-login .mat-mdc-text-field-wrapper .mat-mdc-form-field-flex .mat-mdc-floating-label {
+  font-size: 12px;
+  padding-left: 5px;
+}
+
+::ng-deep .mat-sm-login .mat-mdc-form-field .mdc-text-field--outlined .mdc-notched-outline--upgraded .mdc-floating-label--float-above {
+  color: rgba(0, 0, 0, 0.6);
+  top: 0 !important;
+  position: relative !important;
+  font-weight: 300 !important;
+  background-color: rgb(255, 255, 255);
+  --mat-mdc-form-field-floating-label-label-scale: 0.8;
+}
+
+::ng-deep .mat-sm-login .mat-mdc-input-element {
+  top: -8px !important;
+  position: relative !important;
+}
+
+::ng-deep .mdc-text-field--outlined {
+  padding-left: max(10px, calc(var(--mdc-outlined-text-field-container-shape) + 4px)) !important;
+}
+
+::ng-deep .mat-mdc-text-field-wrapper .mat-mdc-form-field-input-control {
+  padding: 0 10px !important;
+}
+
+::ng-deep .mat-sm-login .mat-mdc-form-field-icon-suffix {
+  top: -8px;
+}
