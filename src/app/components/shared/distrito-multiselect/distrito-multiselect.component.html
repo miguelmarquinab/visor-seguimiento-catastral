@@ -1,0 +1,32 @@
+<div class="ms">
+  <button type="button" class="ms-btn" (click)="toggleOpen()">
+    <span class="ms-label">{{ labelSummary() }}</span>
+    <span class="ms-caret">▾</span>
+  </button>
+
+  <div class="ms-panel" *ngIf="open">
+    <div class="ms-search">
+      <span class="icon">🔎</span>
+      <input [formControl]="search" placeholder="Buscar distrito..." />
+    </div>
+
+    <div class="ms-actions">
+      <button type="button" (click)="selectAllFiltered()">Marcar visibles</button>
+      <button type="button" (click)="clear()">Limpiar</button>
+    </div>
+
+    <div class="ms-list">
+      <label class="row" *ngFor="let d of filtered">
+        <input
+          type="checkbox"
+          [checked]="selectedIds.has(d.idOrganizacion)"
+          (change)="toggleDistrict(d)"
+        />
+        <div class="txt">
+          <div class="name">{{ d.distrito }}</div>
+          <div class="sub">{{ d.departamento }} · {{ d.provincia }}</div>
+        </div>
+      </label>
+    </div>
+  </div>
+</div>
