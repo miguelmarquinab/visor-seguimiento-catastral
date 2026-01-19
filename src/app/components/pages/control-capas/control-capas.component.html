@@ -1,3 +1,7 @@
+
+
+
+
 <div class="panel" [class.embedded]="embedded">
   <div class="panel-header">
     <div class="title">
@@ -11,9 +15,11 @@
   <div class="panel-body">
     <div class="row">
       <label class="label">Distritos seleccionados:</label>
-      <select class="select">
-        <option>TODOS</option>
-      </select>
+      <app-distrito-multiselect
+        [all]="allDistritos"
+        [selected]="selectedDistritos"
+        (selectedChange)="onDistritosChange($event)">
+      </app-distrito-multiselect>
       <button class="circle-btn" title="Configurar">⚙</button>
     </div>
 
