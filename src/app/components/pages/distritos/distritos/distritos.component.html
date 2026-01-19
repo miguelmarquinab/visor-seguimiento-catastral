@@ -1,4 +1,8 @@
-<div class="page">
+
+
+<!-- VISTA 1: selección -->
+<section *ngIf="(ui.view$ | async) === 'distritos'">
+  <!-- tu buscador + cards + agregar --><div class="page">
   <div class="panel">
     <div class="toolbar">
       <div class="searchWrap">
@@ -49,107 +53,27 @@
     </div>
   </div>
 </div>
+</section>
 
+<!-- VISTA 2: mapa + control de capas -->
+<section *ngIf="(ui.view$ | async) === 'mapa'" class="map-shell">
+  <app-mapa></app-mapa>
 
+  <!-- botón flotante (capas) -->
+  <button class="fab-control" (click)="ui.toggleControl()" type="button" aria-label="Capas">
+    ☰
+  </button>
 
+  <!-- modal -->
+  <div class="control-modal" *ngIf="(ui.showControl$ | async)">
+    <div class="control-header">
+      <div class="title">Reporte Espacial</div>
+      <button class="close" type="button" (click)="ui.setShowControl(false)">✕</button>
+    </div>
 
+    <div class="control-body">
+      <app-control-capas [embedded]="true"></app-control-capas>
+    </div>
+  </div>
+</section>
 
-<!--<div class="districts-page">-->
-
-<!--  <div class="districts-card">-->
-
-<!--    <div class="searchbar">-->
-<!--      <span class="search-icon">🔍</span>-->
-<!--      <input-->
-<!--        class="search-input"-->
-<!--        placeholder="Buscar distrito..."-->
-<!--        [formControl]="search"-->
-<!--        (keydown)="onEnter($event)"-->
-<!--      />-->
-<!--      <button class="search-btn" (click)="onBuscar()">Buscar</button>-->
-<!--    </div>-->
-
-<!--    <h2 class="title">Seleccionar Distrito:</h2>-->
-
-<!--    <ng-container *ngIf="!loading; else loadingTpl">-->
-<!--      <div class="grid">-->
-<!--        <button-->
-<!--          type="button"-->
-<!--          class="district-tile"-->
-<!--          *ngFor="let d of items"-->
-<!--          (click)="toggleSelection(d)"-->
-<!--          [class.selected]="isSelected(d)"-->
-<!--        >-->
-<!--          <span class="check" [class.on]="isSelected(d)">-->
-<!--            ✓-->
-<!--          </span>-->
-
-<!--          <div class="logo">-->
-<!--            &lt;!&ndash; Si luego recibes logo real, lo ponemos aquí &ndash;&gt;-->
-<!--            <div class="logo-placeholder"></div>-->
-<!--          </div>-->
-
-<!--          <div class="name">{{ d.distrito | uppercase }}</div>-->
-<!--        </button>-->
-<!--      </div>-->
-
-<!--      <div class="pager">-->
-<!--        <button class="pager-btn" (click)="prev()" [disabled]="page === 0">Anterior</button>-->
-<!--        <div class="pager-info">Página {{ page + 1 }} de {{ totalPages }}</div>-->
-<!--        <button class="pager-btn" (click)="next()" [disabled]="page + 1 >= totalPages">Siguiente</button>-->
-<!--      </div>-->
-<!--    </ng-container>-->
-
-<!--    <ng-template #loadingTpl>-->
-<!--      <div class="loading">Cargando…</div>-->
-<!--    </ng-template>-->
-
-<!--    <div class="footer">-->
-<!--      <button class="add-btn" (click)="agregar()" [disabled]="selectedId.size === 0">-->
-<!--        Agregar-->
-<!--      </button>-->
-<!--    </div>-->
-
-<!--  </div>-->
-<!--</div>-->
-
-
-
-<!--  <div class="toolbar">-->
-<!--    <input-->
-<!--      class="search"-->
-<!--      placeholder="Buscar Distrito"-->
-<!--      [formControl]="search"-->
-<!--      (keydown)="onEnter($event)"-->
-<!--    />-->
-<!--    <button class="btn" (click)="onBuscar()">Buscar</button>-->
-<!--  </div>-->
-
-<!--  <div class="grid" *ngIf="!loading; else loadingTpl">-->
-<!--    <button class="card" *ngFor="let d of items" type="button">-->
-<!--      &lt;!&ndash; Logo opcional &ndash;&gt;-->
-<!--      <div class="logo">-->
-<!--        <img *ngIf="d.logo" [src]="d.logo" alt="logo" />-->
-<!--      </div>-->
-
-<!--      &lt;!&ndash; Nombre visible (distrito) &ndash;&gt;-->
-<!--      <div class="name">{{ d.distrito }}</div>-->
-
-<!--      &lt;!&ndash; Subtexto &ndash;&gt;-->
-<!--      <div class="sub">{{ d.provincia }} - {{ d.departamento }}</div>-->
-
-<!--      &lt;!&ndash; Ubigeo &ndash;&gt;-->
-<!--      <div class="meta">Ubigeo: {{ d.codigoUbigeo }}</div>-->
-<!--    </button>-->
-<!--  </div>-->
-
-<!--  <ng-template #loadingTpl>-->
-<!--    <div class="loading">Cargando…</div>-->
-<!--  </ng-template>-->
-
-<!--  <div class="pager">-->
-<!--    <button class="btn ghost" (click)="prev()" [disabled]="page === 0">Anterior</button>-->
-<!--    <span class="pageinfo">Página {{ page + 1 }} de {{ totalPages }}</span>-->
-<!--    <button class="btn ghost" (click)="next()" [disabled]="page + 1 >= totalPages">Siguiente</button>-->
-<!--  </div>-->
-<!--</div>-->
