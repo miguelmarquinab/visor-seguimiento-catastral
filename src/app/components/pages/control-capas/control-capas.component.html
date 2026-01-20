@@ -11,10 +11,15 @@
   <div class="panel-body">
     <div class="row">
       <label class="label">Distritos seleccionados:</label>
-      <select class="select">
-        <option>TODOS</option>
-      </select>
-      <button class="circle-btn" title="Configurar">⚙</button>
+      <app-distrito-multiselect
+        [all]="allDistritos"
+        [selected]="selectedDistritos"
+        (selectedChange)="onDistritosChange($event)">
+      </app-distrito-multiselect>
+<!--      <button class="circle-btn" title="Configurar" (click)="openDistritoModal()">⚙</button>-->
+      <button class="btn-add-distrito" (click)="showAddDistrito = true">
+        <i class="icon-plus"></i>
+      </button>
     </div>
 
     <!-- MANZANA -->
@@ -64,3 +69,76 @@
     </div>
   </div>
 </div>
+
+
+<!-- MODAL: Agregar/Quitar Distrito -->
+<div class="modal-overlay" *ngIf="showAddDistrito">
+  <div class="modal">
+
+    <div class="modal-header">
+      <span>Agregar Distrito</span>
+      <button class="close" (click)="showAddDistrito = false">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <app-distrito-multiselect
+        [allDistritos]="allDistritos"
+        [selected]="selectedDistritos"
+        (selectedChange)="onDistritosChange($event)">
+      </app-distrito-multiselect>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-primary" (click)="confirmAddDistritos()">
+        Agregar
+      </button>
+    </div>
+
+  </div>
+</div>
+
+
+<!--<div class="district-modal-backdrop" *ngIf="showDistritoModal">-->
+<!--  <div class="district-modal">-->
+<!--    <div class="district-modal-header">-->
+<!--      <div class="title">Agregar Distrito</div>-->
+<!--      <button class="x" type="button" (click)="closeDistritoModal()">✕</button>-->
+<!--    </div>-->
+
+<!--    <div class="district-modal-toolbar">-->
+<!--      <div class="left">Seleccionar Distrito</div>-->
+
+<!--      <div class="search">-->
+<!--        <span class="icon">🔍</span>-->
+<!--        <input-->
+<!--          type="text"-->
+<!--          placeholder="Buscar..."-->
+<!--          [(ngModel)]="filtroDistrito"-->
+<!--        />-->
+<!--      </div>-->
+<!--    </div>-->
+
+<!--    <div class="district-grid">-->
+<!--      <button-->
+<!--        type="button"-->
+<!--        class="district-card"-->
+<!--        *ngFor="let d of distritosFiltrados"-->
+<!--        (click)="toggleDistrito(d)"-->
+<!--        [class.selected]="isDistritoSelected(d)"-->
+<!--      >-->
+<!--        <div class="logo"></div>-->
+<!--        <div class="name">{{ d.distrito }}</div>-->
+
+<!--        <div class="check" [class.on]="isDistritoSelected(d)">-->
+<!--          ✓-->
+<!--        </div>-->
+<!--      </button>-->
+<!--    </div>-->
+
+<!--    <div class="district-modal-footer">-->
+<!--      <button type="button" class="btn-add" (click)="aplicarDistritos()">-->
+<!--        Agregar-->
+<!--      </button>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
