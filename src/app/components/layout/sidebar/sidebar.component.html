@@ -13,13 +13,31 @@
 <!--</aside>-->
 
 <aside class="sidebar">
-  <div class="brand">SICU - Seguimiento</div>
-
+  <div class="brand">
+    <img src="../../../../assets/images/svg/logo-sicun.svg" alt="Logo SICU" class="brand-logo">
+  </div>
   <nav class="nav">
-    <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
-    <a routerLink="/mapa" routerLinkActive="active">Mapa</a>
-    <a routerLink="/reportes" routerLinkActive="active">Reportes</a>
+    <a mat-button
+      routerLink="/dashboard"
+      routerLinkActive="active">
+      <mat-icon>dashboard</mat-icon>
+    </a>
+
+    <a mat-button
+      routerLink="/mapa"
+      routerLinkActive="active">
+      <mat-icon>map</mat-icon>
+    </a>
+
+    <a mat-button
+      routerLink="/reportes"
+      routerLinkActive="active">
+      <mat-icon>bar_chart</mat-icon>
+    </a>
   </nav>
 
-  <button class="logout" (click)="logout.emit()">Cerrar sesión</button>
+
+  <button class="btnLogout" (click)="logout.emit()">
+    <mat-icon>logout</mat-icon>
+  </button>
 </aside>
