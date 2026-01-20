@@ -26,8 +26,11 @@ ng g c components/pages/control-capas --standalone --skip-tests
 npm i leaflet
 
 ng g s services/map --skip-tests
-
 ng g c components/shared/distrito-multiselect --standalone --skip-tests
+ng g c components/shared/menu-right --standalone --skip-tests
+
+
+
 
 
 

@@ -59,6 +59,8 @@
 <section *ngIf="(ui.view$ | async) === 'mapa'" class="map-shell">
   <app-mapa></app-mapa>
 
+  <!-- ✅ menú derecho -->
+  <app-menu class="menu-right"></app-menu>
   <!-- botón flotante (capas) -->
   <button class="fab-control" (click)="ui.toggleControl()" type="button" aria-label="Capas">
     ☰

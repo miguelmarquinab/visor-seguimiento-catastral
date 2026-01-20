@@ -1,0 +1,26 @@
+
+<div class="menu-right">
+
+  <div class="user-pill">
+    <span class="icon">👤</span>
+    <span class="name">{{ (userName$ | async) || 'Usuario' }}</span>
+    <span class="chev">▾</span>
+  </div>
+
+  <!-- BOTONES REDONDOS -->
+  <div class="btn-row">
+    <button type="button" class="circle-btn" title="Mapa">
+      🏠
+    </button>
+
+    <button type="button" class="circle-btn primary" title="Reportes">
+      🗺️
+    </button>
+
+    <button type="button" class="circle-btn" title="Dashboard">
+      📄
+    </button>
+
+  </div>
+
+</div>
