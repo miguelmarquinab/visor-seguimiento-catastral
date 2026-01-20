@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import {FormControl,  FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { Distrito } from '../../../interfaces/Distrito';
 import { DistritoSelected } from '../../../interfaces/DistritoSelected';
@@ -8,15 +8,22 @@ import { DistritoSelected } from '../../../interfaces/DistritoSelected';
 @Component({
   selector: 'app-distrito-multiselect',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule],
   templateUrl: './distrito-multiselect.component.html',
   styleUrls: ['./distrito-multiselect.component.css'],
 })
 export class DistritoMultiselectComponent {
   @Input() all: Distrito[] = [];
+  // TODOS los distritos (vienen del backend)
+  @Input() allDistritos: Distrito[] = [];
+  // seleccionados actuales (vienen del UiStateService)
   @Input() selected: DistritoSelected[] = [];
 
+  // Output propio: emite la nueva selección
   @Output() selectedChange = new EventEmitter<DistritoSelected[]>();
+
+  filtroDistrito = '';
+
 
   open = false;
   search = new FormControl<string>('', { nonNullable: true });
