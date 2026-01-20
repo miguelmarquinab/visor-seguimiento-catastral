@@ -4,10 +4,22 @@ import {FormGroup, FormBuilder, ReactiveFormsModule, Validators} from '@angular/
 import { Router } from '@angular/router';
 import { AuthService} from '../../../core/auth/auth.service';
 
+// Angular Material
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import {MatIconModule} from '@angular/material/icon';
+
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, MatInputModule,
+    MatFormFieldModule,
+    MatButtonModule,
+    MatCardModule, MatIconModule,
+    MatProgressSpinnerModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -15,6 +27,8 @@ export class LoginComponent {
   loading: boolean = false;
   error : string = '';
   form!: FormGroup;
+  hidePassword = true;
+
 
   constructor (
     private fb: FormBuilder,
