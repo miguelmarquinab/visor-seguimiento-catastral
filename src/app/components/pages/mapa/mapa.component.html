@@ -1,1 +1,5 @@
 <div id="map" class="map"></div>
+
+@if (uiService.showStatsWidget$ | async) {
+  <app-map-modal-reporte-mapa></app-map-modal-reporte-mapa>
+}

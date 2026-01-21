@@ -1,0 +1,62 @@
+<div class="stats-widget shadow-lg">
+  <div class="widget-header">
+    <div class="header-main">
+      <mat-icon class="shield-icon">security</mat-icon>
+      <span>ESTADISTICAS</span>
+    </div>
+    <button class="minimize-btn">
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+  </div>
+
+  <div class="widget-body">
+    <h3 class="layer-name">Manzana</h3>
+
+    <div class="chart-container">
+      <canvas #statsChart></canvas>
+    </div>
+
+    <section class="section">
+      <h4 class="section-title">Leyenda</h4>
+      <div class="legend-list">
+        @for (item of dataEstadistica; track item.label) {
+          <div class="legend-item">
+            <span class="label-text">{{ item.label }}</span>
+            <span class="color-box" [style.background-color]="item.color"></span>
+          </div>
+        }
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <section class="section">
+      <h4 class="section-title">Descarga</h4>
+      <div class="download-container">
+
+        <button class="circle-btn" [matMenuTriggerFor]="menuXls">
+          <mat-icon class="icon-xls">description</mat-icon>
+          <mat-icon class="arrow">expand_more</mat-icon>
+        </button>
+        <mat-menu #menuXls="matMenu">
+          <button mat-menu-item (click)="exportar('XLS')">XLS</button>
+          <button mat-menu-item (click)="exportar('CSV')">CSV</button>
+        </mat-menu>
+
+        <button class="circle-btn" [matMenuTriggerFor]="menuGis">
+          <mat-icon class="icon-gis">equalizer</mat-icon>
+          <mat-icon class="arrow">expand_more</mat-icon>
+        </button>
+        <mat-menu #menuGis="matMenu">
+          <button mat-menu-item (click)="exportar('GEOJSON')">GEOJSON</button>
+          <button mat-menu-item (click)="exportar('SHAPE')">SHAPE</button>
+        </mat-menu>
+
+      </div>
+    </section>
+
+    <button class="minimize-btn" (click)="cerrar()">
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+  </div>
+</div>

@@ -1,17 +1,26 @@
-import { Component } from '@angular/core';
+import {Component, inject, signal} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import * as L from 'leaflet';
-import { MapService } from '../../../services/map.service';
+import { MapService } from '../../../services/map.service'
+import { UiStateService } from '../../../services/ui-state.service'; // Importa tu servicio
+import {MapModalReporteMapaComponent} from '../widgets/map-modal-reporte-mapa/map-modal-reporte-mapa.component';
 
 @Component({
   selector: 'app-mapa',
   standalone: true,
-  imports: [],
+  imports: [CommonModule,
+    MapModalReporteMapaComponent],
   templateUrl: './mapa.component.html',
   styleUrl: './mapa.component.css'
 })
 export class MapaComponent {
 
   private map?: L.Map;
+
+  // Inyectamos el servicio de estado global
+  public uiService = inject(UiStateService);
+
+  public showStats = signal(false);
 
   constructor(private mapService: MapService) {}
 
