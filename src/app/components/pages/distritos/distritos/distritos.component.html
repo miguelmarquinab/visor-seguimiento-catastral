@@ -4,9 +4,9 @@
 <section *ngIf="(ui.view$ | async) === 'distritos'">
   <!-- tu buscador + cards + agregar --><div class="page">
   <div class="panel">
-    <div class="toolbar">
+    <div class="toolbar conten-buscar">
       <div class="searchWrap">
-        <span class="searchIcon">🔎</span>
+        <span><mat-icon fontIcon = "search" ></mat-icon></span>
         <input
           class="search"
           placeholder="Buscar distrito..."
@@ -15,7 +15,9 @@
         />
       </div>
 
-      <button class="btnPrimary" (click)="onBuscar()">Buscar</button>
+      <button class="btnPrimary" (click)="onBuscar()">
+        <mat-icon fontIcon = "search" ></mat-icon>
+      </button>
     </div>
 
     <h2 class="title">Seleccionar Distrito:</h2>

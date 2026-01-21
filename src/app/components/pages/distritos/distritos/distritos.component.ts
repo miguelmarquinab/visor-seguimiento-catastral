@@ -7,10 +7,11 @@ import { Distrito} from '../../../../interfaces/Distrito'
 import { UiStateService} from '../../../../services/ui-state.service';
 import {MapaComponent} from '../../mapa/mapa.component';
 import {ControlCapasComponent} from '../../control-capas/control-capas.component';
+import {MatIconModule} from '@angular/material/icon';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MapaComponent, ControlCapasComponent],
+  imports: [CommonModule, ReactiveFormsModule, MapaComponent, ControlCapasComponent,MatIconModule],
   templateUrl: './distritos.component.html',
   styleUrls: ['./distritos.component.css'],
 })
