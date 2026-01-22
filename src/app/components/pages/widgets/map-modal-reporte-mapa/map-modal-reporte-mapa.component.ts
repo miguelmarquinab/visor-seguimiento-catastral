@@ -1,4 +1,4 @@
-import {Component, OnInit, signal, ViewChild, ElementRef, AfterViewInit, inject} from '@angular/core';
+import {Component, ViewChild, ElementRef, AfterViewInit, inject} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -26,6 +26,7 @@ export class MapModalReporteMapaComponent implements AfterViewInit {
   sidebarOpen = true;
 
   @ViewChild('statsChart', { static: false }) statsChart!: ElementRef<HTMLCanvasElement>;
+
   private uiService = inject(UiStateService);
 
   //Data Hardcoded segun prototipo

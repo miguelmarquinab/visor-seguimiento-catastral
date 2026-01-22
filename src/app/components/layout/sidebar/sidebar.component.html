@@ -22,33 +22,17 @@
       <mat-icon>dashboard</mat-icon>
     </a>
 
-    <a mat-button class="btnLogout"
-      routerLink="/mapa"
-      routerLinkActive="active">
-      <mat-icon>map</mat-icon>
+    <a mat-button
+       (click)="abrirReporteManzanas()"
+       [class.active]="(uiService.showManzanaPanel$ | async)"
+       style="cursor: pointer;">
+      <mat-icon>assessment</mat-icon>
     </a>
 
-   <!--  <a
-      mat-button
-      class="btnMapa"
-      routerLink="/mapa"
-      routerLinkActive="active">
-
-      <img
-        src="../../../../assets/images/svg/icons/mapa.svg"
-        alt="Mapa"
-        class="icon-default">
-
-      <img
-        src="../../../../assets/images/svg/icons/mapa-hover.svg"
-        alt="Mapa hover"
-        class="icon-hover">
-
-    </a> -->
-
-    <a mat-button class="btnLogout"
-      routerLink="/reportes"
-      routerLinkActive="active">
+    <a mat-button
+      (click)="abrirReportePoligonos()"
+       [class.active]="(uiService.showPoligonoPanel$ | async)"
+       style="cursor: pointer;">
       <mat-icon>bar_chart</mat-icon>
     </a>
   </nav>
