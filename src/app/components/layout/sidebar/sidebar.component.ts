@@ -23,8 +23,11 @@ export class SidebarComponent {
   public uiService = inject(UiStateService);
 
   abrirEstadisticas() {
-    // Ahora 'this.uiService' sí será reconocido
     this.uiService.toggleStatsWidget();
+  }
+
+  abrirReporteManzanas() {
+    this.uiService.toggleManzanaPanel();
   }
 
 }

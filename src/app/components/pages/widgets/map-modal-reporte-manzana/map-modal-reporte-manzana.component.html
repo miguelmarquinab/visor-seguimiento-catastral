@@ -1,0 +1,110 @@
+<div class="manzana-panel shadow-lg" [class.maximized]="isMaximized()">
+
+  <button class="toggle-btn" (click)="toggleSise()">
+    <mat-icon>{{ isMaximized() ? 'expand_more' : 'expand_less' }}</mat-icon>
+  </button>
+
+  <div class="main-layout">
+
+    <aside class="controls-column">
+      <div class="chips-row">
+        @for (dist of distritosSeleccionados; track dist.id) {
+          <span class="custom-chip">
+            {{ dist.nombre }}
+            <mat-icon class="close-chip">close</mat-icon>
+          </span>
+        }
+      </div>
+
+      <div class="reporte-card">
+        <div class="card-header-blue">
+          <mat-icon>security</mat-icon>
+          <span>Reporte de Manzanas por Distrito</span>
+          <div class="header-actions">
+            <mat-icon>add</mat-icon>
+            <mat-icon>arrow_upward</mat-icon>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <div class="expansion-header">
+            <mat-icon>grid_view</mat-icon>
+            <span>Total de Manzanas</span>
+            <mat-icon>expand_less</mat-icon>
+          </div>
+
+          <div class="form-container">
+            <div class="input-group">
+              <label>Departamento:</label>
+              <select class="custom-select"><option>LIMA</option></select>
+            </div>
+            <div class="input-group">
+              <label>Provincia:</label>
+              <select class="custom-select"><option>LIMA</option></select>
+            </div>
+            <div class="input-group">
+              <label>Distrito:</label>
+              <select class="custom-select"><option>TODOS</option></select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="dashboard-column" *ngIf="isMaximized()">
+
+      <div class="blue-banner">Manzanas</div>
+
+      <div class="summary-row">
+        @for (card of summaryCards; track card.label) {
+          <div class="status-box" [style.background-color]="card.color">
+            <span class="status-label">{{ card.label }}</span>
+            <span class="status-value">{{ card.value }}</span>
+          </div>
+        }
+      </div>
+
+      <div class="vertical-charts-container">
+
+        <div class="chart-section-wrapper">
+          <div class="blue-banner-light">Total de Manzanas</div>
+          <div class="total-text-blue">Total: 500</div>
+          <div class="chart-layout-row">
+            <div class="canvas-container">
+              <canvas #barChart></canvas>
+            </div>
+            <div class="custom-legend">
+              @for (item of summaryCards.slice(1); track item.label) {
+                <div class="legend-item">
+                  <span class="legend-square" [style.background-color]="item.color"></span>
+                  <span class="legend-text">{{ item.label }}</span>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+
+        <div class="divider-line"></div>
+
+        <div class="chart-section-wrapper">
+          <div class="blue-banner-light">Estado de Manzanas por distrito</div>
+          <div class="chart-layout-row">
+            <div class="canvas-container">
+              <canvas #stackedChart></canvas>
+            </div>
+            <div class="custom-legend">
+              @for (item of summaryCards.slice(1); track item.label) {
+                <div class="legend-item">
+                  <span class="legend-square" [style.background-color]="item.color"></span>
+                  <span class="legend-text">{{ item.label }}</span>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+  </div>
+</div>

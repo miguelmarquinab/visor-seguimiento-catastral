@@ -1,0 +1,203 @@
+:host {
+  --blue-strong: #004a99;
+  --blue-banner: #add8ff;
+  --blue-banner-light: #c6e2ff;
+  --text-dark: #2d3748;
+  --text-muted: #4a5568;
+}
+
+.manzana-panel {
+  position: fixed;
+  bottom: 0;
+  left: 70px; /* Ajustar según ancho real del sidebar */
+  right: 0;
+  background: white;
+  z-index: 1100;
+  padding: 15px 25px;
+  transition: height 0.4s ease-in-out;
+  box-shadow: 0 -5px 25px rgba(0,0,0,0.15);
+  border-radius: 20px 20px 0 0;
+  overflow-x: hidden;
+}
+
+.maximized { height: 88vh; overflow-y: auto; }
+.minimized { height: 65px; overflow: hidden; }
+
+.main-layout {
+  display: flex;
+  gap: 30px;
+  margin-top: 10px;
+  align-items: flex-start;
+}
+
+/* --- COLUMNA IZQUIERDA (CONTROLES) --- */
+.controls-column {
+  width: 280px;
+  flex-shrink: 0;
+}
+
+.chips-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 15px;
+}
+
+.custom-chip {
+  background: #cbd5e0;
+  color: #2d5282;
+  padding: 4px 12px;
+  border-radius: 15px;
+  font-size: 11px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.close-chip { font-size: 14px; width: 14px; height: 14px; cursor: pointer; }
+
+.reporte-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.card-header-blue {
+  background: var(--blue-strong);
+  color: white;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.header-actions { margin-left: auto; display: flex; gap: 8px; }
+.header-actions mat-icon { font-size: 18px; width: 18px; height: 18px; cursor: pointer; }
+
+.expansion-header {
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: bold;
+  font-size: 13px;
+  color: var(--text-dark);
+}
+
+.form-container { padding: 15px; background: #f8fafc; }
+
+.input-group { margin-bottom: 12px; }
+.input-group label { font-size: 11px; display: block; margin-bottom: 4px; color: var(--text-muted); }
+
+.custom-select {
+  width: 100%;
+  padding: 6px;
+  border: 1px solid #cbd5e0;
+  border-radius: 4px;
+  font-size: 12px;
+  background-color: white;
+}
+
+/* --- COLUMNA DERECHA (DASHBOARD) --- */
+.dashboard-column {
+  flex: 1;
+}
+
+.blue-banner {
+  background: var(--blue-banner);
+  color: #003366;
+  text-align: center;
+  font-weight: bold;
+  padding: 6px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+
+.summary-row {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 30px;
+}
+
+.status-box {
+  flex: 1;
+  padding: 10px;
+  text-align: center;
+  color: #1a202c;
+  min-height: 70px;
+}
+
+.status-label { display: block; font-size: 11px; font-weight: bold; margin-bottom: 5px; line-height: 1.1; height: 26px;}
+.status-value { font-size: 20px; font-weight: 800; }
+
+/* --- GRÁFICOS VERTICALES --- */
+.vertical-charts-container {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding-bottom: 40px;
+}
+
+.chart-section-wrapper { width: 100%; }
+
+.blue-banner-light {
+  background: var(--blue-banner-light);
+  color: #003366;
+  text-align: center;
+  padding: 4px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.total-text-blue {
+  text-align: center;
+  color: var(--blue-strong);
+  font-weight: bold;
+  margin: 8px 0;
+  font-size: 14px;
+}
+
+.chart-layout-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  height: 280px; /* Altura de cada bloque de gráfico */
+  margin-top: 10px;
+}
+
+.canvas-container {
+  flex: 3;
+  height: 100%;
+  position: relative;
+}
+
+.custom-legend {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-left: 15px;
+}
+
+.legend-item { display: flex; align-items: center; gap: 10px; }
+.legend-square { width: 15px; height: 15px; border-radius: 2px; flex-shrink: 0; }
+.legend-text { font-size: 11px; color: var(--text-muted); white-space: nowrap; }
+
+.divider-line {
+  height: 1px;
+  background: #edf2f7;
+  margin: 10px 0;
+}
+
+.toggle-btn {
+  position: absolute;
+  top: 10px;
+  right: 25px;
+  background: #edf2f7;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 10;
+}

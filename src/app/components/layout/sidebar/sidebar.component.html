@@ -11,9 +11,10 @@
     </a>
 
     <a mat-button
-      routerLink="/mapa"
-      routerLinkActive="active">
-      <mat-icon>map</mat-icon>
+       (click)="abrirReporteManzanas()"
+       [class.active]="(uiService.showManzanaPanel$ | async)"
+       style="cursor: pointer;">
+      <mat-icon>assessment</mat-icon>
     </a>
 
     <a mat-button
