@@ -1,22 +1,52 @@
 <aside class="sidebar">
   <div class="brand">
-    <img src="../../../../assets/images/svg/logo-sicun.svg" alt="Logo SICU" class="brand-logo">
+    <img
+      src="../../../../assets/images/svg/logo-sicun.svg"
+      alt="Logo SICUN"
+      class="brand-logo"
+    />
+    <div class="brand-text">
+      <span class="brand-title">
+        VISOR DE SEGUIMIENTO DE
+      </span>
+      <span class="brand-subtitle">
+        LEVANTAMIENTO CATASTRAL
+      </span>
+    </div>
   </div>
   <nav class="nav">
-    <a mat-button
+    <a mat-button class="btnLogout"
        (click)="abrirEstadisticas()"
        [class.active]="(uiService.showStatsWidget$ | async)"
        style="cursor: pointer;">
       <mat-icon>dashboard</mat-icon>
     </a>
 
-    <a mat-button
+    <a mat-button class="btnLogout"
       routerLink="/mapa"
       routerLinkActive="active">
       <mat-icon>map</mat-icon>
     </a>
 
-    <a mat-button
+   <!--  <a
+      mat-button
+      class="btnMapa"
+      routerLink="/mapa"
+      routerLinkActive="active">
+
+      <img
+        src="../../../../assets/images/svg/icons/mapa.svg"
+        alt="Mapa"
+        class="icon-default">
+
+      <img
+        src="../../../../assets/images/svg/icons/mapa-hover.svg"
+        alt="Mapa hover"
+        class="icon-hover">
+
+    </a> -->
+
+    <a mat-button class="btnLogout"
       routerLink="/reportes"
       routerLinkActive="active">
       <mat-icon>bar_chart</mat-icon>

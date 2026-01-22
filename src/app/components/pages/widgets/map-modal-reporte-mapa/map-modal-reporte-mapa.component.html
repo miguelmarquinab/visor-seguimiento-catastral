@@ -6,26 +6,19 @@
     {{ sidebarOpen ? 'chevron_right' : 'chevron_left' }}
   </mat-icon>
 </button>
-
-<!-- <button class="edge-toggle-btn" (click)="toggleSidebar()">
-  <mat-icon>
-    {{ sidebarOpen ? 'chevron_right' : 'chevron_left' }}
-  </mat-icon>
-</button> -->
-
 <aside class="sidebar" [class.closed]="!sidebarOpen">
-  <div class="stats-widget shadow-lg">
-    <div class="widget-header">
-      <div class="header-main">
-        <mat-icon class="shield-icon">security</mat-icon>
-        <span>ESTADISTICAS</span>
-      </div>
+  <div class="widget-header">
+    <div class="header-main">
+      <mat-icon class="shield-icon">bar_chart</mat-icon>
+      <span class="title">Estadistica</span>
     </div>
-
+  </div>
+  <br><br>
+  <div class="stats-widget shadow-lg">
     <div class="widget-body">
       <h3 class="layer-name">Manzana</h3>
 
-      <div class="chart-container">
+      <div class="chart-container" style="width: 200px;">
         <canvas #statsChart></canvas>
       </div>
 
@@ -68,9 +61,6 @@
         </div>
       </section>
 
-      <button class="minimize-btn" (click)="cerrar()">
-        <mat-icon>chevron_right</mat-icon>
-      </button>
     </div>
   </div>
 </aside>

@@ -1,17 +1,7 @@
 .sidebar{
- /*  height: 100vh;
-  padding: 16px 14px;
-  background: linear-gradient(180deg, var(--brand), var(--brand-dark));
-  color: #fff;
-  box-shadow: 8px 0 24px rgba(0,0,0,.12);
-  display:flex;
-  flex-direction: column;
-  gap: 14px; */
     height: 56px;
-    background: linear-gradient(180deg, #194a8b, var(--brand-dark));
     color: #fff;
     display: flex;
-    gap: 14px;
     flex-direction: row;
     position: absolute;
     z-index: 9999;
@@ -20,19 +10,47 @@
     align-items: center;
 }
 
-.brand{
-    padding: 0px 32px;
-    border-radius: 20px;
-    background: rgb(255 255 255);
-    min-height: 44px;
-    display: flex;
-    align-items: center;
-    margin: 0px 16px;
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 20px;
+  background: #ffffff;
+  border-radius: 40px;
+  box-shadow: 2px 2px 2px 1px rgb(0 0 0 / 32%);
+  margin-top: 6px;
 }
 
+/* LOGO */
 .brand-logo {
-  width: 120px;
+  height: 35px;
+  width: auto;
   object-fit: contain;
+}
+
+/* TEXTO */
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+  width: 210px;
+}
+
+/* TITULO PRINCIPAL */
+.brand-title {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: #1e4fa3;
+  text-transform: uppercase;
+}
+
+/* SUBTITULO */
+.brand-subtitle {
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  color: #1e4fa3;
 }
 .nav{
     gap: 5px;
@@ -42,18 +60,22 @@
 }
 
 .nav a{
-  display:block;
-  padding: 10px 12px;
-  border-radius: 12px;
-  background: rgba(255,255,255,.10);
-  color:#fff;
-  text-decoration:none;
-  font-weight: 700;
-  transition: transform .08s ease, background .18s ease;
+    display: block;
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: rgb(255 255 255);
+    color: #204785;
+    text-decoration: none;
+    font-weight: 500;
+    margin: 0;
+    border-radius: 25px;
+    border: 1px solid #244a86;
+    box-shadow: 2px 2px 2px 1px rgb(0 0 0 / 32%);
 }
 
 .nav a:hover{
-  background: rgba(255,255,255,.16);
+  background-color: #194A8B;
+  color: #fff;
   transform: translateY(-1px);
 }
 
@@ -67,26 +89,15 @@
   cursor: pointer;
   height: 42px;
   width: 42px;
+  min-width: 42px;
   border: none;
   margin: 0px 16px;
-  /* margin-top: auto;
-  width: 100%;
-  border: 1px solid rgba(255,255,255,.55);
-  background: rgba(0,0,0,.12);
-  color: #fff;
-  padding: 10px 12px;
-  border-radius: 12px;
-  font-weight: 800;
-  cursor: pointer;
-  transition: transform .08s ease, background .18s ease, border-color .18s ease; */
+  border: 1px solid #204785;
 }
 
 .btnLogout:hover{
   background-color: #194A8B;
   color: #fff;
-  /* background: rgba(0,0,0,.18);
-  border-color: rgba(255,255,255,.75);
-  transform: translateY(-1px); */
 }
 
 .btnLogout:focus-visible,
@@ -117,4 +128,40 @@
 /* Estilo para asegurar que el icono se vea bien */
 mat-icon {
   vertical-align: middle;
+}
+
+/*********icon eventos**************/
+.btnMapa {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;        /* ajusta al tamaño real */
+  height: 48px;
+}
+
+/* Estilos comunes para ambos íconos */
+.btnMapa img {
+  position: absolute;
+  width: 100%;
+  height: auto;
+  transition: opacity 0.3s ease;
+}
+
+/* Estado inicial */
+.icon-default {
+  opacity: 1;
+}
+
+.icon-hover {
+  opacity: 0;
+}
+
+/* Hover */
+.btnMapa:hover .icon-default {
+  opacity: 0;
+}
+
+.btnMapa:hover .icon-hover {
+  opacity: 1;
 }

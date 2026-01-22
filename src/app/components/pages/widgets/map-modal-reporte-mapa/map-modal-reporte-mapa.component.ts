@@ -103,10 +103,6 @@ export class MapModalReporteMapaComponent implements AfterViewInit {
     console.log('Exportando a:', formato);
   }
 
-  cerrar() {
-    this.uiService.setStatsWidget(false);
-  }
-
   toggleSidebar(): void {
   this.sidebarOpen = !this.sidebarOpen;
   }
