@@ -30,4 +30,8 @@ export class SidebarComponent {
     this.uiService.toggleManzanaPanel();
   }
 
+  abrirReportePoligonos() {
+    this.uiService.togglePoligoPanel();
+  }
+
 }

@@ -18,8 +18,9 @@
     </a>
 
     <a mat-button
-      routerLink="/reportes"
-      routerLinkActive="active">
+      (click)="abrirReportePoligonos()"
+       [class.active]="(uiService.showPoligonoPanel$ | async)"
+       style="cursor: pointer;">
       <mat-icon>bar_chart</mat-icon>
     </a>
   </nav>
