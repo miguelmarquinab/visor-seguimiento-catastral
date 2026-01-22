@@ -33,6 +33,8 @@ ng g c components/shared/distrito-multiselect --standalone --skip-tests
 npm install chart.js
 
 ng g c components/pages/widgets/map-modal-reporte-mapa
+ng g c components/pages/widgets/map-modal-reporte-manzana
+
 
 
 

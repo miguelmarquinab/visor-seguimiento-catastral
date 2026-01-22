@@ -21,12 +21,13 @@ export class UiStateService {
   private _showStatsWidget = new BehaviorSubject<boolean>(false);
   showStatsWidget$ = this._showStatsWidget.asObservable();
 
+  private categorySelectedSubject = new BehaviorSubject<string | null>(null);
+  categorySelected$ = this.categorySelectedSubject.asObservable();
+
   setShowControl(v: boolean) { this._showControl.next(v); }
   toggleControl() { this._showControl.next(!this._showControl.value); }
 
-  setView(view: ViewMode) {
-    this.viewSubject.next(view);
-  }
+  setView(view: ViewMode) { this.viewSubject.next(view);}
 
   setDistritos(selected: DistritoSelected[]) {
     localStorage.setItem(this.LS_KEY, JSON.stringify(selected));
@@ -34,12 +35,12 @@ export class UiStateService {
     this.setView('mapa');
   }
 
-  toggleStatsWidget() {
-    this._showStatsWidget.next(!this._showStatsWidget.value);
-  }
+  toggleStatsWidget() { this._showStatsWidget.next(!this._showStatsWidget.value);}
 
-  setStatsWidget(visible: boolean) {
-    this._showStatsWidget.next(visible);
+  setStatsWidget(visible: boolean) { this._showStatsWidget.next(visible);}
+
+  selectCategory(label : string | null) {
+    this.categorySelectedSubject.next(label);
   }
 
   private readFromLocalStorage(): DistritoSelected[] {

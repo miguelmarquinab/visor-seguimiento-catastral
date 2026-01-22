@@ -25,6 +25,7 @@ export class MapaComponent {
   constructor(private mapService: MapService) {}
 
   ngAfterViewInit(): void {
+
     this.map = L.map('map', {
       zoomControl: true,
       attributionControl: false,
@@ -39,11 +40,39 @@ export class MapaComponent {
 
     // Hardcode demo layers (cuadrados)
     this.createDemoLayers();
+
+    this.uiService.categorySelected$.subscribe(category => {
+      this.filtrarMapa(category);
+    })
+  }
+
+  filtrarMapa(categoria: string | null) {
+    // Obtenemos todas las capas registradas en el mapService
+    // Asumiendo que tus IDs de capa contienen el nombre de la categoría (ej: 'mz_pendiente')
+    const categoriasMap: Record<string, string> = {
+      'Pendiente': 'mz_pendiente',
+      'Levantamiento': 'mz_levantamiento',
+      'Edición gráfica': 'mz_edicion',
+      'Control de calidad interno': 'mz_calidad',
+      'Terminada': 'mz_terminada',
+      'En polígono': 'mz_en_poligono'
+    };
+
+    Object.keys(categoriasMap).forEach(key => {
+      const layerId = categoriasMap[key];
+      const layer = this.mapService.getLayer(layerId); // Asegúrate de tener este método en tu MapService
+
+      if (layer) {
+        if (!categoria || categoria === key) {
+          layer.addTo(this.map!); // Mostrar si coincide o si no hay filtro
+        } else {
+          layer.remove(); // Ocultar si no coincide con el clic
+        }
+      }
+    });
   }
 
   private createDemoLayers() {
-    // Simulamos “Manzana: Pendiente / Levantamiento / etc”
-    // Solo para probar: polígonos de colores alrededor de Lima
 
     const layers: Array<{ id: string; coords: [number, number][] }> = [
       { id: 'mz_pendiente', coords: [[-12.05,-77.08],[-12.05,-77.06],[-12.035,-77.06],[-12.035,-77.08]] },
@@ -54,7 +83,6 @@ export class MapaComponent {
       { id: 'mz_en_poligono', coords: [[-12.04,-77.095],[-12.04,-77.085],[-12.03,-77.085],[-12.03,-77.095]] },
     ];
 
-    // colores hardcode (solo demo)
     const styleMap: Record<string, any> = {
       mz_pendiente: { color: '#f2c94c', weight: 2, fillColor: '#f2c94c', fillOpacity: 0.35 },
       mz_levantamiento: { color: '#2d9cdb', weight: 2, fillColor: '#2d9cdb', fillOpacity: 0.35 },
