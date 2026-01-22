@@ -108,3 +108,13 @@
   transform: translateY(-1px);
   color:#fff;
 }
+
+.nav a.active {
+  background-color: rgba(255, 255, 255, 0.2); /* O el color de tu preferencia */
+  color: #fff;
+}
+
+/* Estilo para asegurar que el icono se vea bien */
+mat-icon {
+  vertical-align: middle;
+}

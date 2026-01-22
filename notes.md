@@ -22,12 +22,17 @@ ng g s services/ui-state --skip-tests
 
 ng g c components/pages/mapa --standalone --skip-tests
 ng g c components/pages/control-capas --standalone --skip-tests
+ng g c components/pages/map-modal-reporte-mapa --standalone --skip-tests
 
 npm i leaflet
 
 ng g s services/map --skip-tests
 
 ng g c components/shared/distrito-multiselect --standalone --skip-tests
+
+npm install chart.js
+
+ng g c components/pages/widgets/map-modal-reporte-mapa
 
 
 

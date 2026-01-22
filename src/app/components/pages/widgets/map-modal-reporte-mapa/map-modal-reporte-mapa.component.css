@@ -1,0 +1,97 @@
+.stats-widget {
+  position: absolute;
+  top: 70px; /* Debajo del header azul */
+  right: 15px;
+  width: 320px; /* Ancho fijo como el prototipo */
+  background: white;
+  border-radius: 15px;
+  z-index: 1100;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+}
+
+.widget-header {
+  background: linear-gradient(90deg, #0b3d91 0%, #1e5bb9 100%);
+  color: white;
+  padding: 10px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-main {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.widget-body {
+  padding: 15px;
+  max-height: 85vh;
+  overflow-y: auto;
+}
+
+.layer-name {
+  color: #0b3d91;
+  font-size: 16px;
+  font-weight: 800;
+  margin-bottom: 15px;
+}
+
+chart-container {
+  position: relative;
+  height: 200px; /* Altura fija para que Chart.js sepa cuánto medir */
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.section-title {
+  color: #0b3d91;
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.legend-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+  font-size: 12px;
+}
+
+.color-box {
+  width: 24px;
+  height: 24px;
+  border-radius: 2px;
+}
+
+.divider {
+  border: 0;
+  border-top: 1px solid #eee;
+  margin: 15px 0;
+}
+
+/* Ajuste para los botones de descarga circulares del prototipo */
+.download-container {
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0;
+}
+
+.circle-btn {
+  background: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  border-radius: 30px;
+  padding: 5px 15px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.icon-xls { color: #1d6f42; }
+.icon-gis { color: #f7931e; }
+.arrow { font-size: 18px; width: 18px; height: 18px; color: #666; }
