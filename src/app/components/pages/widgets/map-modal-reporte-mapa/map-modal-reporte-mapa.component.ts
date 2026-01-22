@@ -56,13 +56,30 @@ export class MapModalReporteMapaComponent implements AfterViewInit {
           datasets: [{
             label: 'Valor',
             data: this.dataEstadistica.map(d => d.valor),
-            backgroundColor: this.dataEstadistica.map(d => d.color),
+            //backgroundColor: this.dataEstadistica.map(d => d.color),
+            backgroundColor: this.dataEstadistica.map(d => {
+              // Si hay una categoría seleccionada y no es esta, bajamos la opacidad
+              return d.color;
+            }),
             borderRadius: 5,
             borderWidth: 0,
             barThickness: 20
           }]
         },
         options: {
+          onClick: (event, elements, chart) => {
+            if (elements.length > 0) {
+              const index = elements[0].index;
+              const label = this.dataEstadistica[index].label;
+
+              // Enviamos la categoría seleccionada al servicio
+              this.uiService.selectCategory(label);
+              console.log('Filtrando mapa por:', label);
+            } else {
+              // Si hace clic fuera de una barra, limpiamos el filtro
+              this.uiService.selectCategory(null);
+            }
+          },
           responsive: true,
           maintainAspectRatio: false,
           plugins: {
@@ -74,7 +91,8 @@ export class MapModalReporteMapaComponent implements AfterViewInit {
               grid: { display: true, color: '#f0f0f0' }
             },
             x: { grid: { display: false } }
-          }
+          },
+
         }
       });
     }
