@@ -49,4 +49,8 @@ export class MapService {
     // demo: centro Lima
     this.getMap().setView([-12.0464, -77.0428], 12);
   }
+
+  getLayer(id: string): L.Layer | undefined {
+    return this.overlays.get(id);
+  }
 }
