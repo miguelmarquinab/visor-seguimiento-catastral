@@ -1,0 +1,121 @@
+<div class="poligono-panel shadow-lg" [class.maximized]="isMaximized()">
+
+  <button class="toggle-btn" (click)="toggleSize()">
+    <mat-icon>{{ isMaximized() ? 'expand_more' : 'expand_less' }}</mat-icon>
+  </button>
+
+  <div class="main-layout">
+    <aside class="left-col">
+      <div class="chips-container">
+        @for (dist of distritosSeleccionados; track dist) {
+          <span class="custom-chip">{{ dist }} <mat-icon>close</mat-icon></span>
+        }
+      </div>
+
+      <div class="report-box">
+        <div class="report-header">
+          <mat-icon>security</mat-icon>
+          <span>Reporte Espacial</span>
+        </div>
+        <div class="report-body">
+          <div class="accordion-item">
+            <span>Manzana</span>
+            <mat-icon>expand_less</mat-icon>
+          </div>
+          <div class="form-content">
+            <label>Departamento:</label>
+            <select class="form-select"><option>TODOS</option></select>
+            <label>Provincia:</label>
+            <select class="form-select"><option>TODOS</option></select>
+            <label>Distrito:</label>
+            <select class="form-select"><option>TODOS</option></select>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="right-col" *ngIf="isMaximized()">
+
+      <div class="top-stats-grid">
+        <div class="stat-section">
+          <div class="header-banner blue-light">Polígono</div>
+          <div class="cards-flex">
+            <div class="stat-card bg-blue-strong"><span>Total</span><strong>500</strong></div>
+            <div class="stat-card bg-blue-soft"><span>Pendientes</span><strong>200</strong></div>
+            <div class="stat-card bg-blue-soft"><span>En proceso</span><strong>150</strong></div>
+            <div class="stat-card bg-blue-soft"><span>Terminado</span><strong>150</strong></div>
+          </div>
+        </div>
+        <div class="stat-section">
+          <div class="header-banner gold-strong">Unidades Catastrales</div>
+          <div class="cards-flex">
+            <div class="stat-card bg-gold-dark"><span>Total</span><strong>1.571.781</strong></div>
+            <div class="stat-card bg-gold-soft"><span>Pendientes</span><strong>781</strong></div>
+            <div class="stat-card bg-gold-soft"><span>En proceso</span><strong>571.000</strong></div>
+            <div class="stat-card bg-gold-soft"><span>Terminado</span><strong>1.000.000</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="charts-container-grid">
+        <div class="chart-wrapper">
+          <div class="chart-label">Total de Polígono</div>
+          <div class="canvas-holder"><canvas #chart1></canvas></div>
+        </div>
+        <div class="chart-wrapper">
+          <div class="chart-label">Total de unidades por Polígono</div>
+          <div class="canvas-holder"><canvas #chart2></canvas></div>
+        </div>
+        <div class="chart-wrapper">
+          <div class="chart-label">Total de Polígono por distrito</div>
+          <div class="canvas-holder"><canvas #chart3></canvas></div>
+        </div>
+        <div class="chart-wrapper">
+          <div class="chart-label">Total de Polígono por Lote</div>
+          <div class="canvas-holder"><canvas #chart4></canvas></div>
+        </div>
+      </div>
+
+      <div class="table-container-fixed">
+        <table class="report-table">
+          <thead>
+          <tr>
+            <th>Departamento</th>
+            <th>Provincia</th>
+            <th>Distrito</th>
+            <th>Lote</th>
+            <th>Polígono</th>
+            <th>UUCC</th>
+            <th>QA1</th>
+            <th>QA2</th>
+            <th>CIC</th>
+            <th>QA3</th>
+            <th>QA4</th>
+            <th>MUN</th>
+            <th>Conformidad</th>
+          </tr>
+          </thead>
+          <tbody>
+            @for (i of [1,2,3]; track i) {
+              <tr>
+                <td>LIMA</td>
+                <td>LIMA</td>
+                <td>{{ i == 1 ? 'INDEPENDENCIA' : i == 2 ? 'EL AGUSTINO' : 'BREÑA' }}</td>
+                <td>1</td>
+                <td>127669</td>
+                <td>3.185</td>
+                <td><mat-icon class="icon-check">check_circle</mat-icon></td>
+                <td><mat-icon class="icon-check">check_circle</mat-icon></td>
+                <td><mat-icon class="icon-check">check_circle</mat-icon></td>
+                <td><mat-icon class="icon-check">check_circle</mat-icon></td>
+                <td><mat-icon class="icon-check">check_circle</mat-icon></td>
+                <td><mat-icon class="icon-check">check_circle</mat-icon></td>
+                <td>27/12/2024</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+</div>

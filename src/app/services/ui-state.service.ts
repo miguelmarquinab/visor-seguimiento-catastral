@@ -26,6 +26,9 @@ export class UiStateService {
   private _showManzanaPanel = new BehaviorSubject<boolean>(false);
   showManzanaPanel$ = this._showManzanaPanel.asObservable();
 
+  private _showPoligonoPanel = new BehaviorSubject<boolean>(false);
+  showPoligonoPanel$ = this._showPoligonoPanel.asObservable();
+
   setShowControl(v: boolean) { this._showControl.next(v); }
 
   toggleControl() { this._showControl.next(!this._showControl.value); }
@@ -48,6 +51,10 @@ export class UiStateService {
 
   toggleManzanaPanel() {
     this._showManzanaPanel.next(!this._showManzanaPanel.value);
+  }
+
+  togglePoligoPanel() {
+    this._showPoligonoPanel.next(!this._showPoligonoPanel.value);
   }
 
   private readFromLocalStorage(): DistritoSelected[] {

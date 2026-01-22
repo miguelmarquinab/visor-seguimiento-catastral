@@ -7,3 +7,7 @@
 @if(uiService.showManzanaPanel$ | async) {
   <app-map-modal-reporte-manzana></app-map-modal-reporte-manzana>
 }
+
+@if (uiService.showPoligonoPanel$ | async) {
+  <app-map-modal-reporte-poligono></app-map-modal-reporte-poligono>
+}

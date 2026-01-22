@@ -42,6 +42,9 @@ npm install chart.js
 
 ng g c components/pages/widgets/map-modal-reporte-mapa
 ng g c components/pages/widgets/map-modal-reporte-manzana
+ng g c components/pages/widgets/map-modal-reporte-poligono
+
+
 
 
 
