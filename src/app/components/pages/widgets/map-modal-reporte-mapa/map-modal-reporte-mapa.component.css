@@ -36,8 +36,8 @@
 
 .layer-name {
   color: #0b3d91;
-  font-size: 16px;
-  font-weight: 800;
+  font-size: 15px;
+  font-weight: 700;
   margin-bottom: 15px;
 }
 
@@ -95,3 +95,73 @@ chart-container {
 .icon-xls { color: #1d6f42; }
 .icon-gis { color: #f7931e; }
 .arrow { font-size: 18px; width: 18px; height: 18px; color: #666; }
+
+
+/*MOSTAR OCULTAR*/
+
+
+/* SIDEBAR */
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 360px;
+  height: 100vh;
+  background: #ffffff;
+  box-shadow: -4px 0 12px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
+  z-index: 1000;
+}
+
+/* OCULTO */
+.sidebar.closed {
+  transform: translateX(100%);
+}
+
+/* BOTÓN AL BORDE */
+.edge-toggle-btn {
+  position: fixed;
+  top: 50%;
+  right: 340px; /* MOSTRAR */
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #1e4fa3;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  z-index: 1100;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  transition: right 0.3s ease;
+}
+
+/* BOTÓN CUANDO ESTÁ OCULTO */
+.sidebar.closed + .edge-toggle-btn,
+.edge-toggle-btn.closed {
+  right: 0;
+}
+
+/* AJUSTE CUANDO EL PANEL SE OCULTA */
+.sidebar.closed ~ .edge-toggle-btn {
+  right: 0;
+}
+
+/* ÍCONO */
+.edge-toggle-btn mat-icon {
+  font-size: 28px;
+}
+
+/* OCULTO */
+.edge-toggle-btn.closed {
+  right: 0px;
+}
+
+.edge-toggle-btn mat-icon {
+  font-size: 28px;
+}
