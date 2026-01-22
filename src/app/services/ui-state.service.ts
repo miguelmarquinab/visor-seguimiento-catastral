@@ -14,7 +14,6 @@ export class UiStateService {
   private _showControl = new BehaviorSubject<boolean>(true);
   showControl$ = this._showControl.asObservable();
 
-  // ✅ OJO: DistritoSelected[] (no Distrito[])
   private distritosSubject = new BehaviorSubject<DistritoSelected[]>(this.readFromLocalStorage());
   distritos$ = this.distritosSubject.asObservable();
 
@@ -24,7 +23,11 @@ export class UiStateService {
   private categorySelectedSubject = new BehaviorSubject<string | null>(null);
   categorySelected$ = this.categorySelectedSubject.asObservable();
 
+  private _showManzanaPanel = new BehaviorSubject<boolean>(false);
+  showManzanaPanel$ = this._showManzanaPanel.asObservable();
+
   setShowControl(v: boolean) { this._showControl.next(v); }
+
   toggleControl() { this._showControl.next(!this._showControl.value); }
 
   setView(view: ViewMode) { this.viewSubject.next(view);}
@@ -41,6 +44,10 @@ export class UiStateService {
 
   selectCategory(label : string | null) {
     this.categorySelectedSubject.next(label);
+  }
+
+  toggleManzanaPanel() {
+    this._showManzanaPanel.next(!this._showManzanaPanel.value);
   }
 
   private readFromLocalStorage(): DistritoSelected[] {

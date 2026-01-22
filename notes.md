@@ -1,4 +1,12 @@
 
+git fetch -p
+git branch -D <nombrebranc>
+git checkout <nombrebranch>
+git pull
+git pull origin <nombrebranch>
+git push
+git merge origin/<nombrebranch>
+
 #Comandos Angular 19 (standalone)
 
 ng g c components/pages/login --standalone

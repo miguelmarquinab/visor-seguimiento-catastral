@@ -4,12 +4,15 @@ import * as L from 'leaflet';
 import { MapService } from '../../../services/map.service'
 import { UiStateService } from '../../../services/ui-state.service'; // Importa tu servicio
 import {MapModalReporteMapaComponent} from '../widgets/map-modal-reporte-mapa/map-modal-reporte-mapa.component';
+import { MapModalReporteManzanaComponent} from '../widgets/map-modal-reporte-manzana/map-modal-reporte-manzana.component';
 
 @Component({
   selector: 'app-mapa',
   standalone: true,
   imports: [CommonModule,
-    MapModalReporteMapaComponent],
+    MapModalReporteMapaComponent,
+    MapModalReporteManzanaComponent
+  ],
   templateUrl: './mapa.component.html',
   styleUrl: './mapa.component.css'
 })

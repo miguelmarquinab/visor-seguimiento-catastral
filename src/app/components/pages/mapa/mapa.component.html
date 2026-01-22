@@ -3,3 +3,7 @@
 @if (uiService.showStatsWidget$ | async) {
   <app-map-modal-reporte-mapa></app-map-modal-reporte-mapa>
 }
+
+@if(uiService.showManzanaPanel$ | async) {
+  <app-map-modal-reporte-manzana></app-map-modal-reporte-manzana>
+}
