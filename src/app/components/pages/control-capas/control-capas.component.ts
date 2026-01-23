@@ -24,18 +24,15 @@ type LayerItem = { id: string; label: string; checked: boolean; };
 })
 export class ControlCapasComponent implements OnInit, OnDestroy {
   @Input() embedded = false;
-
   expandedManzana = true;
   expandedPoligono = false;
   opacity = 1;
 
-  // ✅ ambos con el MISMO tipo
   allDistritos: DistritoSelected[] = [];
   selectedDistritos: DistritoSelected[] = [];
 
   private sub = new Subscription();
 
-  // Modal agregar/quitar
   showDistritoModal = false;
   showAddDistrito = false;
   filtroDistrito = '';
@@ -69,14 +66,12 @@ export class ControlCapasComponent implements OnInit, OnDestroy {
     // Prender capas por defecto
     this.manzana.filter(x => x.checked).forEach(x => this.mapService.addLayer(x.id));
 
-    // ✅ Ahora sí: el observable emite DistritoSelected[]
     this.sub.add(
       this.ui.distritos$.subscribe((ds: DistritoSelected[]) => {
         this.selectedDistritos = ds ?? [];
       })
     );
 
-    // Cargar “todos” (hardcode / llamada grande)
     this.distritosService.buscar('', 0, 2000).subscribe({
       next: (res) => {
         // ✅ tu API trae data.organizaciones con el shape de DistritoSelected
@@ -90,7 +85,7 @@ export class ControlCapasComponent implements OnInit, OnDestroy {
     this.sub.unsubscribe();
   }
 
-  // ✅ el multiselect debe emitir DistritoSelected[]
+
   onDistritosChange(next: DistritoSelected[]): void {
     // 1) guardar selección (localStorage + state)
     this.ui.setDistritos(next);
@@ -160,20 +155,20 @@ export class ControlCapasComponent implements OnInit, OnDestroy {
 
   toggleExpandManzana(): void {
     this.expandedManzana = !this.expandedManzana;
-    // Si abro Manzana, cierro Polígono
     if (this.expandedManzana) {
       this.expandedPoligono = false;
+      this.mapService.clearCategoryLayers('po_'); // Limpia polígonos
+      this.manzana.filter(m => m.checked).forEach(m => this.mapService.addLayer(m.id));
     }
-
   }
 
   toggleExpandPoligonoPanel(): void {
     this.expandedPoligono = !this.expandedPoligono;
-    // Si abro Polígono, cierro Manzana
     if (this.expandedPoligono) {
       this.expandedManzana = false;
+      this.mapService.clearCategoryLayers('mz_'); // Limpia manzanas
+      this.poligonos.filter(p => p.checked).forEach(p => this.mapService.addLayer(p.id));
     }
-
   }
 
   onToggle(item: LayerItem): void {
