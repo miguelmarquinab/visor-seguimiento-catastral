@@ -1,30 +1,25 @@
 <div class="panel" [class.embedded]="embedded">
 
+
   <div class="panel-body" style="padding: 0;">
+
     <div class="row">
       <label class="label">Distritos seleccionados:</label>
-      <app-distrito-multiselect
-        [all]="allDistritos"
-        [selected]="selectedDistritos"
-        (selectedChange)="onDistritosChange($event)">
-      </app-distrito-multiselect>
+      <app-distrito-multiselect  [all]="allDistritos"  [selected]="selectedDistritos"  (selectedChange)="onDistritosChange($event)"></app-distrito-multiselect>
 <!--      <button class="circle-btn" title="Configurar" (click)="openDistritoModal()">⚙</button>-->
       <button class="circle-btn" (click)="showAddDistrito = true" matTooltip="Agregar distrito" matTooltipClass = "class-tooltip">
         <mat-icon fontIcon="add_location"></mat-icon>
       </button>
     </div>
 
-    <!-- MANZANA -->
     <div class="group">
       <div class="group-header">
-        <button class="chev" (click)="toggleExpandManzana()">
-          {{ expandedManzana ? '▾' : '▸' }}
-        </button>
-
+        <button class="chev" (click)="toggleExpandManzana()">{{ expandedManzana ? '▾' : '▸' }}</button>
         <label class="group-title">
           <input type="checkbox" checked disabled />
           <span>Manzana</span>
         </label>
+
 
         <div class="group-actions">
           <button class="circle-btn" matTooltip="Menu" matTooltipClass = "class-tooltip">
@@ -41,29 +36,29 @@
           <input type="checkbox" [checked]="it.checked" (change)="onToggle(it)" />
           <span>{{ it.label }}</span>
         </label>
-
-        <div class="opacity">
-          <span>Opacidad</span>
-          <input type="range" min="0.2" max="1" step="0.05" [value]="opacity" (input)="onOpacityChange($event)" />
-        </div>
       </div>
     </div>
 
-    <!-- POLIGONO (hardcode, aún sin capa) -->
     <div class="group">
       <div class="group-header">
-        <button class="chev" disabled>▸</button>
-        <label class="group-title muted">
-          <input type="checkbox" disabled />
+        <button class="chev" (click)="toggleExpandPoligonoPanel()">{{ expandedPoligono ? '▾' : '▸' }}</button>
+        <label class="group-title">
+          <input type="checkbox" checked disabled />
           <span>Polígono</span>
         </label>
         <div class="group-actions">
-          <button class="circle-btn" matTooltip="Menu" matTooltipClass = "class-tooltip">
-            <mat-icon fontIcon="menu"></mat-icon>
-          </button>
-          <button class="circle-btn" matTooltip="transparencia" matTooltipClass = "class-tooltip">
-            <mat-icon fontIcon="linear_scale"></mat-icon>
-          </button>
+          <button class="round">≡</button>
+          <button class="round">⇄</button>
+        </div>
+      </div>
+      <div class="group-content" *ngIf="expandedPoligono">
+        <label class="item" *ngFor="let ip of poligonos">
+          <input type="checkbox" [checked]="ip.checked" (change)="onToggle(ip)" />
+          <span>{{ ip.label }}</span>
+        </label>
+        <div class="opacity">
+          <span>Opacidad</span>
+          <input type="range" min="0.2" max="1" step="0.05" [value]="opacity" (input)="onOpacityChange($event)" />
         </div>
       </div>
     </div>
@@ -96,49 +91,3 @@
 
   </div>
 </div>
-
-
-<!--<div class="district-modal-backdrop" *ngIf="showDistritoModal">-->
-<!--  <div class="district-modal">-->
-<!--    <div class="district-modal-header">-->
-<!--      <div class="title">Agregar Distrito</div>-->
-<!--      <button class="x" type="button" (click)="closeDistritoModal()">✕</button>-->
-<!--    </div>-->
-
-<!--    <div class="district-modal-toolbar">-->
-<!--      <div class="left">Seleccionar Distrito</div>-->
-
-<!--      <div class="search">-->
-<!--        <span class="icon">🔍</span>-->
-<!--        <input-->
-<!--          type="text"-->
-<!--          placeholder="Buscar..."-->
-<!--          [(ngModel)]="filtroDistrito"-->
-<!--        />-->
-<!--      </div>-->
-<!--    </div>-->
-
-<!--    <div class="district-grid">-->
-<!--      <button-->
-<!--        type="button"-->
-<!--        class="district-card"-->
-<!--        *ngFor="let d of distritosFiltrados"-->
-<!--        (click)="toggleDistrito(d)"-->
-<!--        [class.selected]="isDistritoSelected(d)"-->
-<!--      >-->
-<!--        <div class="logo"></div>-->
-<!--        <div class="name">{{ d.distrito }}</div>-->
-
-<!--        <div class="check" [class.on]="isDistritoSelected(d)">-->
-<!--          ✓-->
-<!--        </div>-->
-<!--      </button>-->
-<!--    </div>-->
-
-<!--    <div class="district-modal-footer">-->
-<!--      <button type="button" class="btn-add" (click)="aplicarDistritos()">-->
-<!--        Agregar-->
-<!--      </button>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</div>-->
