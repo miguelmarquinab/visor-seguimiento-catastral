@@ -23,6 +23,7 @@ Chart.register(...registerables);
   styleUrl: './map-modal-reporte-mapa.component.css'
 })
 export class MapModalReporteMapaComponent implements AfterViewInit {
+  sidebarOpen = true;
 
   @ViewChild('statsChart', { static: false }) statsChart!: ElementRef<HTMLCanvasElement>;
 
@@ -103,8 +104,8 @@ export class MapModalReporteMapaComponent implements AfterViewInit {
     console.log('Exportando a:', formato);
   }
 
-  cerrar() {
-    this.uiService.setStatsWidget(false);
+  toggleSidebar(): void {
+  this.sidebarOpen = !this.sidebarOpen;
   }
 
 }

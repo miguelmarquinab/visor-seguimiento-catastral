@@ -2,7 +2,7 @@
   position: absolute;
   top: 70px; /* Debajo del header azul */
   right: 15px;
-  width: 320px; /* Ancho fijo como el prototipo */
+  width: 230px;
   background: white;
   border-radius: 15px;
   z-index: 1100;
@@ -36,8 +36,8 @@
 
 .layer-name {
   color: #0b3d91;
-  font-size: 16px;
-  font-weight: 800;
+  font-size: 15px;
+  font-weight: 700;
   margin-bottom: 15px;
 }
 
@@ -60,7 +60,7 @@ chart-container {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 6px;
-  font-size: 12px;
+  font-size: 11px;
 }
 
 .color-box {
@@ -80,6 +80,7 @@ chart-container {
   display: flex;
   justify-content: space-around;
   padding: 10px 0;
+  z-index: 9999999999999999999;
 }
 
 .circle-btn {
@@ -95,3 +96,77 @@ chart-container {
 .icon-xls { color: #1d6f42; }
 .icon-gis { color: #f7931e; }
 .arrow { font-size: 18px; width: 18px; height: 18px; color: #666; }
+
+
+/*MOSTAR OCULTAR*/
+
+
+/* SIDEBAR */
+.sidebar {
+  position: fixed;
+  top: 9%;
+  right: 0;
+  width: 260px;
+  height: 91vh;
+  background: #0000007e;
+  box-shadow: -4px 0 12px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
+  z-index: 1000;
+}
+
+/* OCULTO */
+.sidebar.closed {
+  transform: translateX(100%);
+}
+
+/* BOTÓN AL BORDE */
+.edge-toggle-btn {
+  position: fixed;
+  top: 59%;
+  right: 261px;
+  transform: translateY(-50%);
+  width: 25px;
+  height: 100%;
+  border-radius: 15px 0 0 15px;
+  background: #0000007e;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  z-index: 1099;
+  display: flex;
+  padding: 0;
+  align-items: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  transition: right 0.3s ease;
+}
+
+/* BOTÓN CUANDO ESTÁ OCULTO */
+.sidebar.closed + .edge-toggle-btn,
+.edge-toggle-btn.closed {
+  right: 0;
+}
+
+/* AJUSTE CUANDO EL PANEL SE OCULTA */
+.sidebar.closed ~ .edge-toggle-btn {
+  right: 0;
+}
+
+/* ÍCONO */
+.edge-toggle-btn mat-icon {
+  font-size: 28px;
+}
+
+/* OCULTO */
+.edge-toggle-btn.closed {
+  right: 0px;
+}
+
+.edge-toggle-btn mat-icon {
+  font-size: 28px;
+}
+
+::ng-deep .mat-mdc-menu-content {
+    background: #FFF;
+    color: #194A8B;
+    font-size: 13px!important;
+}

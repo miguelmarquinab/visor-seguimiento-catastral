@@ -23,3 +23,25 @@ html,
      font-family: Roboto, "Helvetica Neue", sans-serif;
      overflow: hidden; /* default */
  }
+
+.map{
+    background-image: url(assets/images/map.jpg);
+    height: 100%;
+    background-position: center;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+}
+.title {
+    margin: 5px;
+    text-align: center;
+    font-weight: 500;
+    font-size: 15px;
+    letter-spacing: .2px;
+    color: #ffffff;
+}
+.class-tooltip{
+    background-color: #01285ccb;
+    color: #fff!important;
+    border-radius: 8px!important;
+}

@@ -2,7 +2,7 @@
 
 <!-- VISTA 1: selección -->
 <section *ngIf="(ui.view$ | async) === 'distritos'">
-  <!-- tu buscador + cards + agregar --><div class="page">
+  <!-- tu buscador + cards + agregar --><div class="page map">
   <div class="panel">
     <div class="toolbar conten-buscar">
       <div class="searchWrap">
@@ -33,7 +33,8 @@
         <span class="check" [class.on]="isSelected(d)">✓</span>
 
         <div class="logoCircle">
-          <!-- Si luego tienes logo, aquí lo pones -->
+          <img src="../../../../../assets/images/jpg-muni/140106.jpg"
+          class="icon-log-muni-1" alt="logo-municipalidades" />
         </div>
 
         <div class="name">{{ d.distrito | uppercase }}</div>
@@ -76,6 +77,10 @@
     <div class="control-body">
       <app-control-capas [embedded]="true"></app-control-capas>
     </div>
+  </div>
+  <!-- modal 2-->
+  <div class="control-body">
+    <app-map-modal-reporte-mapa></app-map-modal-reporte-mapa>
   </div>
 </section>
 
