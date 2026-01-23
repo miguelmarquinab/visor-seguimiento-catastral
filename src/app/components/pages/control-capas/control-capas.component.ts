@@ -9,6 +9,8 @@ import { DistritosService } from '../../../services/distritos.service';
 
 import { DistritoSelected } from '../../../interfaces/DistritoSelected';
 import { DistritoMultiselectComponent } from '../../shared/distrito-multiselect/distrito-multiselect.component';
+import {MatIconModule} from '@angular/material/icon';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 type LayerItem = { id: string; label: string; checked: boolean; };
 
@@ -18,7 +20,7 @@ type LayerItem = { id: string; label: string; checked: boolean; };
   imports: [
     CommonModule,
     DistritoMultiselectComponent,
-    FormsModule],
+    FormsModule, MatIconModule, MatTooltipModule],
   templateUrl: './control-capas.component.html',
   styleUrls: ['./control-capas.component.css'],
 })

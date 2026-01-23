@@ -5,13 +5,15 @@ import { MatButtonModule } from '@angular/material/button'; // Para mat-button
 import { RouterModule } from '@angular/router'; // Para routerLink
 import { UiStateService} from '../../../services/ui-state.service';
 
+import {MatTooltipModule} from '@angular/material/tooltip';
+
 @Component({
   selector: 'app-sidebar',
   standalone: true,
   imports: [CommonModule,
     MatIconModule,
     MatButtonModule,
-    RouterModule],
+    RouterModule, MatTooltipModule],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css'
 })

@@ -10,7 +10,7 @@
   background: #f1f5f9; z-index: 1100; padding: 15px 20px;
   transition: height 0.4s ease; border-radius: 20px 20px 0 0;
 }
-.maximized { height: 92vh; overflow-y: auto; }
+.maximized { height: 88vh; overflow-y: auto; }
 
 .main-layout { display: flex; gap: 20px; }
 

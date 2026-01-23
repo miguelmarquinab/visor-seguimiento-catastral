@@ -8,14 +8,17 @@ import { UiStateService} from '../../../../services/ui-state.service';
 import {MapaComponent} from '../../mapa/mapa.component';
 import {ControlCapasComponent} from '../../control-capas/control-capas.component';
 import {MatIconModule} from '@angular/material/icon';
+import { MapModalReporteMapaComponent } from '../../widgets/map-modal-reporte-mapa/map-modal-reporte-mapa.component';
+
 
 @Component({
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MapaComponent, ControlCapasComponent,MatIconModule],
+  imports: [CommonModule, ReactiveFormsModule, MapaComponent, ControlCapasComponent, MapModalReporteMapaComponent, MatIconModule],
   templateUrl: './distritos.component.html',
   styleUrls: ['./distritos.component.css'],
 })
 export class DistritosComponent implements OnInit {
+  minimized = false;
   search = new FormControl('');
   items: Distrito[] = [];
   loading = false;

@@ -1,32 +1,44 @@
 <aside class="sidebar">
   <div class="brand">
-    <img src="../../../../assets/images/svg/logo-sicun.svg" alt="Logo SICU" class="brand-logo">
+    <img
+      src="../../../../assets/images/svg/logo-sicun.svg"
+      alt="Logo SICUN"
+      class="brand-logo"
+    />
+    <div class="brand-text">
+      <span class="brand-title">
+        VISOR DE SEGUIMIENTO DE
+      </span>
+      <span class="brand-subtitle">
+        LEVANTAMIENTO CATASTRAL
+      </span>
+    </div>
   </div>
   <nav class="nav">
-    <a mat-button
+    <a mat-button class="btnLogout" matTooltip="Dashboard" matTooltipClass = "class-tooltip"
        (click)="abrirEstadisticas()"
        [class.active]="(uiService.showStatsWidget$ | async)"
        style="cursor: pointer;">
-      <mat-icon>dashboard</mat-icon>
+      <mat-icon class="icon-header">dashboard</mat-icon>
     </a>
 
-    <a mat-button
+    <a mat-button class="btnLogout" matTooltip="Manzana" matTooltipClass = "class-tooltip"
        (click)="abrirReporteManzanas()"
        [class.active]="(uiService.showManzanaPanel$ | async)"
        style="cursor: pointer;">
-      <mat-icon>assessment</mat-icon>
+      <mat-icon class="icon-header">format_shapes</mat-icon>
     </a>
 
-    <a mat-button
+    <a mat-button class="btnLogout" matTooltip="Poligono" matTooltipClass = "class-tooltip"
       (click)="abrirReportePoligonos()"
        [class.active]="(uiService.showPoligonoPanel$ | async)"
        style="cursor: pointer;">
-      <mat-icon>bar_chart</mat-icon>
+      <mat-icon class="icon-header">pentagon</mat-icon>
     </a>
   </nav>
 
 
-  <button class="btnLogout" (click)="logout.emit()">
+  <button class="btnLogout" (click)="logout.emit()" matTooltip="Cerrar sesión" matTooltipClass = "class-tooltip">
     <mat-icon>logout</mat-icon>
   </button>
 </aside>
