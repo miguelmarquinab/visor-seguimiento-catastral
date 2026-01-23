@@ -61,7 +61,7 @@
 
 .nav a{
     display: block;
-    padding: 10px 12px;
+    padding: 6px;
     border-radius: 12px;
     background: rgb(255 255 255);
     color: #204785;
@@ -69,7 +69,7 @@
     font-weight: 500;
     margin: 0;
     border-radius: 25px;
-    border: 1px solid #244a86;
+    border: 1px solid #244a8666;
     box-shadow: 2px 2px 2px 1px rgb(0 0 0 / 32%);
 }
 
@@ -80,7 +80,15 @@
 }
 
 .nav a.active{
-  background: rgba(255,255,255,.22);
+  background-color: #194A8B;
+  color: #fff;
+}
+
+.icon-header{
+  margin: 0!important;
+  width: 28px!important;
+  height: 28px!important;
+  font-size: 28px!important;
 }
 
 .btnLogout{
@@ -120,10 +128,7 @@
   color:#fff;
 }
 
-.nav a.active {
-  background-color: rgba(255, 255, 255, 0.2); /* O el color de tu preferencia */
-  color: #fff;
-}
+
 
 /* Estilo para asegurar que el icono se vea bien */
 mat-icon {
@@ -131,37 +136,3 @@ mat-icon {
 }
 
 /*********icon eventos**************/
-.btnMapa {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 48px;        /* ajusta al tamaño real */
-  height: 48px;
-}
-
-/* Estilos comunes para ambos íconos */
-.btnMapa img {
-  position: absolute;
-  width: 100%;
-  height: auto;
-  transition: opacity 0.3s ease;
-}
-
-/* Estado inicial */
-.icon-default {
-  opacity: 1;
-}
-
-.icon-hover {
-  opacity: 0;
-}
-
-/* Hover */
-.btnMapa:hover .icon-default {
-  opacity: 0;
-}
-
-.btnMapa:hover .icon-hover {
-  opacity: 1;
-}

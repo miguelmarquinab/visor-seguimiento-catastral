@@ -64,7 +64,11 @@
   background:var(--brand);
   color: #fff;
 }
-
+.circle-btn:hover {
+  background:#fff;
+  color: var(--brand);
+  border: 1px solid #0b3c9165;
+}
 .icon-btn {
   background: rgba(255,255,255,0.18);
   color: #fff;

@@ -40,3 +40,8 @@ html,
     letter-spacing: .2px;
     color: #ffffff;
 }
+.class-tooltip{
+    background-color: #01285ccb;
+    color: #fff!important;
+    border-radius: 8px!important;
+}

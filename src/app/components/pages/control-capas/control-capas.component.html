@@ -9,8 +9,8 @@
         (selectedChange)="onDistritosChange($event)">
       </app-distrito-multiselect>
 <!--      <button class="circle-btn" title="Configurar" (click)="openDistritoModal()">⚙</button>-->
-      <button class="btn-add-distrito" (click)="showAddDistrito = true">
-        <i class="icon-plus"></i>
+      <button class="circle-btn" (click)="showAddDistrito = true" matTooltip="Agregar distrito" matTooltipClass = "class-tooltip">
+        <mat-icon fontIcon="add_location"></mat-icon>
       </button>
     </div>
 
@@ -27,8 +27,12 @@
         </label>
 
         <div class="group-actions">
-          <button class="round">≡</button>
-          <button class="round">⇄</button>
+          <button class="circle-btn" matTooltip="Menu" matTooltipClass = "class-tooltip">
+            <mat-icon fontIcon="menu"></mat-icon>
+          </button>
+          <button class="circle-btn" matTooltip="transparencia" matTooltipClass = "class-tooltip">
+            <mat-icon fontIcon="linear_scale"></mat-icon>
+          </button>
         </div>
       </div>
 
@@ -54,8 +58,12 @@
           <span>Polígono</span>
         </label>
         <div class="group-actions">
-          <button class="round" disabled>≡</button>
-          <button class="round" disabled>⇄</button>
+          <button class="circle-btn" matTooltip="Menu" matTooltipClass = "class-tooltip">
+            <mat-icon fontIcon="menu"></mat-icon>
+          </button>
+          <button class="circle-btn" matTooltip="transparencia" matTooltipClass = "class-tooltip">
+            <mat-icon fontIcon="linear_scale"></mat-icon>
+          </button>
         </div>
       </div>
     </div>
