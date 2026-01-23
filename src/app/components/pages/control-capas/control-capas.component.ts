@@ -26,6 +26,7 @@ export class ControlCapasComponent implements OnInit, OnDestroy {
   @Input() embedded = false;
 
   expandedManzana = true;
+  expandedPoligono = false;
   opacity = 1;
 
   // ✅ ambos con el MISMO tipo
@@ -47,6 +48,15 @@ export class ControlCapasComponent implements OnInit, OnDestroy {
     { id: 'mz_calidad', label: 'Control de calidad interno', checked: true },
     { id: 'mz_terminada', label: 'Terminada', checked: true },
     { id: 'mz_en_poligono', label: 'En polígono', checked: true },
+  ];
+
+  poligonos: LayerItem[] = [
+    { id: 'mz_pendiente', label: 'QA1', checked: true },
+    { id: 'mz_levantamiento', label: 'QA2', checked: true },
+    { id: 'mz_edicion', label: 'CIC', checked: true },
+    { id: 'mz_calidad', label: 'QA3', checked: true },
+    { id: 'mz_terminada', label: 'QA4', checked: true },
+    { id: 'mz_en_poligono', label: 'MUNI', checked: true },
   ];
 
   constructor(
@@ -84,7 +94,6 @@ export class ControlCapasComponent implements OnInit, OnDestroy {
   onDistritosChange(next: DistritoSelected[]): void {
     // 1) guardar selección (localStorage + state)
     this.ui.setDistritos(next);
-
     // 2) cargar data asíncrona por ubigeo (hardcode por ahora)
     this.loadDistritosAsync(next);
   }
@@ -151,6 +160,20 @@ export class ControlCapasComponent implements OnInit, OnDestroy {
 
   toggleExpandManzana(): void {
     this.expandedManzana = !this.expandedManzana;
+    // Si abro Manzana, cierro Polígono
+    if (this.expandedManzana) {
+      this.expandedPoligono = false;
+    }
+
+  }
+
+  toggleExpandPoligonoPanel(): void {
+    this.expandedPoligono = !this.expandedPoligono;
+    // Si abro Polígono, cierro Manzana
+    if (this.expandedPoligono) {
+      this.expandedManzana = false;
+    }
+
   }
 
   onToggle(item: LayerItem): void {
@@ -174,10 +197,8 @@ export class ControlCapasComponent implements OnInit, OnDestroy {
 
   private loadDistritosAsync(distritos: DistritoSelected[]): void {
     console.log('Cargando data para distritos:', distritos.map(d => d.codigoUbigeo));
-
     setTimeout(() => {
       console.log('Data cargada OK (hardcode) ✅');
-      // aquí luego refrescas overlays de manzanas/polígonos
     }, 600);
   }
 }
