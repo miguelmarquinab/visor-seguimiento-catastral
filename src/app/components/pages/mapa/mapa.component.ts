@@ -11,7 +11,6 @@ import {MapModalReportePoligonoComponent} from '../widgets/map-modal-reporte-pol
   selector: 'app-mapa',
   standalone: true,
   imports: [CommonModule,
-    MapModalReporteMapaComponent,
     MapModalReporteManzanaComponent,
     MapModalReportePoligonoComponent
   ],

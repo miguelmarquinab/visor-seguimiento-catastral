@@ -24,9 +24,7 @@ export class DistritosComponent implements OnInit {
   private selectedMap = new Map<number, Distrito>();
 
   selectedIds = new Set<number>();
-  constructor(private distritos: DistritosService, private router: Router, public ui: UiStateService) {
-
-  }
+  constructor(private distritos: DistritosService, private router: Router, public ui: UiStateService) {}
 
   ngOnInit(): void {
     const saved = localStorage.getItem('distritos_seleccionados');
@@ -69,7 +67,7 @@ export class DistritosComponent implements OnInit {
 
     localStorage.setItem('distritos_seleccionados', JSON.stringify(selected));
     this.ui.setDistritos(selected);
-    this.ui.setView('mapa'); // <- cambia de “pantalla” en la misma página
+    this.ui.setView('mapa');
   }
 
   private cargar(nombre: string, page: number): void {
@@ -80,13 +78,10 @@ export class DistritosComponent implements OnInit {
         const orgs: Distrito[] = res?.data?.organizaciones ?? [];
         this.items = [...orgs].sort((a, b) =>
             (a.distrito ?? '').localeCompare(b.distrito ?? ''))
-          //.slice(0, 6);
-        //this.selectedIds.clear();
         this.loading = false;
       },
       error: () => {
         this.items = [];
-        //this.selectedIds.clear();
         this.loading = false;
       },
     });

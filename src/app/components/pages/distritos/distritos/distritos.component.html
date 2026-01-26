@@ -59,28 +59,55 @@
 </section>
 
 <!-- VISTA 2: mapa + control de capas -->
+<!--<section *ngIf="(ui.view$ | async) === 'mapa'" class="map-shell">-->
+<!--  <app-mapa></app-mapa>-->
+
+<!--  &lt;!&ndash; botón flotante (capas) &ndash;&gt;-->
+<!--  <button class="fab-control" (click)="ui.toggleControl()" type="button" aria-label="Capas">-->
+<!--    ☰-->
+<!--  </button>-->
+
+<!--  &lt;!&ndash; modal &ndash;&gt;-->
+<!--  <div class="control-modal" *ngIf="(ui.showControl$ | async)">-->
+<!--    <div class="control-header">-->
+<!--      <div class="title">Reporte Espacial</div>-->
+<!--      <button class="close" type="button" (click)="ui.setShowControl(false)">✕</button>-->
+<!--    </div>-->
+
+<!--    <div class="control-body">-->
+<!--      <app-control-capas [embedded]="true"></app-control-capas>-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--  &lt;!&ndash; modal 2&ndash;&gt;-->
+<!--  <div class="control-body">-->
+<!--    <app-map-modal-reporte-mapa></app-map-modal-reporte-mapa>-->
+<!--  </div>-->
+<!--</section>-->
 <section *ngIf="(ui.view$ | async) === 'mapa'" class="map-shell">
+
   <app-mapa></app-mapa>
 
-  <!-- botón flotante (capas) -->
   <button class="fab-control" (click)="ui.toggleControl()" type="button" aria-label="Capas">
     ☰
   </button>
 
-  <!-- modal -->
-  <div class="control-modal" *ngIf="(ui.showControl$ | async)">
-    <div class="control-header">
-      <div class="title">Reporte Espacial</div>
-      <button class="close" type="button" (click)="ui.setShowControl(false)">✕</button>
+  @if (ui.showControl$ | async) {
+    <div class="control-modal">
+      <div class="control-header">
+        <div class="title">Reporte Espacial</div>
+        <button class="close" type="button" (click)="ui.setShowControl(false)">✕</button>
+      </div>
+      <div class="control-body">
+        <app-control-capas [embedded]="true"></app-control-capas>
+      </div>
     </div>
+  }
 
-    <div class="control-body">
-      <app-control-capas [embedded]="true"></app-control-capas>
+  @if (ui.showStatsWidget$ | async) {
+    <div class="widget-container">
+      <app-map-modal-reporte-mapa></app-map-modal-reporte-mapa>
     </div>
-  </div>
-  <!-- modal 2-->
-  <div class="control-body">
-    <app-map-modal-reporte-mapa></app-map-modal-reporte-mapa>
-  </div>
+  }
+
 </section>
-
