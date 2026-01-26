@@ -1,14 +1,9 @@
 <div class="poligono-panel shadow-lg" [class.maximized]="isMaximized()">
-
-  <button class="toggle-btn" (click)="toggleSize()">
-    <mat-icon>{{ isMaximized() ? 'expand_more' : 'expand_less' }}</mat-icon>
-  </button>
-
   <div class="main-layout">
     <aside class="left-col">
       <div class="chips-container">
         @for (dist of distritosSeleccionados; track dist) {
-          <span class="custom-chip">{{ dist }} <mat-icon>close</mat-icon></span>
+          <span class="custom-chip">{{ dist }} <mat-icon class="close-chip">close</mat-icon></span>
         }
       </div>
 
@@ -38,7 +33,8 @@
 
       <div class="top-stats-grid">
         <div class="stat-section">
-          <div class="header-banner blue-light">Polígono</div>
+          <div class="header-banner blue-poligono">Polígono</div>
+          <br>
           <div class="cards-flex">
             <div class="stat-card bg-blue-strong"><span>Total</span><strong>500</strong></div>
             <div class="stat-card bg-blue-soft"><span>Pendientes</span><strong>200</strong></div>
@@ -48,6 +44,7 @@
         </div>
         <div class="stat-section">
           <div class="header-banner gold-strong">Unidades Catastrales</div>
+          <br>
           <div class="cards-flex">
             <div class="stat-card bg-gold-dark"><span>Total</span><strong>1.571.781</strong></div>
             <div class="stat-card bg-gold-soft"><span>Pendientes</span><strong>781</strong></div>

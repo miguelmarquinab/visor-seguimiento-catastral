@@ -11,6 +11,7 @@ import { DistritoSelected } from '../../../interfaces/DistritoSelected';
 import { DistritoMultiselectComponent } from '../../shared/distrito-multiselect/distrito-multiselect.component';
 import {MatIconModule} from '@angular/material/icon';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatMenuModule} from '@angular/material/menu';
 
 type LayerItem = { id: string; label: string; checked: boolean; };
 
@@ -20,7 +21,7 @@ type LayerItem = { id: string; label: string; checked: boolean; };
   imports: [
     CommonModule,
     DistritoMultiselectComponent,
-    FormsModule, MatIconModule, MatTooltipModule],
+    FormsModule, MatIconModule, MatTooltipModule, MatMenuModule],
   templateUrl: './control-capas.component.html',
   styleUrls: ['./control-capas.component.css'],
 })
@@ -29,6 +30,7 @@ export class ControlCapasComponent implements OnInit, OnDestroy {
   expandedManzana = true;
   expandedPoligono = false;
   opacity = 1;
+  mostrarDiv = false;
 
   allDistritos: DistritoSelected[] = [];
   selectedDistritos: DistritoSelected[] = [];
@@ -198,4 +200,16 @@ export class ControlCapasComponent implements OnInit, OnDestroy {
       console.log('Data cargada OK (hardcode) ✅');
     }, 600);
   }
+
+  toggleDiv() {
+    this.mostrarDiv = !this.mostrarDiv;
+  }
+
+  cerrarDistritos() {
+  // lógica para guardar distritos
+  this.mostrarDiv = false; // cerrar modal
+}
+
+
+  
 }

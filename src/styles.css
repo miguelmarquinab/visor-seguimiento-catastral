@@ -44,4 +44,9 @@ html,
     background-color: #01285ccb;
     color: #fff!important;
     border-radius: 8px!important;
+    z-index: 9999999!important;
+}
+.mat-mdc-menu-content {
+  padding: 16px!important;
+
 }
