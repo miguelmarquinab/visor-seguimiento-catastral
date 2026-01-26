@@ -95,25 +95,76 @@
 .blue-poligono { background-color: #4387f8;; }
 
 /* .cards-flex { display: flex; gap: 4px; } */
-.stat-card { flex: 1; padding: 10px; text-align: center; display: flex; flex-direction: column; }
+.stat-card { 
+  flex: 1; 
+  padding: 0;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  border: 3px solid #A5D3FF;
+  border-radius: 10px;
+  min-height: 70px;
+}
+
+.title-total{
+  background-color: #3b82f6;
+    font-size: 14px!important;
+    font-weight: 500;
+    margin-bottom: 6px;
+    display: block;
+    color: #000000;
+    padding: 6px;
+    line-height: 1.5;
+}
+.title-poligono{
+  background-color: #a9d5ff;
+  font-size: 14px!important;
+  font-weight: 500;
+  margin-bottom: 6px;
+  display: block;
+  color: #000000;
+  padding: 6px;
+  line-height: 1.5;
+}
+.title-UC{
+  background-color: #D6B000;
+  font-size: 14px!important;
+  font-weight: 500;
+  margin-bottom: 6px;
+  display: block;
+  color: #000000;
+  padding: 6px;
+  line-height: 1.5;
+}
+.title-UC-sub{
+  background-color: #EFDF97;
+  font-size: 14px!important;
+  font-weight: 500;
+  margin-bottom: 6px;
+  display: block;
+  color: #000000;
+  padding: 6px;
+  line-height: 1.5;
+}
 .stat-card span { font-size: 10px; font-weight: bold; margin-bottom: 5px; }
 .stat-card strong { font-size: 16px; }
 
 .bg-blue-strong {
-  background: var(--blue-strong);
-  color: white;
   border-radius: 10px;
-
+  color: #000;
+  border: 3px solid #4387f8;
+  
+}
   .bg-gold-dark {
-    background: var(--gold-dark);
-    color: white;
     border-radius: 10px;
+    color: #000;
+    border: 3px solid #D6B000;
   }
 
   .bg-gold-soft {
-    background: #fef08a;
     color: #422006;
     border-radius: 10px;
+    border: 3px solid #EFDF97;
   }
 
   /* Gráficos */
@@ -242,4 +293,3 @@
     }
   }
 
-}
