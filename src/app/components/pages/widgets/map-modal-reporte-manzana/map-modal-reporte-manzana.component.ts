@@ -35,7 +35,7 @@ export class MapModalReporteManzanaComponent implements AfterViewInit {
     { id: '150132', nombre: 'SAN LUIS' }
   ];
 
-  summaryCards = [
+  /* summaryCards = [
     { label: 'Total', value: 500, color: '#4facfe' },
     { label: 'Pendiente', value: 78, color: '#f2c94c' },
     { label: 'Levantamiento', value: 50, color: '#2d9cdb' },
@@ -43,7 +43,17 @@ export class MapModalReporteManzanaComponent implements AfterViewInit {
     { label: 'Calidad', value: 50, color: '#f2994a' },
     { label: 'Terminada', value: 100, color: '#27ae60' },
     { label: 'En polígono', value: 123, color: '#eb5757' }
-  ];
+  ]; */
+  summaryCards = [
+  { label: 'Total de Manzanas', value: 500, class: 'total' },
+  { label: 'Pendiente', value: 78, class: 'pendiente' },
+  { label: 'Levantamiento', value: 50, class: 'levantamiento' },
+  { label: 'Edición gráfica', value: 99, class: 'edicion' },
+  { label: 'Control de calidad Int', value: 50, class: 'calidad' },
+  { label: 'Terminada', value: 100, class: 'terminada' },
+  { label: 'En polígono', value: 123, class: 'poligono' }
+];
+
 
   ngAfterViewInit() {
     // Aumentamos a 150ms para asegurar que el DOM cargue totalmente

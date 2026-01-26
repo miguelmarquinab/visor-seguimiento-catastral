@@ -55,14 +55,34 @@
 
       <div class="blue-banner">Manzanas</div>
 
-      <div class="summary-row">
+      <!-- <div class="summary-row">
         @for (card of summaryCards; track card.label) {
           <div class="status-box" [style.background-color]="card.color">
             <span class="status-label">{{ card.label }}</span>
             <span class="status-value">{{ card.value }}</span>
           </div>
         }
+      </div> -->
+
+     <!--  <div class="summary-row">
+        @for (card of summaryCards; track card.label) {
+          <div class="status-box" [ngClass]="card.class">
+            <span class="status-label">{{ card.label }}</span>
+            <span class="status-value">{{ card.value }}</span>
+          </div>
+        }
+      </div> -->
+
+      <div class="summary-row">
+        @for (card of summaryCards; track card.label) {
+          <div class="status-box" [ngClass]="card.class">
+            <span class="status-label" [ngClass]="card.class">{{ card.label }}</span>
+            <span class="status-value">{{ card.value }}</span>
+          </div>
+        }
       </div>
+
+
 
       <div class="vertical-charts-container">
 
@@ -76,7 +96,8 @@
             <div class="custom-legend">
               @for (item of summaryCards.slice(1); track item.label) {
                 <div class="legend-item">
-                  <span class="legend-square" [style.background-color]="item.color"></span>
+                 <!--   <span class="legend-square" [style.background-color]="item.color"></span> -->
+                  <span class="legend-square"></span>
                   <span class="legend-text">{{ item.label }}</span>
                 </div>
               }
@@ -96,7 +117,8 @@
             <div class="custom-legend">
               @for (item of summaryCards.slice(1); track item.label) {
                 <div class="legend-item">
-                  <span class="legend-square" [style.background-color]="item.color"></span>
+                  <!--  <span class="legend-square" [style.background-color]="item.color"></span> -->
+                  <span class="legend-square"></span>
                   <span class="legend-text">{{ item.label }}</span>
                 </div>
               }
