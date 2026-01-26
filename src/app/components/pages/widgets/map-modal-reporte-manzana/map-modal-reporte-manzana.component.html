@@ -1,8 +1,8 @@
 <div class="manzana-panel shadow-lg" [class.maximized]="isMaximized()">
 
-  <button class="toggle-btn" (click)="toggleSise()">
+ <!--  <button class="toggle-btn" (click)="toggleSise()">
     <mat-icon>{{ isMaximized() ? 'expand_more' : 'expand_less' }}</mat-icon>
-  </button>
+  </button> -->
 
   <div class="main-layout">
 
@@ -88,6 +88,7 @@
 
         <div class="chart-section-wrapper">
           <div class="blue-banner-light">Estado de Manzanas por distrito</div>
+          <br><br>
           <div class="chart-layout-row">
             <div class="canvas-container">
               <canvas #stackedChart></canvas>
