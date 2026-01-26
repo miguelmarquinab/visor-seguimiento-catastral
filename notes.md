@@ -35,6 +35,7 @@ ng g c components/pages/map-modal-reporte-mapa --standalone --skip-tests
 npm i leaflet
 
 ng g s services/map --skip-tests
+ng g s services/sessionstate.service --skip-tests
 
 ng g c components/shared/distrito-multiselect --standalone --skip-tests
 
@@ -43,6 +44,8 @@ npm install chart.js
 ng g c components/pages/widgets/map-modal-reporte-mapa
 ng g c components/pages/widgets/map-modal-reporte-manzana
 ng g c components/pages/widgets/map-modal-reporte-poligono
+
+
 
 
 

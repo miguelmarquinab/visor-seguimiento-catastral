@@ -1,21 +1,23 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { DistritoSelected } from '../interfaces/DistritoSelected';
+import {Distrito} from '../interfaces/Distrito';
 
 type ViewMode = 'distritos' | 'mapa';
 
 @Injectable({ providedIn: 'root' })
 export class UiStateService {
+
   private readonly LS_KEY = 'distritos_seleccionados';
 
   private viewSubject = new BehaviorSubject<ViewMode>('distritos');
   view$ = this.viewSubject.asObservable();
 
-  private _showControl = new BehaviorSubject<boolean>(true);
-  showControl$ = this._showControl.asObservable();
-
   private distritosSubject = new BehaviorSubject<DistritoSelected[]>(this.readFromLocalStorage());
   distritos$ = this.distritosSubject.asObservable();
+
+  private _showControl = new BehaviorSubject<boolean>(true);
+  showControl$ = this._showControl.asObservable();
 
   private _showStatsWidget = new BehaviorSubject<boolean>(false);
   showStatsWidget$ = this._showStatsWidget.asObservable();
@@ -29,6 +31,19 @@ export class UiStateService {
   private _showPoligonoPanel = new BehaviorSubject<boolean>(false);
   showPoligonoPanel$ = this._showPoligonoPanel.asObservable();
 
+  constructor() {
+    const saved = localStorage.getItem(this.LS_KEY);
+    if (saved) {
+      try {
+        const distritos = JSON.parse(saved) as Distrito[];
+        this.distritosSubject.next(distritos ?? []);
+      } catch {
+        localStorage.removeItem(this.LS_KEY);
+      }
+    }
+    this.viewSubject.next('distritos');
+  }
+
   setShowControl(v: boolean) { this._showControl.next(v); }
 
   toggleControl() { this._showControl.next(!this._showControl.value); }
@@ -36,14 +51,15 @@ export class UiStateService {
   setView(view: ViewMode) { this.viewSubject.next(view);}
 
   setDistritos(selected: DistritoSelected[]) {
-    localStorage.setItem(this.LS_KEY, JSON.stringify(selected));
     this.distritosSubject.next(selected);
-    this.setView('mapa');
+    localStorage.setItem(this.LS_KEY, JSON.stringify(selected));
+    //this.distritosSubject.next(selected);
+    //this.viewSubject.next((selected?.length ?? 0) > 0 ? 'mapa' : 'distritos');
+    //this.setView('mapa');
+    this.viewSubject.next((selected?.length ?? 0) > 0 ? 'mapa' : 'distritos');
   }
 
   toggleStatsWidget() { this._showStatsWidget.next(!this._showStatsWidget.value);}
-
-  setStatsWidget(visible: boolean) { this._showStatsWidget.next(visible);}
 
   selectCategory(label : string | null) {
     this.categorySelectedSubject.next(label);
@@ -64,5 +80,11 @@ export class UiStateService {
     } catch {
       return [];
     }
+  }
+
+  reset(): void {
+    this.viewSubject.next('distritos');
+    this.distritosSubject.next([]);
+    localStorage.removeItem(this.LS_KEY);
   }
 }

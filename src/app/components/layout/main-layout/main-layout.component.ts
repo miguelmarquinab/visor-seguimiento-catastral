@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {Router, RouterOutlet} from '@angular/router';
 import {SidebarComponent} from '../sidebar/sidebar.component';
 import { AuthService } from '../../../core/auth/auth.service';
+import { UiStateService } from '../../../services/ui-state.service';
 
 @Component({
   selector: 'app-main-layout',
@@ -14,13 +15,14 @@ export class MainLayoutComponent {
 
   constructor(
     private auth: AuthService,
-    private router: Router
+    private router: Router,
+    private ui: UiStateService,
   ) {}
 
   doLogout(): void {
     this.auth.logout();
+
+    this.ui.reset();
     this.router.navigateByUrl('/login');
   }
-
-
 }

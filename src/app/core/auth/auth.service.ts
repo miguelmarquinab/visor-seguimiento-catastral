@@ -5,13 +5,14 @@ import { TokenStorageService} from './token-storage.service';
 import {environment} from '../../../environments/environment';
 import {LoginResponse} from '../../interfaces/LoginResponse';
 import {LoginRequest} from '../../interfaces/LoginRequest';
+import { SessionstateServiceService} from '../../services/sessionstate.service.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor(private http: HttpClient, private tokenStorage: TokenStorageService) { }
+  constructor(private http: HttpClient, private tokenStorage: TokenStorageService, private sesionState: SessionstateServiceService) { }
 
   login(req: LoginRequest): Observable<LoginResponse> {
     const clientId = environment.clientIdSICUAccess;
@@ -52,6 +53,8 @@ export class AuthService {
 
   logout(): void {
     this.tokenStorage.clear();
+    this.sesionState.reset();
+
   }
 
   isLoggedIn(): boolean {

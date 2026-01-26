@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import {FormGroup, FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService} from '../../../core/auth/auth.service';
+import { SessionstateServiceService} from '../../../services/sessionstate.service.service';
 
 // Angular Material
 import { MatInputModule } from '@angular/material/input';
@@ -29,11 +30,11 @@ export class LoginComponent {
   form!: FormGroup;
   hidePassword = true;
 
-
   constructor (
     private fb: FormBuilder,
     private auth: AuthService,
     private router: Router,
+    private sessionState : SessionstateServiceService
   ) {
     this.form = this.fb.group({
       username: ['87654321', Validators.required],
@@ -41,6 +42,7 @@ export class LoginComponent {
     });
 
   }
+
 
   submit() : void {
     this.error = '';
@@ -58,8 +60,9 @@ export class LoginComponent {
 
     this.auth.login(credentials).subscribe({
       next: () => {
-        this.loading = false;
-        this.router.navigateByUrl('/');
+        this.sessionState.setBuscador();
+        //this.router.navigateByUrl('/');
+        this.router.navigate(['/distritos']);
       },
       error: () => {
         this.loading = false;
