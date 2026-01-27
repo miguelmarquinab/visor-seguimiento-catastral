@@ -242,11 +242,108 @@
   cursor: pointer;
   z-index: 10;
 }
+/************************************/
+.status-label {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 6px;
+  display: block;
+  color: #000000;
+  padding: 2px;
+  line-height: 1.5;
+}
+
+/* Colores independientes del label */
+.status-label.total {
+  background-color: #2D77E1;
+  border-radius: 10px;
+}
+
+.status-label.pendiente {
+ 
+  background-color: #efc645;
+ 
+}
+
+.status-label.levantamiento {
+  background-color: #2d9cdb;
+}
+
+.status-label.edicion {
+  background-color: #9b51e0;
+}
+
+.status-label.calidad {
+  background-color: #f2994a;
+}
+
+.status-label.terminada {
+  background-color: #27ae60;
+}
+
+.status-label.poligono {
+  background-color: #eb5757;
+}
 
 
 
+/*********************************/
+.status-box {
+/*   min-width: 120px; */
+  padding: 0;
+  border-radius: 12px;
+  background: #fff;
+  border: 3px solid transparent;
+  text-align: center;
+}
 
+/* .status-label {
+  font-size: 14px;
+  font-weight: 600;
+}
+ */
+.status-value {
+  font-size: 32px;
+  font-weight: 800;
+}
 
+/* ===== CLASES ===== */
+
+.status-box.total {
+  background-color: #2D77E1;
+  border-color: #003d8d;
+  color: #ffffff;
+}
+
+.status-box.pendiente {
+  border-color: #f2c94c;
+  color: #f2c94c;
+}
+
+.status-box.levantamiento {
+  border-color: #2d9cdb;
+  color:#2d9cdb;
+}
+
+.status-box.edicion {
+  border-color: #9b51e0;
+  color: #9b51e0;
+}
+
+.status-box.calidad {
+  border-color: #f2994a;
+  color: #f2994a;
+}
+
+.status-box.terminada {
+  border-color: #27ae60;
+  color: #27ae60;
+}
+
+.status-box.poligono {
+  border-color: #eb5757;
+  color: #eb5757;
+ }
 /* ===============================
    TABLET
 ================================ */
