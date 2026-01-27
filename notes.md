@@ -37,6 +37,8 @@ npm i leaflet
 ng g s services/map --skip-tests
 ng g s services/sessionstate.service --skip-tests
 
+ng g s services/tipomapacore.service --skip-tests
+
 ng g c components/shared/distrito-multiselect --standalone --skip-tests
 
 npm install chart.js

@@ -1,10 +1,9 @@
-<div id="map" class="map"></div>
+<div id="map"></div>
 
-<!--@if (uiService.showStatsWidget$ | async) {-->
-<!--  <app-map-modal-reporte-mapa></app-map-modal-reporte-mapa>-->
-<!--}-->
+<div id="div-map-ubicacion">Datum WGS84<br />{{ coordenadas }}</div>
+<div id="div-map-escala">{{ escala }}</div>
 
-@if(uiService.showManzanaPanel$ | async) {
+@if (uiService.showManzanaPanel$ | async) {
   <app-map-modal-reporte-manzana></app-map-modal-reporte-manzana>
 }
 
