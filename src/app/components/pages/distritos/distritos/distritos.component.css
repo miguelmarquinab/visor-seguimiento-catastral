@@ -83,7 +83,7 @@
   border: 2px solid rgba(255,255,255,.20);
   background: rgba(255,255,255,.92);
   cursor: pointer;
-  padding: 16px 12px;
+  padding: 5px;
   display:flex;
   flex-direction: column;
   align-items:center;
@@ -222,7 +222,6 @@
 .control-header{
   background: var(--brand, #11478A);
   color: #fff;
-  height: 44px;
   display: flex;
   align-items: center;
   justify-content: space-between;

@@ -201,6 +201,7 @@
 
 /* Header */
 .modal-header {
+    border-radius: 10px 10px 0 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -211,6 +212,7 @@
     font-weight: 500;
     font-size: 15px;
     letter-spacing: .2px;
+    height: 16px;
 }
 
 .modal-header .close {
@@ -224,6 +226,91 @@
 /* Body */
 .modal-body {
   padding: 16px;
+}
+/*card*/
+.grid-agregar{
+  display:grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  max-height: 175px;
+  overflow: auto;
+  padding: 16px;
+}
+
+.card-agregar{
+  position: relative;
+  border-radius: 14px;
+  border: 2px solid rgba(255,255,255,.20);
+  background: #F1F3F4;
+  cursor: pointer;
+  padding: 5px;
+  display:flex;
+  flex-direction: column;
+  align-items:center;
+  justify-content:center;
+  min-height: 118px;
+  transition: transform .10s ease, box-shadow .18s ease, border-color .18s ease;
+  width: 150px;
+}
+.card:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 14px 24px rgba(0,0,0,.18);
+  border-color: rgba(255,255,255,.40);
+}
+.card.selected{
+  outline-offset: 2px;
+}
+
+.logoCircle{
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,.12);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  margin-bottom: 10px;
+}
+
+.logoCircle img{
+  width: 65%;
+  height: 65%;
+  object-fit: cover;
+}
+
+.name{
+  text-align:center;
+  font-weight: 600;
+  color: #194a8b;
+  letter-spacing: .3px;
+  font-size: 13px;
+}
+
+/* Checkbox estilo prototipo */
+.check{
+  position:absolute;
+  top: 10px;
+  right: 10px;
+  width: 20px;
+  height: 20px;
+  border-radius: 5px;
+  border: 2px solid rgba(0,0,0,.35);
+  background: rgba(255,255,255,.70);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight: 900;
+  font-size: 12px;
+  line-height: 1;
+  color: transparent;
+}
+
+.check.on {
+    background: #11478A;
+    border-color: #11478A;
+    color: #fff;
 }
 
 /* Footer */
