@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal, computed } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { DistritoSelected } from '../interfaces/DistritoSelected';
 import {Distrito} from '../interfaces/Distrito';
@@ -53,9 +53,6 @@ export class UiStateService {
   setDistritos(selected: DistritoSelected[]) {
     this.distritosSubject.next(selected);
     localStorage.setItem(this.LS_KEY, JSON.stringify(selected));
-    //this.distritosSubject.next(selected);
-    //this.viewSubject.next((selected?.length ?? 0) > 0 ? 'mapa' : 'distritos');
-    //this.setView('mapa');
     this.viewSubject.next((selected?.length ?? 0) > 0 ? 'mapa' : 'distritos');
   }
 

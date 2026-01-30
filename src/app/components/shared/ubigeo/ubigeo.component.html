@@ -1,0 +1,33 @@
+<div class="ubigeo-container" [formGroup]="form">
+
+  <div class="select-group">
+    <label>Departamento</label>
+    <select formControlName="departamento">
+      <option value="">{{ showTodos ? 'TODOS' : 'Seleccione' }}</option>
+      @for (d of departamentos(); track d.value) {
+        <option [value]="d.value">{{ d.label }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="select-group">
+    <label>Provincia</label>
+    <select formControlName="provincia">
+      <option value="">{{ showTodos ? 'TODOS' : 'Seleccione' }}</option>
+      @for (p of provincias(); track p.value) {
+        <option [value]="p.value">{{ p.label }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="select-group">
+    <label>Distrito</label>
+    <select formControlName="distrito">
+      <option value="">{{ showTodos ? 'TODOS' : 'Seleccione' }}</option>
+      @for (dist of distritos(); track dist.value) {
+        <option [value]="dist.value">{{ dist.label }}</option>
+      }
+    </select>
+  </div>
+
+</div>

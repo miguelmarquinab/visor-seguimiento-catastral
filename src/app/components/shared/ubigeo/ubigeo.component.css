@@ -1,0 +1,32 @@
+.ubigeo-container {
+  display: flex;
+  flex-direction: column; /* Cambia a 'row' si el espacio es ancho */
+  gap: 12px;
+  padding: 10px 0;
+}
+
+.select-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.select-group label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #555;
+  text-transform: uppercase;
+}
+
+.select-group select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 13px;
+  background-color: white;
+  outline: none;
+}
+
+.select-group select:focus {
+  border-color: #1E3A8A; /* Color de tu tema */
+}

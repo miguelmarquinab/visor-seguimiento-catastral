@@ -6,7 +6,7 @@ import * as L from 'leaflet';
 })
 export class MapService {
 
-  private map?: L.Map;
+  private map?: L.Map| null = null;
   private overlays = new Map<string, L.Layer>();
   private poligonosSimulados = new Map<string, L.Layer>(); // Nuevo: Para polígonos
 
@@ -39,17 +39,5 @@ export class MapService {
   }
 
   fitToLimaDemo() { this.getMap().setView([-12.0464, -77.0428], 12); }
-
-  // setOpacity(id: string, opacity: number) {
-  //   const layer = this.overlays.get(id) as any;
-  //   // soporte para tileLayer / wms / geojson (si aplica)
-  //   if (layer?.setOpacity) layer.setOpacity(opacity);
-  //   if (layer?.setStyle) layer.setStyle({ opacity, fillOpacity: opacity * 0.35 });
-  // }
-
-  // fitToLimaDemo() {
-  //   // demo: centro Lima
-  //   this.getMap().setView([-12.0464, -77.0428], 12);
-  // }
 
 }

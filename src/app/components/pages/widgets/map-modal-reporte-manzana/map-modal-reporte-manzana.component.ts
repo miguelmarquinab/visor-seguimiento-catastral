@@ -6,6 +6,7 @@ import { Chart, registerables } from 'chart.js';
 // IMPORTANTE: Debes importar estos módulos aquí
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import {UbigeoComponent} from '../../../shared/ubigeo/ubigeo.component';
 
 Chart.register(...registerables);
 
@@ -16,7 +17,8 @@ Chart.register(...registerables);
   imports: [
     CommonModule,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    UbigeoComponent
   ],
   templateUrl: './map-modal-reporte-manzana.component.html',
   styleUrl: './map-modal-reporte-manzana.component.css'
@@ -35,15 +37,6 @@ export class MapModalReporteManzanaComponent implements AfterViewInit {
     { id: '150132', nombre: 'SAN LUIS' }
   ];
 
-  /* summaryCards = [
-    { label: 'Total', value: 500, color: '#4facfe' },
-    { label: 'Pendiente', value: 78, color: '#f2c94c' },
-    { label: 'Levantamiento', value: 50, color: '#2d9cdb' },
-    { label: 'Edición', value: 99, color: '#9b51e0' },
-    { label: 'Calidad', value: 50, color: '#f2994a' },
-    { label: 'Terminada', value: 100, color: '#27ae60' },
-    { label: 'En polígono', value: 123, color: '#eb5757' }
-  ]; */
   summaryCards = [
   { label: 'Total de Manzanas', value: 500, class: 'total' },
   { label: 'Pendiente', value: 78, class: 'pendiente' },
@@ -130,4 +123,20 @@ export class MapModalReporteManzanaComponent implements AfterViewInit {
       }
     });
   }
+
+  onDistritoSeleccionado(event: { ubigeo: string; distrito: string }) {
+    // Aquí agregas el distrito a tus chips y actualizas los gráficos
+    const existe = this.distritosSeleccionados.some(d => d.id === event.ubigeo);
+
+    if (!existe) {
+      this.distritosSeleccionados = [
+        ...this.distritosSeleccionados,
+        { id: event.ubigeo, nombre: event.distrito }
+      ];
+      console.log('...Cargar reportes graficos.....');
+      // Aquí llamarías a tu servicio de Spring Boot para traer la data de este nuevo distrito
+      //this.actualizarGraficos();
+    }
+  }
+
 }

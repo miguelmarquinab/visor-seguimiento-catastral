@@ -3,8 +3,6 @@ import { inject} from '@angular/core';
 import {TokenStorageService} from '../auth/token-storage.service';
 
 export const authTokenInterceptor: HttpInterceptorFn = (req, next) => {
-  //const tokenStorage = inject(TokenStorageService);
-  //const token = tokenStorage.getToken();
 
   const token = inject(TokenStorageService).get();
 

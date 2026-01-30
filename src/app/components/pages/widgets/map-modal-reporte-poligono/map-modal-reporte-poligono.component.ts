@@ -3,13 +3,14 @@ import { CommonModule } from '@angular/common';
 import { UiStateService } from '../../../../services/ui-state.service';
 import { MatIconModule } from '@angular/material/icon';
 import { Chart, registerables } from 'chart.js';
+import {UbigeoComponent} from '../../../shared/ubigeo/ubigeo.component';
 
 Chart.register(...registerables);
 
 @Component({
   selector: 'app-map-modal-reporte-poligono',
   standalone: true,
-  imports: [CommonModule, MatIconModule],
+  imports: [CommonModule, MatIconModule, UbigeoComponent],
   templateUrl: './map-modal-reporte-poligono.component.html',
   styleUrl: './map-modal-reporte-poligono.component.css'
 })
@@ -23,7 +24,12 @@ export class MapModalReportePoligonoComponent implements AfterViewInit {
   @ViewChild('chart3') chart3!: ElementRef<HTMLCanvasElement>;
   @ViewChild('chart4') chart4!: ElementRef<HTMLCanvasElement>;
 
-  distritosSeleccionados = ['INDEPENDENCIA', 'EL AGUSTINO', 'BREÑA', 'SAN LUIS'];
+  distritosSeleccionados = [
+    { id: '150105', nombre: 'BREÑA' },
+    { id: '150112', nombre: 'EL AGUSTINO' },
+    { id: '150114', nombre: 'INDEPENDENCIA' },
+    { id: '150132', nombre: 'SAN LUIS' }
+  ];
 
   ngAfterViewInit() {
     this.renderAllCharts();
@@ -91,5 +97,20 @@ export class MapModalReportePoligonoComponent implements AfterViewInit {
         plugins: { legend: { position: 'top', labels: { boxWidth: 12, font: { size: 10 } } } }
       }
     });
+  }
+
+  onDistritoSeleccionado(event: { ubigeo: string; distrito: string }) {
+    // Aquí agregas el distrito a tus chips y actualizas los gráficos
+    const existe = this.distritosSeleccionados.some(d => d.id === event.ubigeo);
+
+    if (!existe) {
+      this.distritosSeleccionados = [
+        ...this.distritosSeleccionados,
+        { id: event.ubigeo, nombre: event.distrito }
+      ];
+      console.log('...Cargar reportes graficos.....');
+      // Aquí llamarías a tu servicio de Spring Boot para traer la data de este nuevo distrito
+      //this.actualizarGraficos();
+    }
   }
 }
