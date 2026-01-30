@@ -33,20 +33,10 @@
             <mat-icon>expand_less</mat-icon>
           </div>
 
-          <div class="form-container">
-            <div class="input-group">
-              <label>Departamento:</label>
-              <select class="custom-select"><option>LIMA</option></select>
-            </div>
-            <div class="input-group">
-              <label>Provincia:</label>
-              <select class="custom-select"><option>LIMA</option></select>
-            </div>
-            <div class="input-group">
-              <label>Distrito:</label>
-              <select class="custom-select"><option>TODOS</option></select>
-            </div>
-          </div>
+          <app-ubigeo-selector
+            [showTodos]="true"
+            (distritoChange)="onDistritoSeleccionado($event)">
+          </app-ubigeo-selector>
         </div>
       </div>
     </aside>

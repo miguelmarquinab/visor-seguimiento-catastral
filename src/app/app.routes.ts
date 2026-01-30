@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard} from './core/auth/auth.guard';
+import {ubigeoResolver} from './core/ubigeo/ubigeo.resolver';
 
 export const routes: Routes = [
   {
@@ -10,6 +11,7 @@ export const routes: Routes = [
   {
     path: '',
     canActivate: [authGuard],
+    resolve: { ubigeoData: ubigeoResolver },
     loadComponent : () =>
         import('./components/layout/main-layout/main-layout.component').then(m => m.MainLayoutComponent),
     children:[

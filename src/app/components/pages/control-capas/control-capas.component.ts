@@ -1,4 +1,3 @@
-// src/app/components/pages/control-capas/control-capas.component.ts
 import { Component, OnDestroy, OnInit, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
@@ -21,7 +20,11 @@ type LayerItem = { id: string; label: string; checked: boolean; };
   imports: [
     CommonModule,
     DistritoMultiselectComponent,
-    FormsModule, MatIconModule, MatTooltipModule, MatMenuModule],
+    FormsModule,
+    MatIconModule,
+    MatTooltipModule,
+    MatMenuModule
+  ],
   templateUrl: './control-capas.component.html',
   styleUrls: ['./control-capas.component.css'],
 })
@@ -70,6 +73,10 @@ export class ControlCapasComponent implements OnInit, OnDestroy {
     // Prender capas por defecto
     this.manzana.filter(x => x.checked).forEach(x => this.mapService.addLayer(x.id));
 
+    // Al abrir, prende lo que está en checked=true
+    //this.manzanas.forEach(i => i.checked && this.mapService.addLayer(i.id));
+    //this.poligonos.forEach(i => i.checked && this.mapService.addLayer(i.id));
+
     this.sub.add(
       this.ui.distritos$.subscribe((ds: DistritoSelected[]) => {
         this.selectedDistritos = ds ?? [];
@@ -88,7 +95,6 @@ export class ControlCapasComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.sub.unsubscribe();
   }
-
 
   onDistritosChange(next: DistritoSelected[]): void {
     // 1) guardar selección (localStorage + state)
@@ -211,5 +217,5 @@ export class ControlCapasComponent implements OnInit, OnDestroy {
 }
 
 
-  
+
 }

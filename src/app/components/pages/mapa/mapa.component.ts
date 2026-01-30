@@ -4,6 +4,7 @@ import * as L from 'leaflet';
 
 import { MapService } from '../../../services/map.service';
 import { UiStateService } from '../../../services/ui-state.service';
+import { DemoLayersService} from '../../../services/demo-layers.service';
 
 import { MapModalReporteManzanaComponent } from '../widgets/map-modal-reporte-manzana/map-modal-reporte-manzana.component';
 import { MapModalReportePoligonoComponent } from '../widgets/map-modal-reporte-poligono/map-modal-reporte-poligono.component';
@@ -32,6 +33,8 @@ export class MapaComponent implements AfterViewInit, OnDestroy {
   private readonly mapService = inject(MapService);
   private readonly tipoMapaService = inject(TipomapacoreService);
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly demoLayers = inject(DemoLayersService);
+
 
   tipoMapa: TipoMapainterfaz[] = this.tipoMapaService.getTipoMapas();
 
@@ -54,6 +57,8 @@ export class MapaComponent implements AfterViewInit, OnDestroy {
 
     // para que otros servicios puedan usar el mapa
     this.mapService.setMap(this.map!);
+
+    this.demoLayers.initOnce(this.map!);
 
     // ✅ importante para evitar NG0100 (Angular ya chequeó el template)
     this.cdr.detectChanges();
@@ -125,7 +130,6 @@ export class MapaComponent implements AfterViewInit, OnDestroy {
       this.escala = '';
       return;
     }
-
     this.escala = 'Escala: 1/' + new Intl.NumberFormat('es-PE').format(level.scale);
   }
 
