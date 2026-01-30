@@ -18,12 +18,10 @@
             <mat-icon>expand_less</mat-icon>
           </div>
           <div class="form-content">
-            <label>Departamento:</label>
-            <select class="form-select"><option>TODOS</option></select>
-            <label>Provincia:</label>
-            <select class="form-select"><option>TODOS</option></select>
-            <label>Distrito:</label>
-            <select class="form-select"><option>TODOS</option></select>
+            <app-ubigeo-selector
+              [showTodos]="true"
+              (distritoChange)="onDistritoSeleccionado($event)">
+            </app-ubigeo-selector>
           </div>
         </div>
       </div>
