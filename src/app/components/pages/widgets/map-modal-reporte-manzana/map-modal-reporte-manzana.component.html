@@ -1,21 +1,14 @@
 <div class="manzana-panel shadow-lg" [class.maximized]="isMaximized()">
-
- <!--  <button class="toggle-btn" (click)="toggleSise()">
-    <mat-icon>{{ isMaximized() ? 'expand_more' : 'expand_less' }}</mat-icon>
-  </button> -->
-
   <div class="main-layout">
-
     <aside class="controls-column">
       <div class="chips-row">
-        @for (dist of distritosSeleccionados; track dist.id) {
+        @for (dist of distritosSeleccionados(); track dist.codigoUbigeo) {
           <span class="custom-chip">
-            {{ dist.nombre }}
-            <mat-icon class="close-chip">close</mat-icon>
-          </span>
+      {{ dist.distrito }}
+            <mat-icon class="close-chip" (click)="quitarDistrito(dist.codigoUbigeo)">close</mat-icon>
+    </span>
         }
       </div>
-
       <div class="reporte-card">
         <div class="card-header-blue">
           <mat-icon>security</mat-icon>
@@ -42,7 +35,6 @@
     </aside>
 
     <main class="dashboard-column" *ngIf="isMaximized()">
-
       <div class="blue-banner">Manzanas</div>
 
       <!-- <div class="summary-row">
