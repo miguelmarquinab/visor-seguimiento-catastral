@@ -1,68 +1,65 @@
-import { Component, inject, AfterViewInit, ElementRef, ViewChild, signal } from '@angular/core';
+import { Component, inject, AfterViewInit, ElementRef, ViewChild, signal, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UiStateService } from '../../../../services/ui-state.service';
 import { Chart, registerables } from 'chart.js';
-
-// IMPORTANTE: Debes importar estos módulos aquí
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import {UbigeoComponent} from '../../../shared/ubigeo/ubigeo.component';
+import { UbigeoComponent } from '../../../shared/ubigeo/ubigeo.component';
+import { DistritoSelected } from '../../../../interfaces/DistritoSelected';
 
 Chart.register(...registerables);
 
 @Component({
   selector: 'app-map-modal-reporte-manzana',
   standalone: true,
-  // CORRECCIÓN: Si estos módulos no están aquí, <mat-icon> da error
-  imports: [
-    CommonModule,
-    MatIconModule,
-    MatButtonModule,
-    UbigeoComponent
-  ],
+  imports: [CommonModule, MatIconModule, MatButtonModule, UbigeoComponent],
   templateUrl: './map-modal-reporte-manzana.component.html',
   styleUrl: './map-modal-reporte-manzana.component.css'
 })
 export class MapModalReporteManzanaComponent implements AfterViewInit {
   private uiService = inject(UiStateService);
+
+  // 1. Conexión a la fuente de verdad (Signal del Servicio)
+  // Esto hace que si seleccionas distritos en la búsqueda inicial, aparezcan aquí.
+  distritosSeleccionados = this.uiService.distritosSeleccionados;
+
   isMaximized = signal(true);
 
   @ViewChild('barChart') barChartCanvas!: ElementRef<HTMLCanvasElement>;
   @ViewChild('stackedChart') stackedChartCanvas!: ElementRef<HTMLCanvasElement>;
 
-  distritosSeleccionados = [
-    { id: '150105', nombre: 'BREÑA' },
-    { id: '150112', nombre: 'EL AGUSTINO' },
-    { id: '150114', nombre: 'INDEPENDENCIA' },
-    { id: '150132', nombre: 'SAN LUIS' }
+  summaryCards = [
+    { label: 'Total de Manzanas', value: 500, class: 'total' },
+    { label: 'Pendiente', value: 78, class: 'pendiente' },
+    { label: 'Levantamiento', value: 50, class: 'levantamiento' },
+    { label: 'Edición gráfica', value: 99, class: 'edicion' },
+    { label: 'Control de calidad Int', value: 50, class: 'calidad' },
+    { label: 'Terminada', value: 100, class: 'terminada' },
+    { label: 'En polígono', value: 123, class: 'poligono' }
   ];
 
-  summaryCards = [
-  { label: 'Total de Manzanas', value: 500, class: 'total' },
-  { label: 'Pendiente', value: 78, class: 'pendiente' },
-  { label: 'Levantamiento', value: 50, class: 'levantamiento' },
-  { label: 'Edición gráfica', value: 99, class: 'edicion' },
-  { label: 'Control de calidad Int', value: 50, class: 'calidad' },
-  { label: 'Terminada', value: 100, class: 'terminada' },
-  { label: 'En polígono', value: 123, class: 'poligono' }
-];
-
+  constructor() {
+    // 2. Efecto reactivo: Cada vez que los distritos cambian en el servicio,
+    // redibujamos el gráfico apilado.
+    effect(() => {
+      const data = this.distritosSeleccionados();
+      if (data.length >= 0) {
+        // Un pequeño delay para esperar a que el DOM se ajuste si es necesario
+        setTimeout(() => this.renderCharts(), 50);
+      }
+    });
+  }
 
   ngAfterViewInit() {
-    // Aumentamos a 150ms para asegurar que el DOM cargue totalmente
-    setTimeout(() => {
-      this.renderCharts();
-    }, 150);
+    setTimeout(() => this.renderCharts(), 150);
   }
 
   toggleSise(): void {
     this.isMaximized.set(!this.isMaximized());
-    // Esperamos a que la animación CSS termine para redibujar los gráficos
     setTimeout(() => this.renderCharts(), 300);
   }
 
   private renderCharts() {
-    // Verificación defensiva antes de acceder al canvas
     if (this.barChartCanvas?.nativeElement && this.stackedChartCanvas?.nativeElement) {
       this.initBarChart();
       this.initStackedChart();
@@ -74,7 +71,6 @@ export class MapModalReporteManzanaComponent implements AfterViewInit {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // Destruir gráfico anterior para evitar duplicados al maximizar/minimizar
     const existingChart = Chart.getChart(canvas);
     if (existingChart) existingChart.destroy();
 
@@ -104,39 +100,50 @@ export class MapModalReporteManzanaComponent implements AfterViewInit {
     const existingChart = Chart.getChart(canvas);
     if (existingChart) existingChart.destroy();
 
+    // FIX: Mapeo seguro con encadenamiento opcional y filtrado de nulos
+    const labels = this.distritosSeleccionados()
+      .map(d => d?.distrito || 'Sin nombre'); // <--- Si d es null, no rompe
+
     new Chart(ctx, {
       type: 'bar',
       data: {
-        labels: this.distritosSeleccionados.map(d => d.nombre),
+        labels: labels,
         datasets: [
-          { label: 'Pendiente', data: [13, 10, 9, 9], backgroundColor: '#f2c94c' },
-          { label: 'Terminada', data: [13, 10, 10, 10], backgroundColor: '#27ae60' }
+          { label: 'Pendiente', data: labels.map(() => Math.floor(Math.random() * 20)), backgroundColor: '#f2c94c' },
+          { label: 'Terminada', data: labels.map(() => Math.floor(Math.random() * 20)), backgroundColor: '#27ae60' }
         ]
       },
       options: {
-        scales: {
-          x: { stacked: true },
-          y: { stacked: true, beginAtZero: true }
-        },
+        scales: { x: { stacked: true }, y: { stacked: true, beginAtZero: true } },
         responsive: true,
         maintainAspectRatio: false
       }
     });
   }
 
+  // onDistritoSeleccionado(event: { ubigeo: string; distrito: string }) {
+  //   // 4. Agregamos al servicio para que se persista en LocalStorage y se vea en otros paneles
+  //   this.uiService.addDistritos({
+  //     codigoUbigeo: event.ubigeo,
+  //     distrito: event.distrito
+  //   } as DistritoSelected);
+  // }
   onDistritoSeleccionado(event: { ubigeo: string; distrito: string }) {
-    // Aquí agregas el distrito a tus chips y actualizas los gráficos
-    const existe = this.distritosSeleccionados.some(d => d.id === event.ubigeo);
+    // FIX: Llamar al método en SINGULAR y completar el objeto para que cumpla la interfaz
+    const nuevoDistrito: Partial<DistritoSelected> = {
+      codigoUbigeo: event.ubigeo,
+      distrito: event.distrito,
+      idOrganizacion: Date.now(), // ID temporal para evitar errores de tipo
+      provincia: '',
+      departamento: '',
+      nombreOrganizacion: ''
+    };
 
-    if (!existe) {
-      this.distritosSeleccionados = [
-        ...this.distritosSeleccionados,
-        { id: event.ubigeo, nombre: event.distrito }
-      ];
-      console.log('...Cargar reportes graficos.....');
-      // Aquí llamarías a tu servicio de Spring Boot para traer la data de este nuevo distrito
-      //this.actualizarGraficos();
-    }
+    this.uiService.addDistritos(nuevoDistrito as DistritoSelected);
   }
 
+  quitarDistrito(codigo: string) {
+    // FIX: Llamar al método en SINGULAR
+    this.uiService.removeDistritos(codigo);
+  }
 }

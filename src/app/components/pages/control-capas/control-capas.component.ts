@@ -196,19 +196,11 @@ export class ControlCapasComponent implements OnInit, OnDestroy {
     });
   }
 
-  centerDemo(): void {
-    this.mapService.fitToLimaDemo();
-  }
-
   private loadDistritosAsync(distritos: DistritoSelected[]): void {
     console.log('Cargando data para distritos:', distritos.map(d => d.codigoUbigeo));
     setTimeout(() => {
       console.log('Data cargada OK (hardcode) ✅');
     }, 600);
-  }
-
-  toggleDiv() {
-    this.mostrarDiv = !this.mostrarDiv;
   }
 
   cerrarDistritos() {

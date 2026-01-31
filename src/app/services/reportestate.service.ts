@@ -10,8 +10,6 @@ export class ReportestateService {
   private distritosSubject = new BehaviorSubject<Distrito[]>([]);
   distritos$ = this.distritosSubject.asObservable();
 
-
-
   setDistritos(distritos: Distrito[]) {
     this.distritosSubject.next(distritos);
   }
