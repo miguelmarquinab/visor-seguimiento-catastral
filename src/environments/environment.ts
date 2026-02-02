@@ -13,8 +13,7 @@ export const environment = {
   apiUrlVisor: 'http://172.16.16.33:8219/',
   apiSicuVisor: 'http://172.16.16.33:8226/',
 
-  serverImpresion: 'https://geoserver.ue003cofopri.gob.pe/geoserver',
-  serverImpresionLocal: 'http://172.16.16.67:8080/geoserver',
+  urlGeoserver: "https://geoserver.ue003cofopri.gob.pe/geoserver/",
 
   urlTutorial: 'https://wiki.ue003cofopri.gob.pe/index.php/Visor_Cartogr%C3%A1fico',
   localStorageKey: 'accessVisor',

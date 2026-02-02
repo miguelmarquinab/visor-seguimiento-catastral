@@ -14,6 +14,31 @@ export class DemoLayersService {
 
   constructor(private mapService: MapService) {}
 
+  capas = [
+    {
+      id: 1,
+      descripcion: "Manzana",
+      estados: ['01', '02', '03', '04', '05', '06'],
+      workspace: "dashboard",
+      layerName: "dashboard_manzanas"
+    }
+  ]
+
+  updateManzanaFilter(totalEstados: number): void {
+    const filter = this.buildFilterManzanas(totalEstados);
+    this.mapService.manzanaLayer!.setParams({ cql_filter: filter } as any);
+  }
+
+
+
+  buildFilterManzanas(totalEstados: number): string{
+    if (this.capas[0].estados.length === 0) return '1=0';
+    if (this.capas[0].estados.length === totalEstados) return '';
+
+    const valores = this.capas[0].estados.map(v => `'${v}'`);
+    return `estado_manzana IN (${valores.join(',')})`;
+  }
+
   initOnce(map: L.Map): void {
     if (this.initialized) return;
     this.initialized = true;

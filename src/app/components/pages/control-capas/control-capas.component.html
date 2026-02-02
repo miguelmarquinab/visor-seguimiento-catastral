@@ -36,7 +36,7 @@
 
       <div class="group-content" *ngIf="expandedManzana">
         <label class="item" *ngFor="let it of manzana">
-          <input type="checkbox" [checked]="it.checked" (change)="onToggle(it)" />
+          <input type="checkbox" [checked]="it.checked" (change)="onToggleManzana(it)" />
           <span>{{ it.label }}</span>
         </label>
       </div>

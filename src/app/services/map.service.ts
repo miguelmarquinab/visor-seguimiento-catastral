@@ -1,14 +1,17 @@
 import { Injectable } from '@angular/core';
 import * as L from 'leaflet';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MapService {
-
+  
   private map?: L.Map| null = null;
   private overlays = new Map<string, L.Layer>();
   private poligonosSimulados = new Map<string, L.Layer>(); // Nuevo: Para polígonos
+  private urlGeoserver: String = environment.urlGeoserver;
+  public manzanaLayer?: L.TileLayer.WMS;
 
   setMap(map: L.Map) { this.map = map; }
   getMap(): L.Map { if (!this.map) throw new Error('Mapa no inicializado'); return this.map; }
@@ -19,6 +22,26 @@ export class MapService {
   addLayer(id: string) {
     const layer = this.overlays.get(id);
     if (layer && this.map && !this.map.hasLayer(layer)) layer.addTo(this.map);
+  }
+
+  addWmsLayer(workspace: string, nombre:string){
+    let url = `${this.urlGeoserver}/${workspace}/wms`;
+
+    const wmsOptions: any = {
+      layers: `${workspace}:${nombre}`,
+      format: 'image/png',
+      transparent: true,
+      maxNativeZoom: 22,
+      maxZoom: 22,
+      // attribution
+      // zIndex
+      // opacity
+      cql_filter: ''
+    };
+
+    this.manzanaLayer = L.tileLayer.wms(url, wmsOptions);
+
+    this.manzanaLayer.addTo(this.getMap());
   }
 
   removeLayer(id: string) {

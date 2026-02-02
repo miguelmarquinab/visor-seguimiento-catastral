@@ -11,6 +11,7 @@ import { DistritoMultiselectComponent } from '../../shared/distrito-multiselect/
 import {MatIconModule} from '@angular/material/icon';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatMenuModule} from '@angular/material/menu';
+import { DemoLayersService } from '../../../services/demo-layers.service';
 
 type LayerItem = { id: string; label: string; checked: boolean; };
 
@@ -46,12 +47,12 @@ export class ControlCapasComponent implements OnInit, OnDestroy {
   private selectedIds = new Set<number>(); // para marcar rápido
 
   manzana: LayerItem[] = [
-    { id: 'mz_pendiente', label: 'Pendiente', checked: true },
-    { id: 'mz_levantamiento', label: 'Levantamiento', checked: true },
-    { id: 'mz_edicion', label: 'Edición gráfica', checked: true },
-    { id: 'mz_calidad', label: 'Control de calidad interno', checked: true },
-    { id: 'mz_terminada', label: 'Terminada', checked: true },
-    { id: 'mz_en_poligono', label: 'En polígono', checked: true },
+    { id: '01', label: 'Pendiente', checked: true },
+    { id: '02', label: 'Levantamiento', checked: true },
+    { id: '03', label: 'Edición gráfica', checked: true },
+    { id: '04', label: 'Control de calidad interno', checked: true },
+    { id: '05', label: 'Terminada', checked: true },
+    { id: '06', label: 'En polígono', checked: true },
   ];
 
   poligonos: LayerItem[] = [
@@ -66,7 +67,8 @@ export class ControlCapasComponent implements OnInit, OnDestroy {
   constructor(
     private mapService: MapService,
     private ui: UiStateService,
-    private distritosService: DistritosService
+    private distritosService: DistritosService,
+    private layers: DemoLayersService
   ) {}
 
   ngOnInit(): void {
@@ -179,6 +181,25 @@ export class ControlCapasComponent implements OnInit, OnDestroy {
       this.mapService.clearCategoryLayers('mz_'); // Limpia manzanas
       this.poligonos.filter(p => p.checked).forEach(p => this.mapService.addLayer(p.id));
     }
+  }
+
+  onToggleManzana(item: LayerItem): void {
+    item.checked = !item.checked;
+    console.log(item);
+    if (item.checked) {
+      if (!this.layers.capas[0].estados.includes(item.id)) {
+        this.layers.capas[0].estados.push(item.id);
+      }
+    } else {
+      const index = this.layers.capas[0].estados.indexOf(item.id);
+      if (index > -1) {
+        this.layers.capas[0].estados.splice(index, 1);
+      }
+    }
+
+    console.log(this.layers.capas[0].estados)
+    
+    this.layers.updateManzanaFilter(this.manzana.length);
   }
 
   onToggle(item: LayerItem): void {
