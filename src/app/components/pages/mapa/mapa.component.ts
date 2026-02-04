@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, inject, OnDestroy } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import * as L from 'leaflet';
 
@@ -25,7 +25,7 @@ import { LEVELS } from '../../../../assets/data/levels';
   templateUrl: './mapa.component.html',
   styleUrl: './mapa.component.css'
 })
-export class MapaComponent implements AfterViewInit, OnDestroy {
+export class MapaComponent implements AfterViewInit, OnDestroy, OnInit {
   private map: L.Map | null = null;
 
   public uiService = inject(UiStateService);
@@ -49,8 +49,8 @@ export class MapaComponent implements AfterViewInit, OnDestroy {
     [-0.012393, -68.652527]
   ];
 
-  ngAfterViewInit(): void {
-    this.initMapOnce();
+  ngOnInit(): void {
+        this.initMapOnce();
 
     // capas auxiliares
     this.geometryLayer = L.featureGroup().addTo(this.map!);
@@ -65,6 +65,10 @@ export class MapaComponent implements AfterViewInit, OnDestroy {
 
     let capaInicial = this.demoLayers.capas[0];
     this.mapService.addWmsLayer(capaInicial.workspace, capaInicial.layerName)
+  }
+
+  ngAfterViewInit(): void {
+
   }
 
   ngOnDestroy(): void {

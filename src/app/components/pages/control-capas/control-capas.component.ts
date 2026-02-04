@@ -45,6 +45,7 @@ export class ControlCapasComponent implements OnInit, OnDestroy {
   showAddDistrito = false;
   filtroDistrito = '';
   private selectedIds = new Set<number>(); // para marcar rápido
+  private selectedCapa = 1;
 
   manzana: LayerItem[] = [
     { id: '01', label: 'Pendiente', checked: true },
@@ -56,12 +57,12 @@ export class ControlCapasComponent implements OnInit, OnDestroy {
   ];
 
   poligonos: LayerItem[] = [
-    { id: 'mz_pendiente', label: 'QA1', checked: true },
-    { id: 'mz_levantamiento', label: 'QA2', checked: true },
-    { id: 'mz_edicion', label: 'CIC', checked: true },
-    { id: 'mz_calidad', label: 'QA3', checked: true },
-    { id: 'mz_terminada', label: 'QA4', checked: true },
-    { id: 'mz_en_poligono', label: 'MUNI', checked: true },
+    { id: 'QA1', label: 'QA1', checked: true },
+    { id: 'QA2', label: 'QA2', checked: true },
+    { id: 'CIC', label: 'Consulta Información Catastral', checked: true },
+    { id: 'QA3', label: 'QA3', checked: true },
+    { id: 'QA4', label: 'QA4', checked: true },
+    { id: 'MUNI', label: 'Municipalidad', checked: true },
   ];
 
   constructor(
@@ -82,12 +83,12 @@ export class ControlCapasComponent implements OnInit, OnDestroy {
     this.sub.add(
       this.ui.distritos$.subscribe((ds: DistritoSelected[]) => {
         this.selectedDistritos = ds ?? [];
+         this.aplicarFiltros();
       })
     );
 
     this.distritosService.buscar('', 0, 2000).subscribe({
       next: (res) => {
-        // ✅ tu API trae data.organizaciones con el shape de DistritoSelected
         this.allDistritos = res?.data?.organizaciones ?? [];
       },
       error: () => (this.allDistritos = []),
@@ -96,6 +97,38 @@ export class ControlCapasComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.sub.unsubscribe();
+  }
+
+  aplicarFiltros(){
+    const filtroCombinado = this.construirFiltroCombinado();
+    this.layers.updatLayer(filtroCombinado);
+  }
+
+  construirFiltroCombinado(): string{
+    const condiciones: string[] = [];
+    let campo_ubigeo = this.selectedCapa == 1 ? "cod_ubigeo"  : "ubigeo";
+    
+    if(this.selectedDistritos.length > 1){
+      const ubigeos = this.selectedDistritos.map(d => d.codigoUbigeo)
+      condiciones.push(`${campo_ubigeo} IN (${ubigeos.join(',')})`);
+    } else if (this.selectedDistritos.length == 1){
+      condiciones.push(`${campo_ubigeo} = '${this.selectedDistritos[0].codigoUbigeo}'`);
+    }
+
+    const capa = this.layers.capas.filter(c => c.id == this.selectedCapa)[0];
+    const nroEstados = this.selectedCapa == 1 ? this.manzana.length : this.poligonos.length;
+    
+    if(capa.estados.length !== nroEstados){
+      const valores = capa.estados.map(v => `'${v}'`);
+      const nombreCampo = this.selectedCapa == 1 ? "estado_manzana"  : "etapa";
+      condiciones.push(`${nombreCampo} IN (${valores.join(',')})`)
+    }
+    
+    if (condiciones.length === 0) {
+      return '1=0';
+    }
+
+    return condiciones.join(' AND ');
   }
 
   onDistritosChange(next: DistritoSelected[]): void {
@@ -196,10 +229,8 @@ export class ControlCapasComponent implements OnInit, OnDestroy {
         this.layers.capas[0].estados.splice(index, 1);
       }
     }
-
-    console.log(this.layers.capas[0].estados)
     
-    this.layers.updateManzanaFilter(this.manzana.length);
+    this.aplicarFiltros()
   }
 
   onToggle(item: LayerItem): void {

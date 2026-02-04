@@ -11,7 +11,7 @@ export class MapService {
   private overlays = new Map<string, L.Layer>();
   private poligonosSimulados = new Map<string, L.Layer>(); // Nuevo: Para polígonos
   private urlGeoserver: String = environment.urlGeoserver;
-  public manzanaLayer?: L.TileLayer.WMS;
+  public selectedLayer?: L.TileLayer.WMS;
 
   setMap(map: L.Map) { this.map = map; }
   getMap(): L.Map { if (!this.map) throw new Error('Mapa no inicializado'); return this.map; }
@@ -39,9 +39,9 @@ export class MapService {
       cql_filter: ''
     };
 
-    this.manzanaLayer = L.tileLayer.wms(url, wmsOptions);
+    this.selectedLayer = L.tileLayer.wms(url, wmsOptions);
 
-    this.manzanaLayer.addTo(this.getMap());
+    this.selectedLayer.addTo(this.getMap());
   }
 
   removeLayer(id: string) {
