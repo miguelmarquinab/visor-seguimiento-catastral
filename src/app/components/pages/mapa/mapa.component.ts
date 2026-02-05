@@ -58,10 +58,13 @@ export class MapaComponent implements AfterViewInit, OnDestroy {
     // para que otros servicios puedan usar el mapa
     this.mapService.setMap(this.map!);
 
-    this.demoLayers.initOnce(this.map!);
+    // this.demoLayers.initOnce(this.map!);
 
     // ✅ importante para evitar NG0100 (Angular ya chequeó el template)
     this.cdr.detectChanges();
+
+    let capaInicial = this.demoLayers.capas[0];
+    this.mapService.addWmsLayer(capaInicial.workspace, capaInicial.layerName)
   }
 
   ngOnDestroy(): void {
