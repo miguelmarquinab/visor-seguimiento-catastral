@@ -60,6 +60,19 @@ export class DistritosComponent implements OnInit {
     return this.selectedMap.size;
   }
 
+  /** True si hay items y todos están seleccionados (según la lista actual visible). */
+  get todosSeleccionados(): boolean {
+    return this.items.length > 0 && this.items.every(d => this.selectedMap.has(d.idOrganizacion));
+  }
+
+  seleccionarTodos(): void {
+    this.items.forEach(d => this.selectedMap.set(d.idOrganizacion, d));
+  }
+
+  deseleccionarTodos(): void {
+    this.items.forEach(d => this.selectedMap.delete(d.idOrganizacion));
+  }
+
   agregar(): void {
     const selected = this.items.filter(x => this.selectedMap.has(x.idOrganizacion));
 
@@ -67,7 +80,7 @@ export class DistritosComponent implements OnInit {
 
     localStorage.setItem('distritos_seleccionados', JSON.stringify(selected));
     this.ui.setDistritos(selected);
-    this.ui.setView('mapa');
+    this.ui.setShowStatsWidget(true);
   }
 
   private cargar(nombre: string, page: number): void {
@@ -77,7 +90,8 @@ export class DistritosComponent implements OnInit {
       next: (res) => {
         const orgs: Distrito[] = res?.data?.organizaciones ?? [];
         this.items = [...orgs].sort((a, b) =>
-            (a.distrito ?? '').localeCompare(b.distrito ?? ''))
+            (a.distrito ?? '').localeCompare(b.distrito ?? ''));
+        this.ui.setAllDistritos(this.items);
         this.loading = false;
       },
       error: () => {

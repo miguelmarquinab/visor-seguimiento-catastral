@@ -59,13 +59,37 @@
 }
 .btnPrimary:hover{ background: var(--brand-dark); }
 
+.title-row{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin: 12px 0;
+}
+
 .title{
-  margin: 12px;
+  margin: 0;
   text-align: center;
   font-weight: 500;
   font-size: 15px;
   letter-spacing: .2px;
   color: #ffffff;
+}
+
+.btn-seleccionar-todos{
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,.5);
+  background: rgba(255,255,255,.15);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background .2s ease;
+}
+.btn-seleccionar-todos:hover{
+  background: rgba(255,255,255,.25);
 }
 
 .grid{

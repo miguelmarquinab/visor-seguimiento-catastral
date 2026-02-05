@@ -19,6 +19,10 @@ export class UiStateService {
   private _distritosSig = signal<DistritoSelected[]>(this.readFromLocalStorage());
   distritosSeleccionados = computed(() => this._distritosSig());
 
+  /** Listado completo de distritos cargado tras el login (permitidos para el usuario logado) */
+  private allDistritosSubject = new BehaviorSubject<DistritoSelected[]>([]);
+  allDistritos$ = this.allDistritosSubject.asObservable();
+
   private _showControl = new BehaviorSubject<boolean>(true);
   showControl$ = this._showControl.asObservable();
 
@@ -52,6 +56,11 @@ export class UiStateService {
 
   toggleControl() { this._showControl.next(!this._showControl.value); }
 
+  /** Guarda el listado completo de distritos permitidos para el usuario logado. */
+  setAllDistritos(list: DistritoSelected[]): void {
+    this.allDistritosSubject.next(list ?? []);
+  }
+
   setDistritos(selected: DistritoSelected[]) {
     this._distritosSig.set(selected);
     // 1. Actualizar Signal (para reportes nuevos)
@@ -72,8 +81,8 @@ export class UiStateService {
   }
 
   //Quitar desde los chips
-  removeDistritos(codigoUbigeo: string) {
-    const nuevo = this._distritosSig().filter(x => x.codigoUbigeo === codigoUbigeo);
+  removeDistritos(codigoUbigeo: string): void {
+    const nuevo = this._distritosSig().filter(x => x.codigoUbigeo !== codigoUbigeo);
     this.setDistritos(nuevo);
   }
 
@@ -81,17 +90,31 @@ export class UiStateService {
 
   setView(view: ViewMode) { this.viewSubject.next(view);}
 
-  toggleStatsWidget() { this._showStatsWidget.next(!this._showStatsWidget.value);}
+  setShowStatsWidget(value: boolean): void {
+    this._showStatsWidget.next(value);
+  }
+
+  toggleStatsWidget() {
+    this._showPoligonoPanel.next(false);
+    this._showManzanaPanel.next(false);
+    this._showStatsWidget.next(!this._showStatsWidget.value);
+  }
 
   selectCategory(label : string | null) {
     this.categorySelectedSubject.next(label);
   }
 
+  /** Abre/cierra el panel de manzanas; al abrirlo cierra el de polígonos para que solo uno esté visible. */
   toggleManzanaPanel() {
+    this._showPoligonoPanel.next(false);
+    this._showStatsWidget.next(this._showManzanaPanel.value);
     this._showManzanaPanel.next(!this._showManzanaPanel.value);
   }
 
+  /** Abre/cierra el panel de polígonos; al abrirlo cierra el de manzanas para que solo uno esté visible. */
   togglePoligoPanel() {
+    this._showManzanaPanel.next(false);
+    this._showStatsWidget.next(this._showPoligonoPanel.value);
     this._showPoligonoPanel.next(!this._showPoligonoPanel.value);
   }
 

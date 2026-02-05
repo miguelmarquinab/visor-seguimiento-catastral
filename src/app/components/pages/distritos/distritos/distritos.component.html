@@ -20,7 +20,16 @@
       </button>
     </div>
 
-    <h2 class="title">Seleccionar Distrito:</h2>
+    <div class="title-row">
+      <h2 class="title">Seleccionar Distrito:</h2>
+      <button
+        type="button"
+        class="btn-seleccionar-todos"
+        *ngIf="!loading && items.length > 0"
+        (click)="todosSeleccionados ? deseleccionarTodos() : seleccionarTodos()">
+        {{ todosSeleccionados ? 'Deseleccionar todos' : 'Seleccionar todos' }}
+      </button>
+    </div>
 
     <div class="grid" *ngIf="!loading; else loadingTpl">
       <button

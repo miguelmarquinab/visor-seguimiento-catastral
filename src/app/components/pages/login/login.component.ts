@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {FormGroup, FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 import { Router } from '@angular/router';
@@ -24,7 +24,7 @@ import {MatIconModule} from '@angular/material/icon';
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   loading: boolean = false;
   error : string = '';
   form!: FormGroup;
@@ -37,10 +37,15 @@ export class LoginComponent {
     private sessionState : SessionstateServiceService
   ) {
     this.form = this.fb.group({
-      username: ['87654321', Validators.required],
-      password: ['Abc*2025', Validators.required],
+      username: ['', Validators.required],
+      password: ['', Validators.required],
     });
+  }
 
+  ngOnInit(): void {
+    if (this.auth.isLoggedIn()) {
+      this.router.navigate(['/distritos']);
+    }
   }
 
 

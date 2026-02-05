@@ -4,7 +4,6 @@ import { Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { MapService } from '../../../services/map.service';
 import { UiStateService } from '../../../services/ui-state.service';
-import { DistritosService } from '../../../services/distritos.service';
 
 import { DistritoSelected } from '../../../interfaces/DistritoSelected';
 import { DistritoMultiselectComponent } from '../../shared/distrito-multiselect/distrito-multiselect.component';
@@ -68,7 +67,6 @@ export class ControlCapasComponent implements OnInit, OnDestroy {
   constructor(
     private mapService: MapService,
     private ui: UiStateService,
-    private distritosService: DistritosService,
     private layers: DemoLayersService
   ) {}
 
@@ -87,12 +85,11 @@ export class ControlCapasComponent implements OnInit, OnDestroy {
       })
     );
 
-    this.distritosService.buscar('', 0, 2000).subscribe({
-      next: (res) => {
-        this.allDistritos = res?.data?.organizaciones ?? [];
-      },
-      error: () => (this.allDistritos = []),
-    });
+    this.sub.add(
+      this.ui.allDistritos$.subscribe((list) => {
+        this.allDistritos = list ?? [];
+      })
+    );
   }
 
   ngOnDestroy(): void {

@@ -12,6 +12,8 @@ export const environment = {
   urlWebApiAuthenticate: 'http://172.16.16.33:8095/',
   apiUrlVisor: 'http://172.16.16.33:8219/',
   apiSicuVisor: 'http://172.16.16.33:8226/',
+  //apiSicuVisorSeguimiento: 'http://172.16.16.33:8238/',
+  apiSicuVisorSeguimiento: 'http://localhost:8238/',
 
   urlGeoserver: "https://geoserver.ue003cofopri.gob.pe/geoserver/",
 

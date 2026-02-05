@@ -15,6 +15,12 @@
     </div>
   </div>
   <nav class="nav">
+    <a mat-button class="btnLogout" matTooltip="Inicio" matTooltipClass="class-tooltip"
+       (click)="abrirInicio()"
+       [class.active]="(uiService.view$ | async) === 'distritos'"
+       style="cursor: pointer;">
+      <mat-icon class="icon-header">home</mat-icon>
+    </a>
     <a mat-button class="btnLogout" matTooltip="Dashboard" matTooltipClass = "class-tooltip"
        (click)="abrirEstadisticas()"
        [class.active]="(uiService.showStatsWidget$ | async)"

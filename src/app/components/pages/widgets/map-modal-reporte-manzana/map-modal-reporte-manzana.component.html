@@ -28,6 +28,8 @@
 
           <app-ubigeo-selector
             [showTodos]="true"
+            [allowedUbigeos]="allowedUbigeos()"
+            [selectedUbigeos]="selectedUbigeos()"
             (distritoChange)="onDistritoSeleccionado($event)">
           </app-ubigeo-selector>
         </div>
@@ -37,26 +39,8 @@
     <main class="dashboard-column" *ngIf="isMaximized()">
       <div class="blue-banner">Manzanas</div>
 
-      <!-- <div class="summary-row">
-        @for (card of summaryCards; track card.label) {
-          <div class="status-box" [style.background-color]="card.color">
-            <span class="status-label">{{ card.label }}</span>
-            <span class="status-value">{{ card.value }}</span>
-          </div>
-        }
-      </div> -->
-
-     <!--  <div class="summary-row">
-        @for (card of summaryCards; track card.label) {
-          <div class="status-box" [ngClass]="card.class">
-            <span class="status-label">{{ card.label }}</span>
-            <span class="status-value">{{ card.value }}</span>
-          </div>
-        }
-      </div> -->
-
       <div class="summary-row">
-        @for (card of summaryCards; track card.label) {
+        @for (card of summaryCards(); track card.label) {
           <div class="status-box" [ngClass]="card.class">
             <span class="status-label" [ngClass]="card.class">{{ card.label }}</span>
             <span class="status-value">{{ card.value }}</span>
@@ -70,17 +54,16 @@
 
         <div class="chart-section-wrapper">
           <div class="blue-banner-light">Total de Manzanas</div>
-          <div class="total-text-blue">Total: 500</div>
+          <div class="total-text-blue">Total: {{ reporteData()?.totalManzanas ?? 0 }}</div>
           <div class="chart-layout-row">
             <div class="canvas-container">
               <canvas #barChart></canvas>
             </div>
-            <div class="custom-legend">
-              @for (item of summaryCards.slice(1); track item.label) {
+            <div class="custom-legend custom-legend-tabular">
+              @for (item of barChartLegendItems(); track item.label) {
                 <div class="legend-item">
-                 <!--   <span class="legend-square" [style.background-color]="item.color"></span> -->
-                  <span class="legend-square"></span>
                   <span class="legend-text">{{ item.label }}</span>
+                  <span class="legend-square" [style.background-color]="item.color"></span>
                 </div>
               }
             </div>
@@ -93,15 +76,14 @@
           <div class="blue-banner-light">Estado de Manzanas por distrito</div>
           <br><br>
           <div class="chart-layout-row">
-            <div class="canvas-container">
+            <div class="canvas-container canvas-container-stacked">
               <canvas #stackedChart></canvas>
             </div>
-            <div class="custom-legend">
-              @for (item of summaryCards.slice(1); track item.label) {
+            <div class="custom-legend custom-legend-tabular">
+              @for (item of stackedChartLegend(); track item.label) {
                 <div class="legend-item">
-                  <!--  <span class="legend-square" [style.background-color]="item.color"></span> -->
-                  <span class="legend-square"></span>
                   <span class="legend-text">{{ item.label }}</span>
+                  <span class="legend-square" [style.background-color]="item.color"></span>
                 </div>
               }
             </div>

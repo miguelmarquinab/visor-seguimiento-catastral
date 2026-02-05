@@ -34,8 +34,6 @@ ng g c components/pages/map-modal-reporte-mapa --standalone --skip-tests
 
 npm i leaflet
 
-
-
 ng g c components/shared/distrito-multiselect --standalone --skip-tests
 ng g c components/shared/ubigeo  --standalone --skip-tests
 
@@ -44,8 +42,6 @@ npm install chart.js
 ng g c components/pages/widgets/map-modal-reporte-mapa
 ng g c components/pages/widgets/map-modal-reporte-manzana
 ng g c components/pages/widgets/map-modal-reporte-poligono
-
-
 
 
 #---SERVICES-------------
