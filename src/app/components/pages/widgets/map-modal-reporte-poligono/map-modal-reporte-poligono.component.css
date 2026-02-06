@@ -243,6 +243,13 @@
     height: 18px;
   }
 
+  .icon-muted {
+    color: #94a3b8;
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+
   .toggle-btn {
     position: absolute;
     top: 12px;

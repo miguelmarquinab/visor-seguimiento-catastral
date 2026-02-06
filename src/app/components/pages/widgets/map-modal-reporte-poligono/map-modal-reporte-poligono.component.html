@@ -23,6 +23,8 @@
           <div class="form-content">
             <app-ubigeo-selector
               [showTodos]="true"
+              [allowedUbigeos]="allowedUbigeos()"
+              [selectedUbigeos]="selectedUbigeos()"
               (distritoChange)="onDistritoSeleccionado($event)">
             </app-ubigeo-selector>
           </div>
@@ -37,21 +39,20 @@
           <div class="header-banner blue-poligono">Polígono</div>
           <br>
           <div class="cards-flex">
-            <div class="stat-card bg-blue-strong"><span class="title-total">Total</span><strong>500</strong></div>
-            <div class="stat-card bg-blue-soft"><span class="title-poligono">Pendientes</span><strong>200</strong>
-            </div>
-            <div class="stat-card bg-blue-soft"><span class="title-poligono">En proceso</span><strong>150</strong></div>
-            <div class="stat-card bg-blue-soft"><span class="title-poligono">Terminado</span><strong>150</strong></div>
+            <div class="stat-card bg-blue-strong"><span class="title-total">Total</span><strong>{{ reportePorEstadoData()?.totalPoligonos ?? 0 }}</strong></div>
+            <div class="stat-card bg-blue-soft"><span class="title-poligono">Pendientes</span><strong>{{ reportePorEstadoData()?.estado01 ?? 0 }}</strong></div>
+            <div class="stat-card bg-blue-soft"><span class="title-poligono">En proceso</span><strong>{{ reportePorEstadoData()?.estado02 ?? 0 }}</strong></div>
+            <div class="stat-card bg-blue-soft"><span class="title-poligono">Terminado</span><strong>{{ reportePorEstadoData()?.estado03 ?? 0 }}</strong></div>
           </div>
         </div>
         <div class="stat-section">
           <div class="header-banner gold-strong">Unidades Catastrales</div>
           <br>
           <div class="cards-flex">
-            <div class="stat-card bg-gold-dark"><span class="title-UC">Total</span><strong>1.571.781</strong></div>
-            <div class="stat-card bg-gold-soft"><span class="title-UC-sub">Pendientes</span><strong>781</strong></div>
-            <div class="stat-card bg-gold-soft"><span class="title-UC-sub">En proceso</span><strong>571.000</strong></div>
-            <div class="stat-card bg-gold-soft"><span class="title-UC-sub">Terminado</span><strong>1.000.000</strong></div>
+            <div class="stat-card bg-gold-dark"><span class="title-UC">Total</span><strong>{{ reporteUnidadCatastralData()?.totalUc ?? 0 }}</strong></div>
+            <div class="stat-card bg-gold-soft"><span class="title-UC-sub">Pendientes</span><strong>{{ reporteUnidadCatastralData()?.estado01 ?? 0 }}</strong></div>
+            <div class="stat-card bg-gold-soft"><span class="title-UC-sub">En proceso</span><strong>{{ reporteUnidadCatastralData()?.estado02 ?? 0 }}</strong></div>
+            <div class="stat-card bg-gold-soft"><span class="title-UC-sub">Terminado</span><strong>{{ reporteUnidadCatastralData()?.estado03 ?? 0 }}</strong></div>
           </div>
         </div>
       </div>
@@ -95,21 +96,39 @@
           </tr>
           </thead>
           <tbody>
-            @for (i of [1,2,3]; track i) {
+            @for (row of listarEtapasData(); track $index) {
               <tr>
-                <td>LIMA</td>
-                <td>LIMA</td>
-                <td>{{ i == 1 ? 'INDEPENDENCIA' : i == 2 ? 'EL AGUSTINO' : 'BREÑA' }}</td>
-                <td>1</td>
-                <td>127669</td>
-                <td>3.185</td>
-                <td><mat-icon class="icon-check">check_circle</mat-icon></td>
-                <td><mat-icon class="icon-check">check_circle</mat-icon></td>
-                <td><mat-icon class="icon-check">check_circle</mat-icon></td>
-                <td><mat-icon class="icon-check">check_circle</mat-icon></td>
-                <td><mat-icon class="icon-check">check_circle</mat-icon></td>
-                <td><mat-icon class="icon-check">check_circle</mat-icon></td>
-                <td>27/12/2024</td>
+                <td>{{ row.departamento }}</td>
+                <td>{{ row.provincia }}</td>
+                <td>{{ row.distrito }}</td>
+                <td>{{ row.lote }}</td>
+                <td>{{ row.poligono }}</td>
+                <td>{{ row.uucc }}</td>
+                <td>
+                  @if (row.qa1) { <mat-icon class="icon-check">check_circle</mat-icon> }
+                  @else { <mat-icon class="icon-muted">cancel</mat-icon> }
+                </td>
+                <td>
+                  @if (row.qa2) { <mat-icon class="icon-check">check_circle</mat-icon> }
+                  @else { <mat-icon class="icon-muted">cancel</mat-icon> }
+                </td>
+                <td>
+                  @if (row.cic) { <mat-icon class="icon-check">check_circle</mat-icon> }
+                  @else { <mat-icon class="icon-muted">cancel</mat-icon> }
+                </td>
+                <td>
+                  @if (row.qa3) { <mat-icon class="icon-check">check_circle</mat-icon> }
+                  @else { <mat-icon class="icon-muted">cancel</mat-icon> }
+                </td>
+                <td>
+                  @if (row.qa4) { <mat-icon class="icon-check">check_circle</mat-icon> }
+                  @else { <mat-icon class="icon-muted">cancel</mat-icon> }
+                </td>
+                <td>
+                  @if (row.mun) { <mat-icon class="icon-check">check_circle</mat-icon> }
+                  @else { <mat-icon class="icon-muted">cancel</mat-icon> }
+                </td>
+                <td>{{ row.conformidad ?? '—' }}</td>
               </tr>
             }
           </tbody>
