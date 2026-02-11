@@ -45,8 +45,25 @@ html,
     color: #fff!important;
     border-radius: 8px!important;
     z-index: 9999999!important;
+    font-size: 12px!important;
 }
 .mat-mdc-menu-content {
   padding: 16px!important;
 
+}
+
+.leaflet-top .leaflet-control {
+    margin-top: 60px!important;
+}
+
+.leaflet-top, .leaflet-bottom {
+    z-index: 998!important;
+}
+/******** btn menu **********/
+.mat-mdc-menu-content, .mat-mdc-menu-content .mat-mdc-menu-item .mat-mdc-menu-item-text {
+    background: #fff!important;
+    color: #204785!important;
+    z-index: 99999!important;
+    margin: 0 3px !important;
+    border-radius: 10px
 }

@@ -10,7 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { UbigeoComponent } from '../../../shared/ubigeo/ubigeo.component';
 import { DistritoSelected } from '../../../../interfaces/DistritoSelected';
 import type { ManzanaReportePorEstadoMapeado } from '../../../../interfaces/ReporteManzanaPorEstado.interface';
-import type { ReporteManzanaPorDistritoData } from '../../../../interfaces/ReporteManzanaPorDistrito.interface';
+import type { ReporteManzanaPorDistritoItem } from '../../../../interfaces/ReporteManzanaPorDistrito.interface';
 
 Chart.register(...registerables);
 
@@ -18,7 +18,7 @@ const BAR_CHART_COLORS = ['#f2c94c', '#2d9cdb', '#9b51e0', '#f2994a', '#27ae60',
 const BAR_LABEL_MIN_HEIGHT_PX = 22;
 const STACKED_SEGMENT_LABEL_MIN_HEIGHT_PX = 24;
 
-/** Plugin: etiqueta numérica dentro de cada barra (Total de Manzanas). Barras altas: arriba; bajas: centrado. */
+// Plugin: etiqueta numérica dentro de cada barra (Total de Manzanas)
 const barCountLabelPlugin = {
   id: 'barCountLabel',
   afterDatasetsDraw(chart: Chart) {
@@ -112,6 +112,8 @@ export class MapModalReporteManzanaComponent implements AfterViewInit {
   selectedUbigeos = computed(() => this.distritosSeleccionados().map(d => d.codigoUbigeo));
 
   isMaximized = signal(true);
+  /** Panel lateral izquierdo (filtros) plegado */
+  sidebarCollapsed = signal(false);
 
   reporteData = toSignal(
     toObservable(this.distritosSeleccionados).pipe(
@@ -130,7 +132,7 @@ export class MapModalReporteManzanaComponent implements AfterViewInit {
         return this.manzanaReporteService.getReportePorDistrito(ubigeos);
       })
     ),
-    { initialValue: null as ReporteManzanaPorDistritoData | null }
+    { initialValue: [] as ReporteManzanaPorDistritoItem[] }
   );
 
   /** Tarjetas de resumen derivadas del reporte (Total + estados mapeados). */
@@ -151,16 +153,13 @@ export class MapModalReporteManzanaComponent implements AfterViewInit {
     }))
   );
 
-  stackedChartLegend = computed(() => {
-    const data = this.reportePorDistritoData();
-    if (data?.series?.length) {
-      return data.series.map(s => ({ label: s.name, color: s.color }));
-    }
-    return this.summaryCards().slice(1).map((c, i) => ({
+  // Leyenda del gráfico apilado (Estado de Manzanas por distrito)
+  stackedChartLegend = computed(() =>
+    SUMMARY_CARD_KEYS.slice(1).map((c, i) => ({
       label: c.label,
       color: BAR_CHART_COLORS[i] ?? '#999'
-    }));
-  });
+    }))
+  );
 
   @ViewChild('barChart') barChartCanvas!: ElementRef<HTMLCanvasElement>;
   @ViewChild('stackedChart') stackedChartCanvas!: ElementRef<HTMLCanvasElement>;
@@ -246,12 +245,16 @@ export class MapModalReporteManzanaComponent implements AfterViewInit {
     if (existingChart) existingChart.destroy();
 
     const data = this.reportePorDistritoData();
-    const labels = data?.categorias ?? this.distritosSeleccionados().map(d => d?.distrito || 'Sin nombre');
-    const datasets = data?.series?.map(s => ({
-      label: s.name,
-      data: (s.data ?? []).map((v: unknown) => Number(v)),
-      backgroundColor: s.color
-    })) ?? [];
+    const labels = data.map(d => d.distrito);
+    const estadoLabels = SUMMARY_CARD_KEYS.slice(1);
+    const datasets = [
+      { label: estadoLabels[0].label, data: data.map(d => d.estado01), backgroundColor: BAR_CHART_COLORS[0] },
+      { label: estadoLabels[1].label, data: data.map(d => d.estado02), backgroundColor: BAR_CHART_COLORS[1] },
+      { label: estadoLabels[2].label, data: data.map(d => d.estado03), backgroundColor: BAR_CHART_COLORS[2] },
+      { label: estadoLabels[3].label, data: data.map(d => d.estado04), backgroundColor: BAR_CHART_COLORS[3] },
+      { label: estadoLabels[4].label, data: data.map(d => d.estado05), backgroundColor: BAR_CHART_COLORS[4] },
+      { label: estadoLabels[5].label, data: data.map(d => d.estado06), backgroundColor: BAR_CHART_COLORS[5] }
+    ];
 
     new Chart(ctx, {
       type: 'bar',

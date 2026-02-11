@@ -14,16 +14,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have the 'sicu-visor-seguimiento' title`, () => {
+  it(`should have the 'visor-seguimiento' title`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('sicu-visor-seguimiento');
+    expect(app.title).toEqual('visor-seguimiento');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, sicu-visor-seguimiento');
+    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, visor-seguimiento');
   });
 });

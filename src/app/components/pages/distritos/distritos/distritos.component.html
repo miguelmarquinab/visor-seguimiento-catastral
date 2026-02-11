@@ -41,10 +41,12 @@
       >
         <span class="check" [class.on]="isSelected(d)">✓</span>
 
-        <div class="logoCircle">
-          <img src="../../../../../assets/images/jpg-muni/140106.jpg"
-          class="icon-log-muni-1" alt="logo-municipalidades" />
+        <div class="logoCircle" fxFlex="20" style="align-items: center;">
+          <div class="content-logo-munic">
+            <img src="../../../assets/images/jpg-muni/{{d.codigoUbigeo}}.jpg" class="icon-log-muni-1" alt="{{d.distrito}}, {{d.departamento}}, {{d.provincia}}"/>
+          </div>
         </div>
+
 
         <div class="name">{{ d.distrito | uppercase }}</div>
         <div class="sub">{{ d.departamento }} · {{ d.provincia }}</div>
@@ -98,7 +100,7 @@
   <app-mapa></app-mapa>
 
   <button class="fab-control" (click)="ui.toggleControl()" type="button" aria-label="Capas">
-    ☰
+    <mat-icon fontIcon = "menu" ></mat-icon>
   </button>
 
   @if (ui.showControl$ | async) {

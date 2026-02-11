@@ -6,6 +6,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { Chart, registerables} from 'chart.js';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import { UiStateService} from '../../../../services/ui-state.service';
+import { HostListener } from '@angular/core';
+
 
 Chart.register(...registerables);
 
@@ -107,5 +109,31 @@ export class MapModalReporteMapaComponent implements AfterViewInit {
   toggleSidebar(): void {
   this.sidebarOpen = !this.sidebarOpen;
   }
+
+/*********************/
+
+ngOnInit() {
+  this.checkScreen();
+}
+
+@HostListener('window:resize')
+onResize() {
+  this.checkScreen();
+}
+
+checkScreen() {
+  if (window.innerWidth <= 600) {
+    this.sidebarOpen = false;
+  } else {
+    this.sidebarOpen = true;
+  }
+}
+
+/* toggleSidebar() {
+  this.sidebarOpen = !this.sidebarOpen;
+} */
+
+
+  
 
 }

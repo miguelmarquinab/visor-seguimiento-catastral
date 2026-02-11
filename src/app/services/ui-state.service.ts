@@ -100,6 +100,16 @@ export class UiStateService {
     this._showStatsWidget.next(!this._showStatsWidget.value);
   }
 
+  //Cierra panel de Manzanas
+  setShowManzanaPanel(value: boolean): void {
+    this._showManzanaPanel.next(value);
+  }
+
+  //Cierra panel de Poligonos
+  setShowPoligonoPanel(value: boolean): void {
+    this._showPoligonoPanel.next(value);
+  }
+
   selectCategory(label : string | null) {
     this.categorySelectedSubject.next(label);
   }

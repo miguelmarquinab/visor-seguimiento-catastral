@@ -1,37 +1,42 @@
 <div class="manzana-panel shadow-lg" [class.maximized]="isMaximized()">
   <div class="main-layout">
-    <aside class="controls-column">
-      <div class="chips-row">
-        @for (dist of distritosSeleccionados(); track dist.codigoUbigeo) {
-          <span class="custom-chip">
-      {{ dist.distrito }}
-            <mat-icon class="close-chip" (click)="quitarDistrito(dist.codigoUbigeo)">close</mat-icon>
-    </span>
-        }
-      </div>
-      <div class="reporte-card">
-        <div class="card-header-blue">
-          <mat-icon>security</mat-icon>
-          <span>Reporte de Manzanas por Distrito</span>
-          <div class="header-actions">
-            <mat-icon>add</mat-icon>
-            <mat-icon>arrow_upward</mat-icon>
-          </div>
+    <aside class="controls-column" [class.collapsed]="sidebarCollapsed()">
+      <button type="button" class="sidebar-toggle" (click)="sidebarCollapsed.set(!sidebarCollapsed())" [attr.aria-label]="sidebarCollapsed() ? 'Abrir filtros' : 'Cerrar filtros'">
+        <mat-icon>{{ sidebarCollapsed() ? 'chevron_right' : 'chevron_left' }}</mat-icon>
+      </button>
+      <div class="sidebar-content">
+        <div class="chips-row">
+          @for (dist of distritosSeleccionados(); track dist.codigoUbigeo) {
+            <span class="custom-chip">
+              {{ dist.distrito }}
+              <mat-icon class="close-chip" (click)="quitarDistrito(dist.codigoUbigeo)">close</mat-icon>
+            </span>
+          }
         </div>
-
-        <div class="card-body">
-          <div class="expansion-header">
-            <mat-icon>grid_view</mat-icon>
-            <span>Total de Manzanas</span>
-            <mat-icon>expand_less</mat-icon>
+        <div class="reporte-card">
+          <div class="card-header-blue">
+            <mat-icon>security</mat-icon>
+            <span>Reporte de Manzanas por Distrito</span>
+            <div class="header-actions">
+              <mat-icon>add</mat-icon>
+              <mat-icon>arrow_upward</mat-icon>
+            </div>
           </div>
 
-          <app-ubigeo-selector
-            [showTodos]="true"
-            [allowedUbigeos]="allowedUbigeos()"
-            [selectedUbigeos]="selectedUbigeos()"
-            (distritoChange)="onDistritoSeleccionado($event)">
-          </app-ubigeo-selector>
+          <div class="card-body">
+            <div class="expansion-header">
+              <mat-icon>grid_view</mat-icon>
+              <span>Total de Manzanas</span>
+              <mat-icon>expand_less</mat-icon>
+            </div>
+
+            <app-ubigeo-selector
+              [showTodos]="true"
+              [allowedUbigeos]="allowedUbigeos()"
+              [selectedUbigeos]="selectedUbigeos()"
+              (distritoChange)="onDistritoSeleccionado($event)">
+            </app-ubigeo-selector>
+          </div>
         </div>
       </div>
     </aside>

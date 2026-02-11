@@ -80,6 +80,8 @@ export class DistritosComponent implements OnInit {
 
     localStorage.setItem('distritos_seleccionados', JSON.stringify(selected));
     this.ui.setDistritos(selected);
+    this.ui.setShowManzanaPanel(false);
+    this.ui.setShowPoligonoPanel(false);
     this.ui.setShowStatsWidget(true);
   }
 

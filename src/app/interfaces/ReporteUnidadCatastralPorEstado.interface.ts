@@ -12,11 +12,11 @@ export interface ReporteUnidadCatastralPorEstadoItem {
   ucQa4: number;
   ucMuni: number;
   /** Total UC en estado 1 (Pendientes). */
-  estado01: number;
+  estadoUc01: number;
   /** Total UC en estado 2 (En proceso). */
-  estado02: number;
+  estadoUc02: number;
   /** Total UC en estado 3 (Terminado). */
-  estado03: number;
+  estadoUc03: number;
   pctUcQa1: number;
   pctUcQa2: number;
   pctUcCic: number;

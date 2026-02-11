@@ -13,7 +13,7 @@ import {
 } from '../interfaces/ReporteManzanaPorEstado.interface';
 import {
   ReporteManzanaPorDistritoResponse,
-  ReporteManzanaPorDistritoData
+  ReporteManzanaPorDistritoItem
 } from '../interfaces/ReporteManzanaPorDistrito.interface';
 
 @Injectable({ providedIn: 'root' })
@@ -41,20 +41,13 @@ export class ManzanaReporteService {
   }
 
   /**
-   * Reporte por distrito: categorías, series (name, data, color) y leyenda para el gráfico apilado.
+   * Reporte por distrito: un registro por distrito con estado01, estado02, estado03, estado04, estado05, estado05 y totalManzanas.
    */
-  getReportePorDistrito(ubigeos: string[]): Observable<ReporteManzanaPorDistritoData | null> {
-    if (!ubigeos?.length) {
-      return of(null);
-    }
+  getReportePorDistrito(ubigeos: string[]): Observable<ReporteManzanaPorDistritoItem[]> {
+    if (!ubigeos?.length) return of([]);
     const params = new HttpParams().set('ubigeos', ubigeos.join(','));
     return this.http.get<ReporteManzanaPorDistritoResponse>(this.baseUrlPorDistrito, { params }).pipe(
-      map(res => {
-        if (!res?.success || !res?.data) {
-          return null;
-        }
-        return res.data;
-      })
+      map(res => (res?.success && Array.isArray(res?.data) ? res.data : []))
     );
   }
 }

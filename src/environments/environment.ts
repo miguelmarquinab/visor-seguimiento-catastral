@@ -5,18 +5,12 @@ export const environment = {
   urlWebApiLote: 'http://172.16.16.33:8212',
   urlWebApiLoteCalidad: 'http://172.16.16.33:8211',
   urlLeyenda: 'http://172.16.16.33:8086/download/',
-
-  //apiUrlArmonizacion: 'http://172.16.16.33:8088/',
-  apiUrlArmonizacion: 'http://localhost:8088/',
-
+  apiUrlArmonizacion: 'http://172.16.16.33:8088/',
   urlWebApiAuthenticate: 'http://172.16.16.33:8095/',
   apiUrlVisor: 'http://172.16.16.33:8219/',
   apiSicuVisor: 'http://172.16.16.33:8226/',
-  //apiSicuVisorSeguimiento: 'http://172.16.16.33:8238/',
-  apiSicuVisorSeguimiento: 'http://localhost:8238/',
-
+  apiSicuVisorSeguimiento: 'http://172.16.16.33:8238/',
   urlGeoserver: "https://geoserver.ue003cofopri.gob.pe/geoserver/",
-
   urlTutorial: 'https://wiki.ue003cofopri.gob.pe/index.php/Visor_Cartogr%C3%A1fico',
   localStorageKey: 'accessVisor',
   apiUrlDistritos: 'assets/data/distritos.json',
@@ -24,7 +18,7 @@ export const environment = {
   clientSecretSICUAccess: 'appGisSicu2025&@*-*',
   keySiteCatpcha: '6LcPBMcqAAAAAHQhfAy0iQ9dI_JONHrsy_DOh9Ll',
   visibleBusqueda: true,
-  version: 'V. 2.1.1',
+  version: 'V. 1.0.1',
   ambiente: 'Desarrollo',
   name: 'development',
   code: 1001,

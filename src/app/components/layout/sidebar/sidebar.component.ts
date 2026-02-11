@@ -5,11 +5,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { RouterModule } from '@angular/router';
 import { UiStateService } from '../../../services/ui-state.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatMenuModule } from '@angular/material/menu';
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [CommonModule, MatIconModule, MatButtonModule, RouterModule, MatTooltipModule],
+  imports: [CommonModule, MatIconModule, MatButtonModule, RouterModule, MatTooltipModule, MatMenuModule],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css'
 })

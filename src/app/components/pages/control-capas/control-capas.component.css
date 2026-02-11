@@ -182,8 +182,8 @@
 
 .modal-overlay {
   position: fixed;
-  top: 108px;
-  left: 355px;
+  top: 140px;
+  left: 326px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -201,10 +201,11 @@
 
 /* Header */
 .modal-header {
+    border-radius: 10px 10px 0 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 14px 16px;
+    padding: 10px 12px;
     color: #fff;
     background: #204d8c !important;
     text-align: center;

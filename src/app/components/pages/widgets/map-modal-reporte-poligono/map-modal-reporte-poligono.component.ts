@@ -29,6 +29,8 @@ export class MapModalReportePoligonoComponent implements AfterViewInit {
   public uiService = inject(UiStateService);
   private poligonoReporteService = inject(PoligonoReporteService);
   isMaximized = signal(true);
+  /** Panel lateral izquierdo (filtros) plegado */
+  sidebarCollapsed = signal(false);
 
   distritosSeleccionados = this.uiService.distritosSeleccionados;
 
@@ -191,6 +193,7 @@ export class MapModalReportePoligonoComponent implements AfterViewInit {
         responsive: true,
         maintainAspectRatio: false,
         scales: { x: { stacked: true }, y: { stacked: true } },
+        datasets: { bar: { barPercentage: 0.35, categoryPercentage: 0.55 } },
         plugins: { legend: { position: 'top', labels: { boxWidth: 12, font: { size: 10 } } } }
       }
     });
@@ -222,6 +225,7 @@ export class MapModalReportePoligonoComponent implements AfterViewInit {
         responsive: true,
         maintainAspectRatio: false,
         scales: { x: { stacked: true }, y: { stacked: true } },
+        datasets: { bar: { barPercentage: 0.35, categoryPercentage: 0.55 } },
         plugins: { legend: { position: 'top', labels: { boxWidth: 12, font: { size: 10 } } } }
       }
     });

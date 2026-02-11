@@ -41,10 +41,12 @@
   margin-bottom: 15px;
 }
 
-chart-container {
+.chart-container {
   position: relative;
-  height: 200px; /* Altura fija para que Chart.js sepa cuánto medir */
+  height: 320px;
+  min-height: 320px;
   width: 100%;
+  max-width: 360px;
   margin-bottom: 15px;
 }
 
@@ -170,3 +172,4 @@ chart-container {
     color: #194A8B;
     font-size: 13px!important;
 }
+

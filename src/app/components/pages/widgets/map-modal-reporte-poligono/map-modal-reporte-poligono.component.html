@@ -1,32 +1,37 @@
 <div class="poligono-panel shadow-lg" [class.maximized]="isMaximized()">
   <div class="main-layout">
-    <aside class="left-col">
-      <div class="chips-container">
-        @for (dist of distritosSeleccionados(); track dist.codigoUbigeo) {
-          <span class="custom-chip">
-        {{ dist.distrito }}
-            <mat-icon class="close-chip" (click)="quitarDistrito(dist.codigoUbigeo)">close</mat-icon>
-      </span>
-        }
-      </div>
-
-      <div class="report-box">
-        <div class="report-header">
-          <mat-icon>security</mat-icon>
-          <span>Reporte Espacial</span>
+    <aside class="left-col" [class.collapsed]="sidebarCollapsed()">
+      <button type="button" class="sidebar-toggle" (click)="sidebarCollapsed.set(!sidebarCollapsed())" [attr.aria-label]="sidebarCollapsed() ? 'Abrir filtros' : 'Cerrar filtros'">
+        <mat-icon>{{ sidebarCollapsed() ? 'chevron_right' : 'chevron_left' }}</mat-icon>
+      </button>
+      <div class="sidebar-content">
+        <div class="chips-container">
+          @for (dist of distritosSeleccionados(); track dist.codigoUbigeo) {
+            <span class="custom-chip">
+              {{ dist.distrito }}
+              <mat-icon class="close-chip" (click)="quitarDistrito(dist.codigoUbigeo)">close</mat-icon>
+            </span>
+          }
         </div>
-        <div class="report-body">
-          <div class="accordion-item">
-            <span>Poligono</span>
-            <mat-icon>expand_less</mat-icon>
+
+        <div class="report-box">
+          <div class="report-header">
+            <mat-icon>security</mat-icon>
+            <span>Reporte Espacial</span>
           </div>
-          <div class="form-content">
-            <app-ubigeo-selector
-              [showTodos]="true"
-              [allowedUbigeos]="allowedUbigeos()"
-              [selectedUbigeos]="selectedUbigeos()"
-              (distritoChange)="onDistritoSeleccionado($event)">
-            </app-ubigeo-selector>
+          <div class="report-body">
+            <div class="accordion-item">
+              <span>Poligono</span>
+              <mat-icon>expand_less</mat-icon>
+            </div>
+            <div class="form-content">
+              <app-ubigeo-selector
+                [showTodos]="true"
+                [allowedUbigeos]="allowedUbigeos()"
+                [selectedUbigeos]="selectedUbigeos()"
+                (distritoChange)="onDistritoSeleccionado($event)">
+              </app-ubigeo-selector>
+            </div>
           </div>
         </div>
       </div>
@@ -50,9 +55,9 @@
           <br>
           <div class="cards-flex">
             <div class="stat-card bg-gold-dark"><span class="title-UC">Total</span><strong>{{ reporteUnidadCatastralData()?.totalUc ?? 0 }}</strong></div>
-            <div class="stat-card bg-gold-soft"><span class="title-UC-sub">Pendientes</span><strong>{{ reporteUnidadCatastralData()?.estado01 ?? 0 }}</strong></div>
-            <div class="stat-card bg-gold-soft"><span class="title-UC-sub">En proceso</span><strong>{{ reporteUnidadCatastralData()?.estado02 ?? 0 }}</strong></div>
-            <div class="stat-card bg-gold-soft"><span class="title-UC-sub">Terminado</span><strong>{{ reporteUnidadCatastralData()?.estado03 ?? 0 }}</strong></div>
+            <div class="stat-card bg-gold-soft"><span class="title-UC-sub">Pendientes</span><strong>{{ reporteUnidadCatastralData()?.estadoUc01 ?? 0 }}</strong></div>
+            <div class="stat-card bg-gold-soft"><span class="title-UC-sub">En proceso</span><strong>{{ reporteUnidadCatastralData()?.estadoUc02 ?? 0 }}</strong></div>
+            <div class="stat-card bg-gold-soft"><span class="title-UC-sub">Terminado</span><strong>{{ reporteUnidadCatastralData()?.estadoUc03 ?? 0 }}</strong></div>
           </div>
         </div>
       </div>

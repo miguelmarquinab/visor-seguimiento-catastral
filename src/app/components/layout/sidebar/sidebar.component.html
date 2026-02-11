@@ -14,7 +14,7 @@
       </span>
     </div>
   </div>
-  <nav class="nav">
+  <nav class="nav toolbar-icons">
     <a mat-button class="btnLogout" matTooltip="Inicio" matTooltipClass="class-tooltip"
        (click)="abrirInicio()"
        [class.active]="(uiService.view$ | async) === 'distritos'"
@@ -44,7 +44,35 @@
   </nav>
 
 
-  <button class="btnLogout" (click)="logout.emit()" matTooltip="Cerrar sesión" matTooltipClass = "class-tooltip">
+  <button class="btnLogout toolbar-icons" (click)="logout.emit()" matTooltip="Cerrar sesión" matTooltipClass = "class-tooltip">
     <mat-icon>logout</mat-icon>
   </button>
+
+  <button mat-icon-button class="mobile-menu-btn" [matMenuTriggerFor]="mobileMenu">
+  <mat-icon>menu</mat-icon>
+  </button>
+
+  <mat-menu #mobileMenu="matMenu">
+    <button mat-menu-item (click)="abrirInicio()">
+      <mat-icon>home</mat-icon>
+      <span>Inicio</span>
+    </button>
+    <button mat-menu-item (click)="abrirEstadisticas()">
+      <mat-icon>dashboard</mat-icon>
+      <span>Dashboard</span>
+    </button>
+    <button mat-menu-item (click)="abrirReporteManzanas()">
+      <mat-icon>format_shapes</mat-icon>
+      <span>Manzana</span>
+    </button>
+    <button mat-menu-item (click)="abrirReportePoligonos()">
+      <mat-icon>pentagon</mat-icon>
+      <span>Poligono</span>
+    </button>
+    <button mat-menu-item (click)="logout.emit()">
+      <mat-icon>logout</mat-icon>
+      <span>Salir</span>
+    </button>
+  </mat-menu>
+
 </aside>
