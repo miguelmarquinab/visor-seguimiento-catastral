@@ -1,66 +1,75 @@
-<button
-  class="edge-toggle-btn"
-  [class.closed]="!sidebarOpen"
-  (click)="toggleSidebar()">
+<button class="edge-toggle-btn" [class.closed]="!sidebarOpen" (click)="toggleSidebar()">
   <mat-icon>
     {{ sidebarOpen ? 'chevron_right' : 'chevron_left' }}
   </mat-icon>
 </button>
+
 <aside class="sidebar" [class.closed]="!sidebarOpen">
   <div class="widget-header">
     <div class="header-main">
       <mat-icon class="shield-icon">bar_chart</mat-icon>
-      <span class="title">Estadistica</span>
+      <span class="title">Estadística</span>
     </div>
   </div>
+
   <br><br>
-  <div class="stats-widget shadow-lg">
+
+  <div class="stats-widget shadow-lg"  [style.display]="uiService.panelActivo() === 'manzana' ? 'block' : 'none'">
     <div class="widget-body">
       <h3 class="layer-name">Manzana</h3>
 
       <div class="chart-container">
+        @if (uiService.datosConteoManzanas().length === 0) {
+        <div class="no-data-msg">Mueva el mapa para cargar datos</div>
+        }
         <canvas #statsChart></canvas>
       </div>
 
       <section class="section">
         <h4 class="section-title">Leyenda</h4>
         <div class="legend-list">
-          @for (item of dataEstadistica; track item.label) {
-            <div class="legend-item">
-              <span class="label-text">{{ item.label }}</span>
-              <span class="color-box" [style.background-color]="item.color"></span>
-            </div>
+          @for (item of uiService.datosConteoManzanas(); track item.estado) {
+          <div class="legend-item">
+            <span class="label-text">{{ item.nombreEstado }}</span>
+            <span class="count-badge">({{ item.nroManzanas }})</span>
+            <span class="color-box" [style.background-color]="getColor(item.estado)"></span>
+          </div>
           }
         </div>
       </section>
 
       <hr class="divider">
+    </div>
+  </div>
+
+  <div class="stats-widget shadow-lg" [style.display]="uiService.panelActivo() === 'poligono' ? 'block' : 'none'">
+    <div class="widget-body">
+      <h3 class="layer-name">Polígono</h3>
+
+      <div class="chart-container">
+        @if (uiService.datosConteoPoligonos().length === 0) {
+          <div class="no-data-msg">Mueva el mapa para cargar datos</div>
+        }
+        <canvas #statsChartPoligono></canvas>
+      </div>
 
       <section class="section">
-        <h4 class="section-title">Descarga</h4>
-        <div class="download-container">
-
-          <button class="circle-btn" [matMenuTriggerFor]="menuXls">
-            <mat-icon class="icon-xls">description</mat-icon>
-            <mat-icon class="arrow">expand_more</mat-icon>
-          </button>
-          <mat-menu #menuXls="matMenu">
-            <button mat-menu-item (click)="exportar('XLS')">XLS</button>
-            <button mat-menu-item (click)="exportar('CSV')">CSV</button>
-          </mat-menu>
-
-          <button class="circle-btn" [matMenuTriggerFor]="menuGis">
-            <mat-icon class="icon-gis">equalizer</mat-icon>
-            <mat-icon class="arrow">expand_more</mat-icon>
-          </button>
-          <mat-menu #menuGis="matMenu">
-            <button mat-menu-item (click)="exportar('GEOJSON')">GEOJSON</button>
-            <button mat-menu-item (click)="exportar('SHAPE')">SHAPE</button>
-          </mat-menu>
-
+        <h4 class="section-title">Leyenda</h4>
+        <div class="legend-list">
+          @for (item of uiService.datosConteoPoligonos(); track item.estado) {
+            <div class="legend-item">
+              <span class="label-text">{{ item.nombreEstado }}</span>
+              <span class="count-badge">({{ item.nroPoligonos }})</span>
+              <span class="color-box" [style.background-color]="getColorPoligono(item.estado)">
+              </span>
+            </div>
+          }
         </div>
       </section>
 
     </div>
   </div>
+
+
+
 </aside>

@@ -22,10 +22,31 @@
           [checked]="selectedIds.has(d.idOrganizacion)"
           (change)="toggleDistrict(d)"
         />
+
+        <!-- hidden ubigeo (si lo quieres para forms HTML5) -->
+        <input type="hidden" [value]="d.codigoUbigeo" />
+
         <div class="txt">
           <div class="name">{{ d.distrito }}</div>
           <div class="sub">{{ d.departamento }} · {{ d.provincia }}</div>
         </div>
+
+        <!-- ✅ Switch único: límite + centrar -->
+        <button
+          type="button"
+          class="switch-btn"
+          [class.on]="isLimiteOn(d.codigoUbigeo)"
+          (click)="onToggleLimiteDistrito(d, $event)"
+          title="Mostrar/ocultar límite y centrar distrito"
+        >
+          <span class="spinner" *ngIf="isLoadingUbigeo(d.codigoUbigeo)"></span>
+
+          <!-- icono tipo switch -->
+          <span class="switch-icon" *ngIf="!isLoadingUbigeo(d.codigoUbigeo)">
+            <span class="switch-track"></span>
+            <span class="switch-knob"></span>
+          </span>
+        </button>
       </label>
     </div>
   </div>

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {BehaviorSubject} from 'rxjs';
 import {Distrito} from '../interfaces/Distrito';
 
 @Injectable({
@@ -7,7 +7,7 @@ import {Distrito} from '../interfaces/Distrito';
 })
 export class ReportestateService {
 
-  private distritosSubject = new BehaviorSubject<Distrito[]>([]);
+  private readonly distritosSubject = new BehaviorSubject<Distrito[]>([]);
   distritos$ = this.distritosSubject.asObservable();
 
   setDistritos(distritos: Distrito[]) {

@@ -2,17 +2,13 @@ import { Injectable } from '@angular/core';
 import * as L from 'leaflet';
 import { MapService } from './map.service';
 
-/**
- * Responsabilidad única:
- * - Crear capas DEMO (hardcode) y registrarlas en MapService
- * - NO conoce UI, NO lee checkboxes
- */
+
 @Injectable({ providedIn: 'root' })
 export class DemoLayersService {
 
   private initialized = false;
 
-  constructor(private mapService: MapService) {}
+  constructor(private readonly mapService: MapService) {}
 
   capas = [
     {
@@ -25,7 +21,7 @@ export class DemoLayersService {
     {
       id: 2,
       descripcion: "Polígono",
-      estados: ['QA1', 'QA2', 'CIC', 'QA3', 'QA4', 'QA3', 'MUNI'],
+      estados: ['QA1', 'QA2', 'CIC', 'QA3', 'QA4', 'MUNI'],
       workspace: "dashboard",
       layerName: "dashboard_poligonos"
     },
@@ -62,10 +58,10 @@ export class DemoLayersService {
     ]);
 
     this.registerPolygon(map, 'mz_calidad', [
-      [-11.98, -77.10],
+      [-11.98, -77.1],
       [-11.98, -77.06],
       [-11.95, -77.06],
-      [-11.95, -77.10],
+      [-11.95, -77.1],
     ]);
 
     this.registerPolygon(map, 'mz_terminada', [
@@ -84,45 +80,45 @@ export class DemoLayersService {
 
     // ---- POLIGONOS (po_*) ----
     this.registerPolygon(map, 'po_qa1', [
-      [-12.30, -77.40],
-      [-12.30, -77.10],
-      [-12.05, -77.10],
-      [-12.05, -77.40],
+      [-12.3, -77.4],
+      [-12.3, -77.1],
+      [-12.05, -77.1],
+      [-12.05, -77.4],
     ], { weight: 4, fillOpacity: 0.15 });
 
     this.registerPolygon(map, 'po_qa2', [
-      [-12.05, -77.40],
-      [-12.05, -77.10],
-      [-11.80, -77.10],
-      [-11.80, -77.40],
+      [-12.05, -77.4],
+      [-12.05, -77.1],
+      [-11.8, -77.1],
+      [-11.8, -77.4],
     ], { weight: 4, fillOpacity: 0.15 });
 
     this.registerPolygon(map, 'po_cic', [
-      [-12.30, -77.10],
-      [-12.30, -76.80],
-      [-12.05, -76.80],
-      [-12.05, -77.10],
+      [-12.3, -77.1],
+      [-12.3, -76.8],
+      [-12.05, -76.8],
+      [-12.05, -77.1],
     ], { weight: 4, fillOpacity: 0.15 });
 
     this.registerPolygon(map, 'po_qa3', [
-      [-12.05, -77.10],
-      [-12.05, -76.80],
-      [-11.80, -76.80],
-      [-11.80, -77.10],
+      [-12.05, -77.1],
+      [-12.05, -76.8],
+      [-11.8, -76.8],
+      [-11.8, -77.1],
     ], { weight: 4, fillOpacity: 0.15 });
 
     this.registerPolygon(map, 'po_qa4', [
-      [-12.30, -76.80],
-      [-12.30, -76.50],
-      [-12.05, -76.50],
-      [-12.05, -76.80],
+      [-12.3, -76.8],
+      [-12.3, -76.5],
+      [-12.05, -76.5],
+      [-12.05, -76.8],
     ], { weight: 4, fillOpacity: 0.15 });
 
     this.registerPolygon(map, 'po_muni', [
-      [-12.05, -76.80],
-      [-12.05, -76.50],
-      [-11.80, -76.50],
-      [-11.80, -76.80],
+      [-12.05, -76.8],
+      [-12.05, -76.5],
+      [-11.8, -76.5],
+      [-11.8, -76.8],
     ], { weight: 4, fillOpacity: 0.15 });
   }
 

@@ -67,3 +67,11 @@ html,
     margin: 0 3px !important;
     border-radius: 10px
 }
+/************ ICONO SELEC***************/
+.ms-caret{
+    font-size: 24px;
+}
+.txt .name {
+    font-weight: 500!important;
+    font-size: 14px!important;
+}

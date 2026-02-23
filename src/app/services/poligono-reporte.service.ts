@@ -25,7 +25,10 @@ import {
   PoligonoListaEtapasResponse,
   PoligonoListaEtapasItem
 } from '../interfaces/PoligonoListaEtapas.interface';
-
+import {
+  ConteoEstadoItem,
+  ConteoEstadosResponse
+} from '../interfaces/PoligonoConteo'
 @Injectable({ providedIn: 'root' })
 export class PoligonoReporteService {
   private readonly baseUrlReportePorEstado = `${environment.apiSicuVisorSeguimiento}poligono/reporteporestado`;
@@ -33,8 +36,9 @@ export class PoligonoReporteService {
   private readonly baseUrlReportePorDistrito = `${environment.apiSicuVisorSeguimiento}poligono/reportepordistrito`;
   private readonly baseUrlListaEtapas = `${environment.apiSicuVisorSeguimiento}poligono/listaretapas`;
   private readonly baseUrlReporteUnidadCatastral = `${environment.apiSicuVisorSeguimiento}unidadcatastral/reporteporestado`;
+  private readonly baseUrlConteo = `${environment.apiSicuVisorSeguimiento}poligono/conteoestados`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
   /**
    * Reporte total de polígonos por estado (q1, q2, cic, qa3, qa4, muni y porcentajes). Un registro agregado para los ubigeos.
@@ -92,4 +96,24 @@ export class PoligonoReporteService {
       map(res => (res?.success && res?.data?.length ? res.data[0] : null))
     );
   }
+
+  getConteoEstados(
+      bbox: { xmin: number; ymin: number; xmax: number; ymax: number },
+      ubigeos: string[] 
+    ): Observable<ConteoEstadoItem[]> {
+      
+      let params = new HttpParams()
+        .set('xmin', bbox.xmin.toString())
+        .set('ymin', bbox.ymin.toString())
+        .set('xmax', bbox.xmax.toString())
+        .set('ymax', bbox.ymax.toString());
+  
+      if (ubigeos.length > 0) {
+        params = params.set('ubigeos', ubigeos.join(','));
+      }
+  
+      return this.http.get<ConteoEstadosResponse>(this.baseUrlConteo, { params }).pipe(
+        map(res => (res?.success && Array.isArray(res?.data) ? res.data : []))
+      );
+    }
 }

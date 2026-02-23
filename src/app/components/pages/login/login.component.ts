@@ -31,10 +31,10 @@ export class LoginComponent implements OnInit {
   hidePassword = true;
 
   constructor (
-    private fb: FormBuilder,
-    private auth: AuthService,
-    private router: Router,
-    private sessionState : SessionstateServiceService
+    private readonly fb: FormBuilder,
+    private readonly auth: AuthService,
+    private readonly router: Router,
+    private readonly sessionState : SessionstateServiceService
   ) {
     this.form = this.fb.group({
       username: ['', Validators.required],
@@ -66,7 +66,6 @@ export class LoginComponent implements OnInit {
     this.auth.login(credentials).subscribe({
       next: () => {
         this.sessionState.setBuscador();
-        //this.router.navigateByUrl('/');
         this.router.navigate(['/distritos']);
       },
       error: () => {
@@ -74,6 +73,5 @@ export class LoginComponent implements OnInit {
         this.error = 'Usuario o contraseña inválidos';
       }
     });
-
   }
 }

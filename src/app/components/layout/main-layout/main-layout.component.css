@@ -1,6 +1,4 @@
 .layout {
-  /* display: grid;
-  grid-template-columns: 260px 1fr; */
   height: 100vh;
   background: var(--bg);
 }
@@ -8,13 +6,5 @@
 .content {
   height: 100vh;
   overflow: auto;
-  /* padding: 20px; */
   background: #f6f8fb;
 }
-
-/*.content {*/
-/*  height: 100vh;*/
-/*  overflow: auto;*/
-/*  padding: 0;*/
-/*  background: transparent;*/
-/*}*/

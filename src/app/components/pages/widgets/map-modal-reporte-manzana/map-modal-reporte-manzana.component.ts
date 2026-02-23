@@ -11,10 +11,13 @@ import { UbigeoComponent } from '../../../shared/ubigeo/ubigeo.component';
 import { DistritoSelected } from '../../../../interfaces/DistritoSelected';
 import type { ManzanaReportePorEstadoMapeado } from '../../../../interfaces/ReporteManzanaPorEstado.interface';
 import type { ReporteManzanaPorDistritoItem } from '../../../../interfaces/ReporteManzanaPorDistrito.interface';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatCardModule} from '@angular/material/card';
+
 
 Chart.register(...registerables);
 
-const BAR_CHART_COLORS = ['#f2c94c', '#2d9cdb', '#9b51e0', '#f2994a', '#27ae60', '#eb5757'];
+const BAR_CHART_COLORS = ['#eb5757a6', '#7d7a7ac2', '#9b51e0c0', '#f2984ac8', '#27ae5fd0', '#17753edd'];
 const BAR_LABEL_MIN_HEIGHT_PX = 22;
 const STACKED_SEGMENT_LABEL_MIN_HEIGHT_PX = 24;
 
@@ -86,7 +89,7 @@ const SUMMARY_CARD_KEYS = [
   { key: 'pendiente', label: 'Pendiente', class: 'pendiente' },
   { key: 'levantamiento', label: 'Levantamiento', class: 'levantamiento' },
   { key: 'edicion', label: 'Edición gráfica', class: 'edicion' },
-  { key: 'calidad', label: 'Control de calidad Int', class: 'calidad' },
+  { key: 'calidad', label: 'Control calidad Int', class: 'calidad' },
   { key: 'terminada', label: 'Terminada', class: 'terminada' },
   { key: 'poligono', label: 'En polígono', class: 'poligono' }
 ] as const;
@@ -94,7 +97,7 @@ const SUMMARY_CARD_KEYS = [
 @Component({
   selector: 'app-map-modal-reporte-manzana',
   standalone: true,
-  imports: [CommonModule, MatIconModule, MatButtonModule, UbigeoComponent],
+  imports: [CommonModule, MatIconModule, MatButtonModule, UbigeoComponent, MatMenuModule, MatCardModule],
   templateUrl: './map-modal-reporte-manzana.component.html',
   styleUrl: './map-modal-reporte-manzana.component.css'
 })
@@ -289,4 +292,77 @@ export class MapModalReporteManzanaComponent implements AfterViewInit {
   quitarDistrito(codigoUbigeo: string): void {
     this.uiService.removeDistritos(codigoUbigeo);
   }
+/*************JOEL*********/
+  menuHover1 = false;
+  menuHover2 = false;
+
+  private closeTimeout1: any;
+  private closeTimeout2: any;
+
+  handleEnter(trigger: any, menuId: number) {
+    if (menuId === 1) {
+      clearTimeout(this.closeTimeout1);
+    } else {
+      clearTimeout(this.closeTimeout2);
+    }
+
+    if (!trigger.menuOpen) {
+      trigger.openMenu();
+    }
+  }
+
+  handleLeave(trigger: any, menuId: number) {
+    const timeout = setTimeout(() => {
+      const hover = menuId === 1 ? this.menuHover1 : this.menuHover2;
+
+      if (!hover) {
+        trigger.closeMenu();
+      }
+
+      if (menuId === 1) {
+        this.menuHover1 = false;
+      } else {
+        this.menuHover2 = false;
+      }
+
+    }, 150);
+
+    if (menuId === 1) {
+      this.closeTimeout1 = timeout;
+    } else {
+      this.closeTimeout2 = timeout;
+    }
+  }
+
+  getIconConfig(label: string): { icon: string; color: string } {
+
+    switch (label) {
+      case "Pendiente":
+        return { icon: "chronic", color: "#f07c6c" }; // rojo
+
+      case "Levantamiento":
+        return { icon: "bar_chart", color: "#a1a1a1" }; // gris
+
+      case "Edición gráfica":
+        return { icon: "area_chart", color: "#b071eb" }; // morado
+
+      case "Control calidad Int":
+        return { icon: "deployed_code_account", color: "#f4ae70" }; // naranja 
+
+      case "Terminada":
+        return { icon: "check_circle", color: "#5dc98a" }; // verde
+
+      case "En polígono":
+        return { icon: "pie_chart", color: "#458961" }; // verde ocuro
+
+      case "Total de Manzanas":
+        return { icon: "insert_chart", color: "#003366" }; // azul
+
+      default:
+        return { icon: "insert_chart_outlined", color: "#7f8c8d" };
+    }
+  }
+
+
+
 }

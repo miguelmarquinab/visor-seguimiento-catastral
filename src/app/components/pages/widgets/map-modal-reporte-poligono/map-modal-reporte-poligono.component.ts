@@ -13,15 +13,17 @@ import type { ReportePoligonoPorDistritoItem } from '../../../../interfaces/Repo
 import type { ReportePoligonoPorEstadoItem } from '../../../../interfaces/ReportePoligonoPorEstado.interface';
 import type { ReporteUnidadCatastralPorEstadoItem } from '../../../../interfaces/ReporteUnidadCatastralPorEstado.interface';
 import type { PoligonoListaEtapasItem } from '../../../../interfaces/PoligonoListaEtapas.interface';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatCardModule} from '@angular/material/card';
 
 Chart.register(...registerables);
 
-const STACKED_LOTE_COLORS = ['#1E3A8A', '#F97316', '#94A3B8', '#FACC15', '#4ADE80', '#EF4444'];
+const STACKED_LOTE_COLORS = ['#fecc29de', '#7fc569dc', '#a6a5a3e5', '#122c9fe0', '#f47d28e1', '#4990eedc'];
 
 @Component({
   selector: 'app-map-modal-reporte-poligono',
   standalone: true,
-  imports: [CommonModule, MatIconModule, UbigeoComponent],
+  imports: [CommonModule, MatIconModule, UbigeoComponent, MatMenuModule, MatCardModule],
   templateUrl: './map-modal-reporte-poligono.component.html',
   styleUrl: './map-modal-reporte-poligono.component.css'
 })

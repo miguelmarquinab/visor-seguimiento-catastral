@@ -52,6 +52,9 @@ ng g s services/ubigeo --skip-tests
 
 ng g s core/ubigeo/reportestate --skip-tests
 
+ng g s services/distritocoordenadas --skip-tests
+
+
 
 
 

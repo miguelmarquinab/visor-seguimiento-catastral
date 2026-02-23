@@ -7,7 +7,7 @@ import {BehaviorSubject} from 'rxjs';
 })
 export class SessionstateServiceService {
 
-  private step$ = new BehaviorSubject<AppFlowStep>(AppFlowStep.LOGIN);
+  private readonly step$ = new BehaviorSubject<AppFlowStep>(AppFlowStep.LOGIN);
   currentStep$ = this.step$.asObservable();
 
   setLogin() {
@@ -29,6 +29,4 @@ export class SessionstateServiceService {
   get current(): AppFlowStep {
     return this.step$.value;
   }
-
-
 }

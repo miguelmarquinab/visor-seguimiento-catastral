@@ -2,42 +2,49 @@ import { Injectable, signal, computed } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { DistritoSelected } from '../interfaces/DistritoSelected';
 import {Distrito} from '../interfaces/Distrito';
-
+import { ConteoEstadoItem } from '../interfaces/ManzanaConteo';
+import { ConteoEstadoItem as ConteoEstadoItemPoligono} from '../interfaces/PoligonoConteo';
 type ViewMode = 'distritos' | 'mapa';
+type PanelActivo = 'manzana' | 'poligono' | null;
 
 @Injectable({ providedIn: 'root' })
 export class UiStateService {
 
   private readonly LS_KEY = 'distritos_seleccionados';
 
-  private viewSubject = new BehaviorSubject<ViewMode>('distritos');
+  private readonly viewSubject = new BehaviorSubject<ViewMode>('distritos');
   view$ = this.viewSubject.asObservable();
 
-  private distritosSubject = new BehaviorSubject<DistritoSelected[]>(this.readFromLocalStorage());
+  private readonly distritosSubject = new BehaviorSubject<DistritoSelected[]>(this.readFromLocalStorage());
   distritos$ = this.distritosSubject.asObservable();
 
-  private _distritosSig = signal<DistritoSelected[]>(this.readFromLocalStorage());
+  private readonly _distritosSig = signal<DistritoSelected[]>(this.readFromLocalStorage());
   distritosSeleccionados = computed(() => this._distritosSig());
 
   /** Listado completo de distritos cargado tras el login (permitidos para el usuario logado) */
-  private allDistritosSubject = new BehaviorSubject<DistritoSelected[]>([]);
+  private readonly allDistritosSubject = new BehaviorSubject<DistritoSelected[]>([]);
   allDistritos$ = this.allDistritosSubject.asObservable();
 
-  private _showControl = new BehaviorSubject<boolean>(true);
+  private readonly _showControl = new BehaviorSubject<boolean>(true);
   showControl$ = this._showControl.asObservable();
 
-  private _showStatsWidget = new BehaviorSubject<boolean>(false);
+  private readonly _showStatsWidget = new BehaviorSubject<boolean>(false);
   showStatsWidget$ = this._showStatsWidget.asObservable();
 
-  private categorySelectedSubject = new BehaviorSubject<string | null>(null);
+  private readonly categorySelectedSubject = new BehaviorSubject<string | null>(null);
   categorySelected$ = this.categorySelectedSubject.asObservable();
 
-  private _showManzanaPanel = new BehaviorSubject<boolean>(false);
+  private readonly _showManzanaPanel = new BehaviorSubject<boolean>(false);
   showManzanaPanel$ = this._showManzanaPanel.asObservable();
 
-  private _showPoligonoPanel = new BehaviorSubject<boolean>(false);
+  private readonly _showPoligonoPanel = new BehaviorSubject<boolean>(false);
   showPoligonoPanel$ = this._showPoligonoPanel.asObservable();
 
+  private readonly _datosConteoManzanas = signal<ConteoEstadoItem[]>([]);
+  datosConteoManzanas = computed(() => this._datosConteoManzanas());
+
+  private readonly _datosConteoPoligonos = signal<ConteoEstadoItemPoligono[]>([]);
+  datosConteoPoligonos = computed(() => this._datosConteoPoligonos());
   constructor() {
     const saved = localStorage.getItem(this.LS_KEY);
     if (saved) {
@@ -75,7 +82,7 @@ export class UiStateService {
   addDistritos(d: DistritoSelected) {
     const actual = this._distritosSig();
     //Evitar duplicados por codigo de ubigeo
-    if(!actual.find(x=> x.codigoUbigeo === d.codigoUbigeo)) {
+    if(!actual.some(x=> x.codigoUbigeo === d.codigoUbigeo)) {
       this.setDistritos([...actual, d]);
     }
   }
@@ -141,5 +148,33 @@ export class UiStateService {
     this.viewSubject.next('distritos');
     this.distritosSubject.next([]);
     localStorage.removeItem(this.LS_KEY);
+  }
+
+  updateConteoManzanas(data: ConteoEstadoItem[]) {
+    this._datosConteoManzanas.set(data);
+  }
+  updateConteoPoligonos(data: ConteoEstadoItemPoligono[]) {
+    this._datosConteoPoligonos.set(data);
+  }
+
+  private readonly _estadosManzana = signal<string[]>(['01','02','03','04','05','06']);
+  estadosManzana = this._estadosManzana.asReadonly();
+
+  setEstadosManzana(estados: string[]) {
+    this._estadosManzana.set(estados);
+  }
+
+  private readonly _estadosPoligono = signal<string[]>(['CIC', 'QA1', 'QA4', 'QA3', 'MUNI', 'QA2']);
+  estadosPoligono = this._estadosPoligono.asReadonly();
+
+  setEstadosPoligono(estados: string[]) {
+    this._estadosPoligono.set(estados);
+  }
+
+  private readonly _panelActivo = signal<PanelActivo>('manzana');
+  panelActivo = this._panelActivo.asReadonly();
+
+  setPanelActivo(p: PanelActivo){
+    this._panelActivo.set(p);
   }
 }

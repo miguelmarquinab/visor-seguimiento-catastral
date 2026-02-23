@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, computed, inject, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import * as L from 'leaflet';
 
@@ -11,7 +11,8 @@ import { MapModalReportePoligonoComponent } from '../widgets/map-modal-reporte-p
 
 import { TipoMapainterfaz } from '../../../interfaces/TipoMapainterfaz';
 import { TipomapacoreService } from '../../../services/tipomapacore.service';
-
+import { ManzanaReporteService } from '../../../services/manzana-reporte.service';
+import { PoligonoReporteService } from '../../../services/poligono-reporte.service';
 import { LEVELS } from '../../../../assets/data/levels';
 
 @Component({
@@ -25,18 +26,22 @@ import { LEVELS } from '../../../../assets/data/levels';
   templateUrl: './mapa.component.html',
   styleUrl: './mapa.component.css'
 })
-export class MapaComponent implements AfterViewInit, OnDestroy, OnInit {
+export class MapaComponent implements OnDestroy, OnInit {
   private map: L.Map | null = null;
 
   public uiService = inject(UiStateService);
+  distritosSeleccionados = this.uiService.distritosSeleccionados;
 
   private readonly mapService = inject(MapService);
   private readonly tipoMapaService = inject(TipomapacoreService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly demoLayers = inject(DemoLayersService);
-
+  private readonly poligonoService = inject(PoligonoReporteService);
+  private readonly manzanaService = inject(ManzanaReporteService);
 
   tipoMapa: TipoMapainterfaz[] = this.tipoMapaService.getTipoMapas();
+
+  selectedUbigeos = computed(() => this.distritosSeleccionados().map(d => d.codigoUbigeo));
 
   Level = LEVELS;
   escala = '';
@@ -50,25 +55,16 @@ export class MapaComponent implements AfterViewInit, OnDestroy, OnInit {
   ];
 
   ngOnInit(): void {
-        this.initMapOnce();
+    this.initMapOnce();
 
-    // capas auxiliares
     this.geometryLayer = L.featureGroup().addTo(this.map!);
 
-    // para que otros servicios puedan usar el mapa
     this.mapService.setMap(this.map!);
 
-    // this.demoLayers.initOnce(this.map!);
-
-    // ✅ importante para evitar NG0100 (Angular ya chequeó el template)
     this.cdr.detectChanges();
 
     let capaInicial = this.demoLayers.capas[0];
     this.mapService.addWmsLayer(capaInicial.workspace, capaInicial.layerName)
-  }
-
-  ngAfterViewInit(): void {
-
   }
 
   ngOnDestroy(): void {
@@ -122,6 +118,26 @@ export class MapaComponent implements AfterViewInit, OnDestroy, OnInit {
       this.coordenadas = `Lat: ${lat}, Long: ${lng}`;
       this.cdr.detectChanges();
     });
+
+    this.map.on('moveend', () => {
+      const bounds:any = this.map?.getBounds();
+      const coords = {
+        xmin: bounds.getWest(),
+        ymin: bounds.getSouth(),
+        xmax: bounds.getEast(),
+        ymax: bounds.getNorth()
+      };
+
+      this.manzanaService.getConteoEstados(coords,this.selectedUbigeos()).subscribe((data:any) => {
+        this.uiService.updateConteoManzanas(data);
+        console.log("Datos enviados al servicio:", data);
+      });
+
+      this.poligonoService.getConteoEstados(coords,this.selectedUbigeos()).subscribe((data:any) => {
+        this.uiService.updateConteoPoligonos(data);
+        console.log("Datos enviados al servicio:", data);
+      });
+    })
 
     this.map.on('click', () => {
       this.removeOnlyMarker();

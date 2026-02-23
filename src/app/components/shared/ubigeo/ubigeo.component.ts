@@ -12,8 +12,8 @@ import { BehaviorSubject, combineLatest, of, startWith, switchMap } from 'rxjs';
   styleUrl: './ubigeo.component.css'
 })
 export class UbigeoComponent implements OnInit, OnChanges {
-  private fb = inject(FormBuilder);
-  private facade = inject(UbigeoFacade);
+  private readonly fb = inject(FormBuilder);
+  private readonly facade = inject(UbigeoFacade);
 
   @Input() showTodos = true;
   /** Lista de códigos ubigeo permitidos para el usuario logado */
@@ -22,7 +22,7 @@ export class UbigeoComponent implements OnInit, OnChanges {
   @Input() selectedUbigeos: string[] = [];
   @Output() distritoChange = new EventEmitter<{ ubigeo: string; distrito: string }>();
 
-  private allowedUbigeos$ = new BehaviorSubject<string[]>([]);
+  private readonly allowedUbigeos$ = new BehaviorSubject<string[]>([]);
 
   form = this.fb.group({
     departamento: [''],
@@ -84,6 +84,7 @@ export class UbigeoComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
+    this.facade.preload();
     const allowed = this.allowedUbigeos ?? [];
     const selected = this.selectedUbigeos ?? [];
     this.allowedUbigeos$.next(allowed.length ? allowed : selected);

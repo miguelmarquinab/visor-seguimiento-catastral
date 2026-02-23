@@ -24,8 +24,10 @@ export class UbigeoFacade {
   /** Datos filtrados por lista de ubigeos permitidos para el usuario logado. */
   getFilteredData(allowedUbigeos: string[]): Observable<UbigeoItemDto[]> {
     if (!allowedUbigeos?.length) return this.data$;
-    const set = new Set(allowedUbigeos);
-    return this.data$.pipe(map(data => data.filter(x => set.has(x.codigoUbigeo))));
+    const set = new Set(allowedUbigeos.map(u => this.norm(u)));
+    return this.data$.pipe(
+      map(data => data.filter(x => set.has(this.norm(x?.codigoUbigeo))))
+    );
   }
 
   getFilteredDepartamentos$(allowed: string[]): Observable<Option[]> {
@@ -35,17 +37,20 @@ export class UbigeoFacade {
   }
 
   getFilteredProvincias$(allowed: string[], departamento: string): Observable<Option[]> {
-    if (!departamento) return of([]);
+    const depto = this.norm(departamento);
+    if (!depto) return of([]);
     return this.getFilteredData(allowed).pipe(
-      map(data => data.filter(x => x.departamento === departamento)),
+      map(data => data.filter(x => this.norm(x.departamento) === depto)),
       map(rows => this.toOptions([...new Set(rows.map(x => x.provincia).filter(Boolean))]))
     );
   }
 
   getFilteredDistritos$(allowed: string[], departamento: string, provincia: string): Observable<Option[]> {
-    if (!departamento || !provincia) return of([]);
+    const depto = this.norm(departamento);
+    const prov = this.norm(provincia);
+    if (!depto || !prov) return of([]);
     return this.getFilteredData(allowed).pipe(
-      map(data => data.filter(x => x.departamento === departamento && x.provincia === provincia && x.distrito)),
+      map(data => data.filter(x => this.norm(x.departamento) === depto && this.norm(x.provincia) === prov && x.distrito)),
       map(rows => {
         const options: Option[] = rows.map(x => ({ value: x.codigoUbigeo || '', label: x.distrito || '' }));
         const uniqueMap = new Map<string, Option>();
@@ -60,20 +65,24 @@ export class UbigeoFacade {
   );
 
   provincias$(departamento: string): Observable<Option[]> {
+    const depto = this.norm(departamento);
+    if (!depto) return of([]);
     return this.data$.pipe(
-      map(data => data.filter(x => x.departamento === departamento)),
+      map(data => data.filter(x => this.norm(x.departamento) === depto)),
       map(rows => this.toOptions([...new Set(rows.map(x => x.provincia).filter(Boolean))]))
     );
   }
 
   distritos$(departamento: string, provincia: string) {
+    const depto = this.norm(departamento);
+    const prov = this.norm(provincia);
+    if (!depto || !prov) return of([]);
     return this.data$.pipe(
       map(data => {
-        // 1. Filtrado riguroso
         const filtered = data.filter(x =>
-          x.departamento === departamento &&
-          x.provincia === provincia &&
-          x.distrito // Aseguramos que el nombre del distrito exista
+          this.norm(x.departamento) === depto &&
+          this.norm(x.provincia) === prov &&
+          x.distrito
         );
 
         // 2. Mapeo usando los nombres reales del JSON (codigoUbigeo)
@@ -97,6 +106,11 @@ export class UbigeoFacade {
         );
       })
     );
+  }
+
+  /** Normaliza un valor de texto (trim, null/undefined → ''). */
+  private norm(s: string | null | undefined): string {
+    return (s ?? '').trim();
   }
 
   private toOptions(values: string[]): Option[] {

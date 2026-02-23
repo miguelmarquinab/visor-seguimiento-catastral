@@ -14,7 +14,6 @@
 }
 
 .panel{
-  /* width: min(820px, 92vw); */
   border-radius: 18px;
   padding: 16px;
   background: rgba(255,255,255,.08);
@@ -97,7 +96,7 @@
   display:grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 14px;
-  max-height: 380px;
+  max-height: 300px;
   overflow: auto;
   padding-right: 6px;
 }
@@ -114,10 +113,8 @@
   align-items:center;
   justify-content:center;
   min-height: 118px;
+  min-width: 200px;
   transition: transform .10s ease, box-shadow .18s ease, border-color .18s ease;
-  /*background:*/
-  /*  radial-gradient(1200px 600px at 60% 15%, rgba(17,71,138,.30), transparent 60%),*/
-  /*  linear-gradient(180deg, #0A2740 0%, #0A3B66 100%);*/
 }
 
 .card:hover{
@@ -127,13 +124,12 @@
 }
 
 .card.selected{
-  /* outline: 3px solid rgba(232,184,53,.65); */
   outline-offset: 2px;
 }
 
 .logoCircle{
-  width: 64px;
-  height: 64px;
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
   background: #fff;
   border: 1px solid rgba(0,0,0,.12);
@@ -145,7 +141,7 @@
 }
 
 .logoCircle img{
-  width: 100%;
+  width: 40px;
   height: 100%;
   object-fit: cover;
 }
@@ -171,7 +167,6 @@
   display:flex;
   align-items:center;
   justify-content:center;
-
   font-weight: 900;
   font-size: 12px;
   line-height: 1;
@@ -225,13 +220,7 @@
 @media (max-width: 600px){
   .grid{ grid-template-columns: repeat(1,1fr); }
 }
-/* El mapa debe estar “debajo” */
-:host {
-  display: block;
-  height: 100%;
-}
 
-/* Panel flotante */
 .control-modal{
   position: fixed;
   top: 140px;
@@ -291,6 +280,8 @@
   justify-content: space-between;
 }
 .icon-log-muni-1 {
-    height: 30px;
-    padding: 2px 2px;
+    padding: 0;
+}
+.hidden {
+  display: none;
 }

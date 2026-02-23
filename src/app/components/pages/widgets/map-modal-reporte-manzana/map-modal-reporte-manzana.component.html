@@ -2,7 +2,7 @@
   <div class="main-layout">
     <aside class="controls-column" [class.collapsed]="sidebarCollapsed()">
       <button type="button" class="sidebar-toggle" (click)="sidebarCollapsed.set(!sidebarCollapsed())" [attr.aria-label]="sidebarCollapsed() ? 'Abrir filtros' : 'Cerrar filtros'">
-        <mat-icon>{{ sidebarCollapsed() ? 'chevron_right' : 'chevron_left' }}</mat-icon>
+        <mat-icon>{{ sidebarCollapsed() ? 'preview' : 'web_asset_off' }}</mat-icon>
       </button>
       <div class="sidebar-content">
         <div class="chips-row">
@@ -29,13 +29,15 @@
               <span>Total de Manzanas</span>
               <mat-icon>expand_less</mat-icon>
             </div>
+            <div class="form-container">
+               <app-ubigeo-selector
+                  [showTodos]="true"
+                  [allowedUbigeos]="allowedUbigeos()"
+                  [selectedUbigeos]="selectedUbigeos()"
+                  (distritoChange)="onDistritoSeleccionado($event)">
+                </app-ubigeo-selector>
 
-            <app-ubigeo-selector
-              [showTodos]="true"
-              [allowedUbigeos]="allowedUbigeos()"
-              [selectedUbigeos]="selectedUbigeos()"
-              (distritoChange)="onDistritoSeleccionado($event)">
-            </app-ubigeo-selector>
+            </div>
           </div>
         </div>
       </div>
@@ -43,47 +45,100 @@
 
     <main class="dashboard-column" *ngIf="isMaximized()">
       <div class="blue-banner">Manzanas</div>
-
       <div class="summary-row">
         @for (card of summaryCards(); track card.label) {
           <div class="status-box" [ngClass]="card.class">
-            <span class="status-label" [ngClass]="card.class">{{ card.label }}</span>
+            
+            <div class="status-header">
+              <span class="status-label">{{ card.label }}</span>
+              <div class="contem-icon">
+                <div class="circu-icon">
+                  <mat-icon
+                    class="material-symbols-outlined status-icon"
+                    [style.color]="getIconConfig(card.label).color">
+                    {{ getIconConfig(card.label).icon }}
+                  </mat-icon>
+                </div>
+              </div>
+            </div>
             <span class="status-value">{{ card.value }}</span>
           </div>
         }
       </div>
 
-
-
       <div class="vertical-charts-container">
+        <mat-card class="dashboard-card chart-section-wrapper">
+          <div class="card-header">
+            <div class="title-section conten-icon-infor" >
+              <mat-icon class="header-icon">insert_chart</mat-icon>
+              <h3>
+                Total de Manzanas:
+                <span class="total-value">{{ reporteData()?.totalManzanas ?? 0 }}</span>
+              </h3>
+            </div>
 
-        <div class="chart-section-wrapper">
-          <div class="blue-banner-light">Total de Manzanas</div>
-          <div class="total-text-blue">Total: {{ reporteData()?.totalManzanas ?? 0 }}</div>
-          <div class="chart-layout-row">
-            <div class="canvas-container">
-              <canvas #barChart></canvas>
-            </div>
-            <div class="custom-legend custom-legend-tabular">
-              @for (item of barChartLegendItems(); track item.label) {
-                <div class="legend-item">
-                  <span class="legend-text">{{ item.label }}</span>
-                  <span class="legend-square" [style.background-color]="item.color"></span>
-                </div>
-              }
-            </div>
+            <mat-icon class="conten-icon-infor"
+              #trigger1="matMenuTrigger"
+              [matMenuTriggerFor]="legendMenu1"
+              (mouseenter)="handleEnter(trigger1, 1)"
+              (mouseleave)="handleLeave(trigger1, 1)">
+              info
+            </mat-icon>
+
+            <mat-menu
+              #legendMenu1="matMenu"
+              [hasBackdrop]="false"
+              [overlapTrigger]="false"
+              (mouseenter)="menuHover1 = true"
+              (mouseleave)="handleLeave(trigger1, 1)">
+
+              <div class="custom-legend custom-legend-tabular">
+                @for (item of barChartLegendItems(); track item.label) {
+                  <div class="legend-item">
+                    <span class="legend-text">{{ item.label }}</span>
+                    <span class="legend-square"
+                          [style.background-color]="item.color">
+                    </span>
+                  </div>
+                }
+              </div>
+            </mat-menu>
           </div>
-        </div>
+          <mat-card-content>
+            <div class="chart-layout-row">
+              <div class="canvas-container">
+                <canvas #barChart></canvas>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
 
         <div class="divider-line"></div>
 
-        <div class="chart-section-wrapper">
-          <div class="blue-banner-light">Estado de Manzanas por distrito</div>
-          <br><br>
-          <div class="chart-layout-row">
-            <div class="canvas-container canvas-container-stacked">
-              <canvas #stackedChart></canvas>
+        <mat-card class="dashboard-card chart-section-wrapper">
+          <div class="card-header">
+            <div class="title-section conten-icon-infor" >
+              <mat-icon class="header-icon">account_tree</mat-icon>
+              <h3>
+                Estado de Manzanas por distrito
+              </h3>
             </div>
+
+            <mat-icon class="conten-icon-infor"
+              #trigger2="matMenuTrigger"
+              [matMenuTriggerFor]="legendMenu2"
+              (mouseenter)="handleEnter(trigger2, 2)"
+              (mouseleave)="handleLeave(trigger2, 2)">
+              info
+            </mat-icon>
+
+            <mat-menu
+            #legendMenu2="matMenu"
+            [hasBackdrop]="false"
+            [overlapTrigger]="false"
+            (mouseenter)="menuHover2 = true"
+            (mouseleave)="handleLeave(trigger2, 2)">
+
             <div class="custom-legend custom-legend-tabular">
               @for (item of stackedChartLegend(); track item.label) {
                 <div class="legend-item">
@@ -92,8 +147,16 @@
                 </div>
               }
             </div>
+          </mat-menu>
           </div>
-        </div>
+          <mat-card-content>
+            <div class="chart-layout-row">
+              <div class="canvas-container canvas-container-stacked">
+                <canvas #stackedChart></canvas>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
 
       </div>
     </main>

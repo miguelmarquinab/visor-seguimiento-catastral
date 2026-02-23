@@ -15,13 +15,17 @@ import {
   ReporteManzanaPorDistritoResponse,
   ReporteManzanaPorDistritoItem
 } from '../interfaces/ReporteManzanaPorDistrito.interface';
-
+import {
+  ConteoEstadoItem,
+  ConteoEstadosResponse
+} from '../interfaces/ManzanaConteo'
 @Injectable({ providedIn: 'root' })
 export class ManzanaReporteService {
   private readonly baseUrl = `${environment.apiSicuVisorSeguimiento}manzana/reporteporestado`;
   private readonly baseUrlPorDistrito = `${environment.apiSicuVisorSeguimiento}manzana/reportepordistrito`;
+  private readonly baseUrlConteo = `${environment.apiSicuVisorSeguimiento}manzana/conteoestados`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
   /**
    * Reporte general: un registro en data con totales para los ubigeos indicados.
@@ -47,6 +51,26 @@ export class ManzanaReporteService {
     if (!ubigeos?.length) return of([]);
     const params = new HttpParams().set('ubigeos', ubigeos.join(','));
     return this.http.get<ReporteManzanaPorDistritoResponse>(this.baseUrlPorDistrito, { params }).pipe(
+      map(res => (res?.success && Array.isArray(res?.data) ? res.data : []))
+    );
+  }
+
+  getConteoEstados(
+    bbox: { xmin: number; ymin: number; xmax: number; ymax: number },
+    ubigeos: string[] 
+  ): Observable<ConteoEstadoItem[]> {
+    
+    let params = new HttpParams()
+      .set('xmin', bbox.xmin.toString())
+      .set('ymin', bbox.ymin.toString())
+      .set('xmax', bbox.xmax.toString())
+      .set('ymax', bbox.ymax.toString());
+
+    if (ubigeos.length > 0) {
+      params = params.set('ubigeos', ubigeos.join(','));
+    }
+
+    return this.http.get<ConteoEstadosResponse>(this.baseUrlConteo, { params }).pipe(
       map(res => (res?.success && Array.isArray(res?.data) ? res.data : []))
     );
   }

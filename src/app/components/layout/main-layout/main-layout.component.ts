@@ -14,9 +14,9 @@ import { UiStateService } from '../../../services/ui-state.service';
 export class MainLayoutComponent {
 
   constructor(
-    private auth: AuthService,
-    private router: Router,
-    private ui: UiStateService,
+    private readonly auth: AuthService,
+    private readonly router: Router,
+    private readonly ui: UiStateService,
   ) {}
 
   doLogout(): void {

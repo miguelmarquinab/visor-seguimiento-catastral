@@ -12,7 +12,7 @@ import { SessionstateServiceService} from '../../services/sessionstate.service.s
 })
 export class AuthService {
 
-  constructor(private http: HttpClient, private tokenStorage: TokenStorageService, private sesionState: SessionstateServiceService) { }
+  constructor(private readonly http: HttpClient, private readonly tokenStorage: TokenStorageService, private  readonly sesionState: SessionstateServiceService) { }
 
   login(req: LoginRequest): Observable<LoginResponse> {
     const clientId = environment.clientIdSICUAccess;

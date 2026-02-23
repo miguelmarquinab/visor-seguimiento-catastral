@@ -2,7 +2,7 @@
   <div class="main-layout">
     <aside class="left-col" [class.collapsed]="sidebarCollapsed()">
       <button type="button" class="sidebar-toggle" (click)="sidebarCollapsed.set(!sidebarCollapsed())" [attr.aria-label]="sidebarCollapsed() ? 'Abrir filtros' : 'Cerrar filtros'">
-        <mat-icon>{{ sidebarCollapsed() ? 'chevron_right' : 'chevron_left' }}</mat-icon>
+        <mat-icon>{{ sidebarCollapsed() ? 'preview' : 'web_asset_off' }}</mat-icon>
       </button>
       <div class="sidebar-content">
         <div class="chips-container">
@@ -41,44 +41,193 @@
 
       <div class="top-stats-grid">
         <div class="stat-section">
-          <div class="header-banner blue-poligono">Polígono</div>
+          <div class="blue-banner">Polígono</div>
           <br>
           <div class="cards-flex">
-            <div class="stat-card bg-blue-strong"><span class="title-total">Total</span><strong>{{ reportePorEstadoData()?.totalPoligonos ?? 0 }}</strong></div>
-            <div class="stat-card bg-blue-soft"><span class="title-poligono">Pendientes</span><strong>{{ reportePorEstadoData()?.estado01 ?? 0 }}</strong></div>
-            <div class="stat-card bg-blue-soft"><span class="title-poligono">En proceso</span><strong>{{ reportePorEstadoData()?.estado02 ?? 0 }}</strong></div>
-            <div class="stat-card bg-blue-soft"><span class="title-poligono">Terminado</span><strong>{{ reportePorEstadoData()?.estado03 ?? 0 }}</strong></div>
+            <div class="stat-card bg-blue-strong">
+              <div class="card-header">
+                <span class="title-total">Total</span>
+
+                <div class="circu-icon">
+                  <span class="material-symbols-outlined total-icon">
+                    insert_chart
+                  </span>
+                </div>
+              </div>
+
+              <strong class="total-number">
+                {{ reportePorEstadoData()?.totalPoligonos ?? 0 }}
+              </strong>
+            </div>
+
+            <div class="stat-card bg-blue-pendiente">
+              <div class="card-header">
+                <span class="title-pendiente">Pendientes</span>
+                <div class="circu-icon">
+                  <span class="material-symbols-outlined pendiente-icon">
+                    chronic
+                  </span>
+                </div>
+              </div>
+              <strong>{{ reportePorEstadoData()?.estado01 ?? 0 }}</strong>
+            </div>
+
+            <div class="stat-card bg-blue-en-proceso">
+              <div class="card-header">
+                <span class="title-en-proceso">En proceso</span>
+                <div class="circu-icon">
+                  <span class="material-symbols-outlined en-proceso-icon">
+                    rule_settings
+                  </span>
+                </div>
+              </div>
+              <strong>{{ reportePorEstadoData()?.estado02 ?? 0 }}</strong>
+            </div>
+
+            <div class="stat-card bg-blue-terminado">
+              <div class="card-header">
+                <span class="title-terminado">Terminado</span>
+                <div class="circu-icon">
+                  <span class="material-symbols-outlined terminado-icon">
+                    check_circle
+                  </span>
+                </div>
+              </div>
+              <strong>{{ reportePorEstadoData()?.estado03 ?? 0 }}</strong>
+            </div>
+
           </div>
+
         </div>
         <div class="stat-section">
-          <div class="header-banner gold-strong">Unidades Catastrales</div>
+          <div class="naranja-banner">Unidades Administrativa</div>
           <br>
           <div class="cards-flex">
-            <div class="stat-card bg-gold-dark"><span class="title-UC">Total</span><strong>{{ reporteUnidadCatastralData()?.totalUc ?? 0 }}</strong></div>
-            <div class="stat-card bg-gold-soft"><span class="title-UC-sub">Pendientes</span><strong>{{ reporteUnidadCatastralData()?.estadoUc01 ?? 0 }}</strong></div>
-            <div class="stat-card bg-gold-soft"><span class="title-UC-sub">En proceso</span><strong>{{ reporteUnidadCatastralData()?.estadoUc02 ?? 0 }}</strong></div>
-            <div class="stat-card bg-gold-soft"><span class="title-UC-sub">Terminado</span><strong>{{ reporteUnidadCatastralData()?.estadoUc03 ?? 0 }}</strong></div>
+            <div class="stat-card bg-blue-strong">
+              <div class="card-header">
+                <span class="title-total">Total</span>
+                <div class="circu-icon">
+                  <span class="material-symbols-outlined total-icon">
+                    insert_chart
+                  </span>
+                </div>
+              </div>
+              <strong>{{ reporteUnidadCatastralData()?.totalUc ?? 0 }}</strong>
+            </div>
+
+            <div class="stat-card bg-blue-pendiente">
+              <div class="card-header">
+                <span class="title-pendiente">Pendientes</span>
+                <div class="circu-icon">
+                  <span class="material-symbols-outlined pendiente-icon">
+                    chronic
+                  </span>
+                </div>
+              </div>
+              <strong>{{ reporteUnidadCatastralData()?.estadoUc01 ?? 0 }}</strong>
+            </div>
+
+            <div class="stat-card bg-blue-en-proceso">
+              <div class="card-header">
+                <span class="title-en-proceso">En proceso</span>
+                <div class="circu-icon">
+                  <span class="material-symbols-outlined en-proceso-icon">
+                    rule_settings
+                  </span>
+                </div>
+              </div>
+              <strong>{{ reporteUnidadCatastralData()?.estadoUc02 ?? 0 }}</strong>
+            </div>
+
+            <div class="stat-card bg-blue-terminado">
+              <div class="card-header">
+                <span class="title-terminado">Terminado</span>
+                <div class="circu-icon">
+                  <span class="material-symbols-outlined terminado-icon">
+                    check_circle
+                  </span>
+                </div>
+              </div>
+              <strong>{{ reporteUnidadCatastralData()?.estadoUc03 ?? 0 }}</strong>
+            </div>
+            
           </div>
         </div>
       </div>
 
       <div class="charts-container-grid">
-        <div class="chart-wrapper">
-          <div class="chart-label">Total de Polígono</div>
-          <div class="canvas-holder"><canvas #chart1></canvas></div>
-        </div>
-        <div class="chart-wrapper">
-          <div class="chart-label">Total de unidades por Polígono</div>
-          <div class="canvas-holder"><canvas #chart2></canvas></div>
-        </div>
-        <div class="chart-wrapper">
-          <div class="chart-label">Total de Polígono por distrito</div>
-          <div class="canvas-holder"><canvas #chart3></canvas></div>
-        </div>
-        <div class="chart-wrapper">
-          <div class="chart-label">Total de Polígono por Lote</div>
-          <div class="canvas-holder"><canvas #chart4></canvas></div>
-        </div>
+<!-- Total de Polígono -->
+        <mat-card class="dashboard-card chart-section-wrapper">
+          <div class="card-header">
+            <div class="title-section conten-icon-infor" >
+              <mat-icon class="header-icon">insert_chart</mat-icon>
+              <h3>
+                Total de Polígono
+              </h3>
+            </div>
+          </div>
+          <mat-card-content>
+            <div class="chart-layout-row">
+              <div class="canvas-container">
+                <canvas #chart1></canvas>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+<!-- Total de Polígono -->
+        <mat-card class="dashboard-card chart-section-wrapper">
+          <div class="card-header">
+            <div class="title-section conten-icon-infor" >
+              <mat-icon class="header-icon">insert_chart</mat-icon>
+              <h3>
+                Total de unidades por Polígono
+              </h3>
+            </div>
+          </div>
+          <mat-card-content>
+            <div class="chart-layout-row">
+              <div class="canvas-container">
+                <canvas #chart2></canvas>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+<!-- Total de Total de Polígono por distrito -->
+        <mat-card class="dashboard-card chart-section-wrapper">
+          <div class="card-header">
+            <div class="title-section conten-icon-infor" >
+              <mat-icon class="header-icon">insert_chart</mat-icon>
+              <h3>
+                Total de Polígono por distrito
+              </h3>
+            </div>
+          </div>
+          <mat-card-content>
+            <div class="chart-layout-row">
+              <div class="canvas-container">
+                <canvas #chart3></canvas>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+<!-- Total Total de Polígono por Lote -->
+        <mat-card class="dashboard-card chart-section-wrapper">
+          <div class="card-header">
+            <div class="title-section conten-icon-infor" >
+              <mat-icon class="header-icon">insert_chart</mat-icon>
+              <h3>
+                Total de Polígono por Lote
+              </h3>
+            </div>
+          </div>
+          <mat-card-content>
+            <div class="chart-layout-row">
+              <div class="canvas-container">
+                <canvas #chart4></canvas>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
       </div>
 
       <div class="table-container-fixed">

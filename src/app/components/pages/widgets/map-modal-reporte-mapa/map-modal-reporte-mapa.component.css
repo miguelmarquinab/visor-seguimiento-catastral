@@ -43,11 +43,10 @@
 
 .chart-container {
   position: relative;
-  height: 320px;
-  min-height: 320px;
+  height: 250px;
+  min-height: 250px;
   width: 100%;
   max-width: 360px;
-  margin-bottom: 15px;
 }
 
 .section-title {
@@ -134,7 +133,7 @@
   color: #fff;
   border: none;
   cursor: pointer;
-  z-index: 1099;
+  z-index: 1000;
   display: flex;
   padding: 0;
   align-items: center;
@@ -173,3 +172,6 @@
     font-size: 13px!important;
 }
 
+.hidden {
+  display: none !important;
+}

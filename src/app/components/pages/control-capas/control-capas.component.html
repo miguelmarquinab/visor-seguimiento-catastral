@@ -4,12 +4,8 @@
   <div class="panel-body" style="padding: 0;">
 
     <div class="row">
-      <label class="label">Distritos seleccionados:</label>
+     <span class="label">Distritos seleccionados:</span>
       <app-distrito-multiselect  [all]="allDistritos"  [selected]="selectedDistritos"  (selectedChange)="onDistritosChange($event)"></app-distrito-multiselect>
-<!--      <button class="circle-btn" title="Configurar" (click)="openDistritoModal()">⚙</button>-->
-<!--      <button class="circle-btn" (click)="mostrarDiv = true" matTooltip="Agregar distrito" matTooltipClass = "class-tooltip">-->
-<!--        <mat-icon fontIcon="add_location"></mat-icon>-->
-<!--      </button>-->
     </div>
 
     <div class="group">
@@ -20,17 +16,7 @@
           <span>Manzana</span>
         </label>
 
-
         <div class="group-actions">
-          <button class="circle-btn" matTooltip="Menu" matTooltipClass = "class-tooltip">
-            <mat-icon fontIcon="menu"></mat-icon>
-          </button>
-          <button matButton [matMenuTriggerFor]="menu1" class="circle-btn" matTooltip="transparencia" matTooltipClass = "class-tooltip">
-            <mat-icon fontIcon="linear_scale"></mat-icon>
-          </button>
-          <mat-menu #menu1="matMenu" class="conten-opacity">
-              <input type="range" min="0.2" max="1" step="0.05" [value]="opacity" (input)="onOpacityChange($event)" />
-          </mat-menu>
         </div>
       </div>
 
@@ -50,16 +36,6 @@
           <span>Polígono</span>
         </label>
         <div class="group-actions">
-          <button class="circle-btn" matTooltip="Menu" matTooltipClass = "class-tooltip">
-            <mat-icon fontIcon="menu"></mat-icon>
-          </button>
-          <button matButton [matMenuTriggerFor]="menu" class="circle-btn" matTooltip="transparencia" matTooltipClass = "class-tooltip">
-            <mat-icon fontIcon="linear_scale"></mat-icon>
-          </button>
-          <mat-menu #menu="matMenu" class="conten-opacity">
-              <input type="range" min="0.2" max="1" step="0.05" [value]="opacity" (input)="onOpacityChange($event)" />
-          </mat-menu>
-
         </div>
       </div>
       <div class="group-content" *ngIf="expandedPoligono">
@@ -69,12 +45,22 @@
         </label>
       </div>
     </div>
+
+    <div class="group">
+      <div class="group-header">
+        <button class="chev" style="opacity: 0;"></button>
+        <label class="group-title">
+          <input type="checkbox" [checked]="flagSector" (change)="onToggleSector()" />
+          <span>Sector</span>
+        </label>
+        <div class="group-actions">
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 
-
-<!-- MODAL: Agregar/Quitar Distrito -->
- <!-- <div class="modal-overlay" *ngIf="showAddDistrito"></div> -->
 <div class="modal-overlay" *ngIf="mostrarDiv">
   <div class="modal">
 
@@ -92,9 +78,6 @@
     </div>
 
     <div class="modal-footer">
-<!--      <button class="btn_aceptar" (click)="confirmAddDistritos()">-->
-<!--        Cargar-->
-<!--      </button>-->
     </div>
 
   </div>

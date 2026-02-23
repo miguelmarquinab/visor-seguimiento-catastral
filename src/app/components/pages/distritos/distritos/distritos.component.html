@@ -1,124 +1,79 @@
-
-
 <!-- VISTA 1: selección -->
 <section *ngIf="(ui.view$ | async) === 'distritos'">
-  <!-- tu buscador + cards + agregar --><div class="page map">
-  <div class="panel">
-    <div class="toolbar conten-buscar">
-      <div class="searchWrap">
-        <span><mat-icon fontIcon = "search" ></mat-icon></span>
-        <input
-          class="search"
-          placeholder="Buscar distrito..."
-          [formControl]="search"
-          (keydown)="onEnter($event)"
-        />
-      </div>
-
-      <button class="btnPrimary" (click)="onBuscar()">
-        <mat-icon fontIcon = "search" ></mat-icon>
-      </button>
-    </div>
-
-    <div class="title-row">
-      <h2 class="title">Seleccionar Distrito:</h2>
-      <button
-        type="button"
-        class="btn-seleccionar-todos"
-        *ngIf="!loading && items.length > 0"
-        (click)="todosSeleccionados ? deseleccionarTodos() : seleccionarTodos()">
-        {{ todosSeleccionados ? 'Deseleccionar todos' : 'Seleccionar todos' }}
-      </button>
-    </div>
-
-    <div class="grid" *ngIf="!loading; else loadingTpl">
-      <button
-        type="button"
-        class="card"
-        *ngFor="let d of items"
-        (click)="toggle(d)"
-        [class.selected]="isSelected(d)"
-      >
-        <span class="check" [class.on]="isSelected(d)">✓</span>
-
-        <div class="logoCircle" fxFlex="20" style="align-items: center;">
-          <div class="content-logo-munic">
-            <img src="../../../assets/images/jpg-muni/{{d.codigoUbigeo}}.jpg" class="icon-log-muni-1" alt="{{d.distrito}}, {{d.departamento}}, {{d.provincia}}"/>
-          </div>
+  <div class="page map">
+    <div class="panel">
+      <div class="toolbar conten-buscar">
+        <div class="searchWrap">
+          <span><mat-icon fontIcon="search"></mat-icon></span>
+          <input class="search" placeholder="Buscar distrito..." [formControl]="search" (keydown)="onEnter($event)" />
         </div>
 
+        <button class="btnPrimary" (click)="onBuscar()">
+          <mat-icon fontIcon="search"></mat-icon>
+        </button>
+      </div>
 
-        <div class="name">{{ d.distrito | uppercase }}</div>
-        <div class="sub">{{ d.departamento }} · {{ d.provincia }}</div>
-      </button>
-    </div>
+      <div class="title-row">
+        <h2 class="title">Seleccionar Distrito:</h2>
+        <button type="button" class="btn-seleccionar-todos" *ngIf="!loading && items.length > 0"
+          (click)="todosSeleccionados ? deseleccionarTodos() : seleccionarTodos()">
+          {{ todosSeleccionados ? 'Deseleccionar todos' : 'Seleccionar todos' }}
+        </button>
+      </div>
 
-    <ng-template #loadingTpl>
-      <div class="loading">Cargando…</div>
-    </ng-template>
+      <div class="grid" *ngIf="!loading; else loadingTpl">
+        <button type="button" class="card" *ngFor="let d of items" (click)="toggle(d)" [class.selected]="isSelected(d)">
+          <span class="check" [class.on]="isSelected(d)">✓</span>
 
-    <div class="footer">
-      <button
-        class="btnAdd"
-        [disabled]="selectedCount === 0"
-        (click)="agregar()">
-        Cargar
-      </button>
+          <div class="logoCircle" fxFlex="20" style="align-items: center;">
+            <div class="content-logo-munic">
+              <img src="../../../assets/images/jpg-muni/{{d.codigoUbigeo}}.jpg" class="icon-log-muni-1"
+                alt="{{d.distrito}}, {{d.departamento}}, {{d.provincia}}" />
+            </div>
+          </div>
+
+
+          <div class="name">{{ d.distrito | uppercase }}</div>
+          <div class="sub">{{ d.departamento }} · {{ d.provincia }}</div>
+        </button>
+      </div>
+
+      <ng-template #loadingTpl>
+        <div class="loading">Cargando…</div>
+      </ng-template>
+
+      <div class="footer">
+        <button class="btnAdd" [disabled]="selectedCount === 0" (click)="agregar()">
+          Cargar
+        </button>
+      </div>
     </div>
   </div>
-</div>
 </section>
 
-<!-- VISTA 2: mapa + control de capas -->
-<!--<section *ngIf="(ui.view$ | async) === 'mapa'" class="map-shell">-->
-<!--  <app-mapa></app-mapa>-->
-
-<!--  &lt;!&ndash; botón flotante (capas) &ndash;&gt;-->
-<!--  <button class="fab-control" (click)="ui.toggleControl()" type="button" aria-label="Capas">-->
-<!--    ☰-->
-<!--  </button>-->
-
-<!--  &lt;!&ndash; modal &ndash;&gt;-->
-<!--  <div class="control-modal" *ngIf="(ui.showControl$ | async)">-->
-<!--    <div class="control-header">-->
-<!--      <div class="title">Reporte Espacial</div>-->
-<!--      <button class="close" type="button" (click)="ui.setShowControl(false)">✕</button>-->
-<!--    </div>-->
-
-<!--    <div class="control-body">-->
-<!--      <app-control-capas [embedded]="true"></app-control-capas>-->
-<!--    </div>-->
-<!--  </div>-->
-
-<!--  &lt;!&ndash; modal 2&ndash;&gt;-->
-<!--  <div class="control-body">-->
-<!--    <app-map-modal-reporte-mapa></app-map-modal-reporte-mapa>-->
-<!--  </div>-->
-<!--</section>-->
 <section *ngIf="(ui.view$ | async) === 'mapa'" class="map-shell">
 
   <app-mapa></app-mapa>
 
   <button class="fab-control" (click)="ui.toggleControl()" type="button" aria-label="Capas">
-    <mat-icon fontIcon = "menu" ></mat-icon>
+    <mat-icon fontIcon="menu"></mat-icon>
   </button>
 
-  @if (ui.showControl$ | async) {
-    <div class="control-modal">
-      <div class="control-header">
-        <div class="title">Reporte Espacial</div>
-        <button class="close" type="button" (click)="ui.setShowControl(false)">✕</button>
-      </div>
-      <div class="control-body">
-        <app-control-capas [embedded]="true"></app-control-capas>
-      </div>
-    </div>
-  }
 
-  @if (ui.showStatsWidget$ | async) {
-    <div class="widget-container">
-      <app-map-modal-reporte-mapa></app-map-modal-reporte-mapa>
+  <div class="control-modal" [class.hidden]="!(ui.showControl$ | async)">
+    <div class="control-header">
+      <div class="title">Reporte Espacial</div>
+      <button class="close" type="button" (click)="ui.setShowControl(false)">✕</button>
     </div>
-  }
+    <div class="control-body">
+      <app-control-capas [embedded]="true"></app-control-capas>
+    </div>
+  </div>
+
+
+  <div class="widget-container" [class.hidden]="!(ui.showStatsWidget$ | async)">
+    <app-map-modal-reporte-mapa></app-map-modal-reporte-mapa>
+  </div>
+
 
 </section>
