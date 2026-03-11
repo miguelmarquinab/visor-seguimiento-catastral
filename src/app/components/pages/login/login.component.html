@@ -38,13 +38,14 @@
             {{ hidePassword ? 'visibility_off' : 'visibility' }}
           </mat-icon>
         </button>
-
       </mat-form-field>
+
+      <re-captcha [siteKey]="keysite" formControlName="recaptcha"></re-captcha>
 
     </div>
 
     <div class="form__field form__submit" style="margin-top: 5px;">
-      <button class="btn_aceptar" type="submit" [disabled]="loading||form.invalid" >
+      <button class="btnAdd" type="submit" [disabled]="loading||form.invalid" >
         {{loading ? 'Ingresando....' : 'Ingresar'}}
       </button>
     </div>

@@ -30,3 +30,10 @@
 .select-group select:focus {
   border-color: #1E3A8A; /* Color de tu tema */
 }
+
+.label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #555;
+  white-space: nowrap;
+}

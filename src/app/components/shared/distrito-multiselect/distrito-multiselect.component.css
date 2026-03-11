@@ -221,6 +221,37 @@
   border-color: rgba(255,255,255,.35);
   border-top-color: rgba(255,255,255,.95);
 }
+.color-icon-location{
+  color: #1b2a3a;
+}
+/************btn-centrar dsitrito*******************/
+.toggle-mat-btn {
+  border-radius: 20px;
+  transition: all 0.25s ease;
+  background: #f0f0f0;
+  color: rgb(36 74 134);
+}
+
+/* Hover */
+.toggle-mat-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+/* Estado ACTIVO */
+.toggle-mat-btn.active {
+  background: linear-gradient(
+    226deg,
+    rgb(30, 100, 200),
+    rgb(10, 70, 160)
+  );
+  color: white;
+}
+
+/* Spinner centrado */
+.toggle-mat-btn mat-progress-spinner {
+  margin: auto;
+}
 
 @keyframes spin{
   to { transform: rotate(360deg); }

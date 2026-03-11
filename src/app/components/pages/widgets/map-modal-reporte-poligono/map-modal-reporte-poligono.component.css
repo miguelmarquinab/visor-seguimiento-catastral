@@ -28,7 +28,7 @@
 
 /* Columna Izquierda - plegable */
 .left-col {
-  width: 320px;
+  width: 30%;
   min-width: 280px;
   flex-shrink: 0;
   position: relative;
@@ -142,13 +142,23 @@
 .form-content label { font-size: 11px; color: #64748b; }
 .form-select { padding: 6px; border: 1px solid #cbd5e0; border-radius: 4px; font-size: 12px; margin-bottom: 8px; }
 
+.expansion-header {
+  padding: 10px 12px!important;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: bold;
+  font-size: 13px;
+  color:  #244a86!important;
+}
+
 /* Columna Derecha - Stats */
 .right-col {
   flex: 1;
   display: flex;
   flex-direction: column;
   gap: 20px;
-  width: 100%;
+  width: 70%;
 }
 .top-stats-grid {
   display: grid;
@@ -188,7 +198,7 @@
 .stat-card { 
   flex: 1; 
   height: 70px;
-  min-width: 100px;
+  min-width: 90px;
   padding: 8px 10px;
   display: flex;
   flex-direction: column;
@@ -237,7 +247,7 @@
   font-weight: 600; 
 }
 .stat-card strong { 
-  font-size: 32px;
+  font-size: 26px;
   font-weight: 500;
   display: flex;
   font-family: "Montserrat", sans-serif;
@@ -341,6 +351,49 @@
     overflow-x: auto;
   }
 
+  .paginacion-etapas {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 16px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-top: none;
+    font-size: 13px;
+  }
+  .paginacion-info {
+    color: #475569;
+  }
+  .paginacion-botones {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .paginacion-pagina {
+    color: #334155;
+    font-weight: 500;
+  }
+  .btn-pag {
+    padding: 6px 14px;
+    border: 1px solid #cbd5e0;
+    border-radius: 6px;
+    background: #fff;
+    color: #334155;
+    font-size: 13px;
+    cursor: pointer;
+  }
+  .btn-pag:hover:not(:disabled) {
+    background: #f1f5f9;
+    border-color: var(--blue-strong);
+    color: var(--blue-strong);
+  }
+  .btn-pag:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
   .report-table {
     width: 100%;
     border-collapse: collapse;
@@ -394,7 +447,6 @@
 
 .card-header {
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
   align-items: center;
   font-family: "Montserrat", sans-serif;
@@ -441,9 +493,57 @@ h2 {
 .chart-container {
   margin-top: 20px;
 }
+/*******************/
+/* --- GRÁFICOS VERTICALES --- */
+.vertical-charts-container {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  padding-bottom: 40px;
+}
+/* ===============================
+   CHARTS
+================================ */
+.chart-layout-row {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
 
+ .canvas-container {
+   height: 246px;
+    min-height: 250px;
+    width: 100%;
+    max-height: 250px;
+  }
+.canva-interno{
+  width: 100%!important;
+}
+.chart-section-wrapper { width: 100%; }
 
+ @media (max-width: 1410px) {
+  .cards-flex
+  {
+      display: grid;
+      grid-template-columns: repeat(2, 2fr);
+      gap: 8px;
+  }
+}
+@media (max-width: 1120px) {
+  .cards-flex
+  {
+      display: grid;
+      grid-template-columns: repeat(1, 1fr);
+      gap: 8px;
+  }
+}
   @media (max-width: 1023px) {
+    .vertical-charts-container {
+   flex-direction: column;
+  }
+     .chart-layout-row {
+    flex-direction: column;
+  }
     .main-layout {
       flex-direction: column;
     }
@@ -456,7 +556,9 @@ h2 {
       min-width: 48px;
       height: 28px; /* ocultar el tamano height */
     }
-
+    .right-col {
+      width: 100%;
+    }
     .top-stats-grid {
       grid-template-columns: 1fr;
     }

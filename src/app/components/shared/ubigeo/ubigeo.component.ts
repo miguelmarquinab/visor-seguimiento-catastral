@@ -42,28 +42,49 @@ export class UbigeoComponent implements OnInit, OnChanges {
   provincias = toSignal(
     combineLatest([
       this.allowedUbigeos$,
-      this.form.get('departamento')!.valueChanges.pipe(startWith(this.form.get('departamento')?.value ?? ''))
-    ]).pipe(
-      switchMap(([allowed, depto]) =>
-        allowed.length
-          ? this.facade.getFilteredProvincias$(allowed, depto || '')
-          : (depto ? this.facade.provincias$(depto) : of([]))
+      this.form.get('departamento')!.valueChanges.pipe(
+        startWith(this.form.get('departamento')?.value ?? '')
       )
+    ]).pipe(
+      switchMap(([allowed, depto]) => {
+        let result$;
+
+        if (allowed.length) {
+          result$ = this.facade.getFilteredProvincias$(allowed, depto || '');
+        } else if (depto) {
+          result$ = this.facade.provincias$(depto);
+        } else {
+          result$ = of([]);
+        }
+
+        return result$;
+      })
     ),
     { initialValue: [] }
   );
-
   distritos = toSignal(
     combineLatest([
       this.allowedUbigeos$,
-      this.form.get('departamento')!.valueChanges.pipe(startWith(this.form.get('departamento')?.value ?? '')),
-      this.form.get('provincia')!.valueChanges.pipe(startWith(this.form.get('provincia')?.value ?? ''))
-    ]).pipe(
-      switchMap(([allowed, depto, prov]) =>
-        allowed.length
-          ? this.facade.getFilteredDistritos$(allowed, depto || '', prov || '')
-          : (depto && prov ? this.facade.distritos$(depto, prov) : of([]))
+      this.form.get('departamento')!.valueChanges.pipe(
+        startWith(this.form.get('departamento')?.value ?? '')
+      ),
+      this.form.get('provincia')!.valueChanges.pipe(
+        startWith(this.form.get('provincia')?.value ?? '')
       )
+    ]).pipe(
+      switchMap(([allowed, depto, prov]) => {
+        let result$;
+
+        if (allowed.length) {
+          result$ = this.facade.getFilteredDistritos$(allowed, depto || '', prov || '');
+        } else if (depto && prov) {
+          result$ = this.facade.distritos$(depto, prov);
+        } else {
+          result$ = of([]);
+        }
+
+        return result$;
+      })
     ),
     { initialValue: [] }
   );

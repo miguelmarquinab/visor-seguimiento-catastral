@@ -9,7 +9,16 @@
           @for (dist of distritosSeleccionados(); track dist.codigoUbigeo) {
             <span class="custom-chip">
               {{ dist.distrito }}
-              <mat-icon class="close-chip" (click)="quitarDistrito(dist.codigoUbigeo)">close</mat-icon>
+              <mat-icon
+                class="close-chip"
+                role="button"
+                tabindex="0"
+                aria-label="Quitar distrito"
+                (click)="quitarDistrito(dist.codigoUbigeo)"
+                (keydown.enter)="quitarDistrito(dist.codigoUbigeo)"
+                (keydown.space)="$event.preventDefault(); quitarDistrito(dist.codigoUbigeo)">
+                close
+              </mat-icon>
             </span>
           }
         </div>
@@ -20,11 +29,13 @@
             <span>Reporte Espacial</span>
           </div>
           <div class="report-body">
-            <div class="accordion-item">
+            <div class="expansion-header">
+              <mat-icon>pentagon</mat-icon>
               <span>Poligono</span>
               <mat-icon>expand_less</mat-icon>
             </div>
             <div class="form-content">
+              <app-lote-selector [allUbigeos]="allowedUbigeos()" (loteChange)="onLoteChange($event)"></app-lote-selector>
               <app-ubigeo-selector
                 [showTodos]="true"
                 [allowedUbigeos]="allowedUbigeos()"
@@ -154,76 +165,78 @@
           </div>
         </div>
       </div>
-
-      <div class="charts-container-grid">
-<!-- Total de Polígono -->
+      
+<!-- Grafico 1 -->
+      <div class="vertical-charts-container">
         <mat-card class="dashboard-card chart-section-wrapper">
           <div class="card-header">
             <div class="title-section conten-icon-infor" >
               <mat-icon class="header-icon">insert_chart</mat-icon>
               <h3>
-                Total de Polígono
+                Polígonos por etapa
               </h3>
             </div>
           </div>
           <mat-card-content>
             <div class="chart-layout-row">
               <div class="canvas-container">
-                <canvas #chart1></canvas>
+                <canvas class="canva-interno" #chart1></canvas>
               </div>
             </div>
           </mat-card-content>
         </mat-card>
-<!-- Total de Polígono -->
+<!-- Grafico 2 -->
         <mat-card class="dashboard-card chart-section-wrapper">
           <div class="card-header">
             <div class="title-section conten-icon-infor" >
               <mat-icon class="header-icon">insert_chart</mat-icon>
               <h3>
-                Total de unidades por Polígono
+                Unidades administrativas por etapa
               </h3>
             </div>
           </div>
           <mat-card-content>
             <div class="chart-layout-row">
               <div class="canvas-container">
-                <canvas #chart2></canvas>
+                <canvas class="canva-interno" #chart2></canvas>
               </div>
             </div>
           </mat-card-content>
         </mat-card>
-<!-- Total de Total de Polígono por distrito -->
+      </div>
+<!-- Grafico 3 -->
+      <div class="vertical-charts-container">
         <mat-card class="dashboard-card chart-section-wrapper">
           <div class="card-header">
             <div class="title-section conten-icon-infor" >
               <mat-icon class="header-icon">insert_chart</mat-icon>
               <h3>
-                Total de Polígono por distrito
+                Total de Polígonos por distrito
               </h3>
             </div>
           </div>
           <mat-card-content>
             <div class="chart-layout-row">
               <div class="canvas-container">
-                <canvas #chart3></canvas>
+                <canvas class="canva-interno" #chart3></canvas>
               </div>
             </div>
           </mat-card-content>
         </mat-card>
-<!-- Total Total de Polígono por Lote -->
+<!-- Grafico 4 -->
         <mat-card class="dashboard-card chart-section-wrapper">
           <div class="card-header">
             <div class="title-section conten-icon-infor" >
               <mat-icon class="header-icon">insert_chart</mat-icon>
               <h3>
-                Total de Polígono por Lote
+                Total de Polígonos por Lote
               </h3>
             </div>
           </div>
           <mat-card-content>
             <div class="chart-layout-row">
               <div class="canvas-container">
-                <canvas #chart4></canvas>
+                <canvas class="canva-interno" #chart4></canvas>
               </div>
             </div>
           </mat-card-content>
@@ -239,6 +252,7 @@
             <th>Distrito</th>
             <th>Lote</th>
             <th>Polígono</th>
+            <th *ngIf="false">Resultado</th>
             <th>UUCC</th>
             <th>QA1</th>
             <th>QA2</th>
@@ -250,13 +264,14 @@
           </tr>
           </thead>
           <tbody>
-            @for (row of listarEtapasData(); track $index) {
+            @for (row of listarEtapasResult().data; track $index) {
               <tr>
                 <td>{{ row.departamento }}</td>
                 <td>{{ row.provincia }}</td>
                 <td>{{ row.distrito }}</td>
                 <td>{{ row.lote }}</td>
                 <td>{{ row.poligono }}</td>
+                <td *ngIf="false">{{ row.resultadoPoligono ?? '—' }}</td>
                 <td>{{ row.uucc }}</td>
                 <td>
                   @if (row.qa1) { <mat-icon class="icon-check">check_circle</mat-icon> }
@@ -288,6 +303,22 @@
           </tbody>
         </table>
       </div>
+      @if (listarEtapasResult().total > 0) {
+        <div class="paginacion-etapas">
+          <span class="paginacion-info">
+            Mostrando {{ paginacionEtapas().start }}–{{ paginacionEtapas().end }} de {{ paginacionEtapas().total }}
+          </span>
+          <div class="paginacion-botones">
+            <button type="button" class="btn-pag" [disabled]="!paginacionEtapas().hasPrev" (click)="goToPrevPageEtapas()">
+              Anterior
+            </button>
+            <span class="paginacion-pagina">Página {{ currentPageEtapas() + 1 }} de {{ paginacionEtapas().totalPages }}</span>
+            <button type="button" class="btn-pag" [disabled]="!paginacionEtapas().hasNext" (click)="goToNextPageEtapas()">
+              Siguiente
+            </button>
+          </div>
+        </div>
+      }
     </main>
   </div>
 </div>

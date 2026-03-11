@@ -19,7 +19,7 @@
       <label class="row" *ngFor="let d of filtered">
         <input
           type="checkbox"
-          [checked]="selectedIds.has(d.idOrganizacion)"
+          [checked]="isDistrictSelected(d)"
           (change)="toggleDistrict(d)"
         />
 
@@ -30,23 +30,30 @@
           <div class="name">{{ d.distrito }}</div>
           <div class="sub">{{ d.departamento }} · {{ d.provincia }}</div>
         </div>
-
-        <!-- ✅ Switch único: límite + centrar -->
-        <button
+        <!-- Boton único: límite + centrar -->
+       <button
+          mat-icon-button
           type="button"
-          class="switch-btn"
-          [class.on]="isLimiteOn(d.codigoUbigeo)"
+          class="toggle-mat-btn"
+          [class.active]="isLimiteOn(d.codigoUbigeo)"
           (click)="onToggleLimiteDistrito(d, $event)"
-          title="Mostrar/ocultar límite y centrar distrito"
+          [attr.aria-pressed]="isLimiteOn(d.codigoUbigeo)"
+          [matTooltip]="isLimiteOn(d.codigoUbigeo) ? 'Ocultar límite y centrar distrito' : 'Mostrar límite y centrar distrito'"
+          matTooltipClass="class-tooltip"
         >
-          <span class="spinner" *ngIf="isLoadingUbigeo(d.codigoUbigeo)"></span>
+          <!-- Spinner -->
+          <mat-progress-spinner
+            *ngIf="isLoadingUbigeo(d.codigoUbigeo)"
+            diameter="20"
+            mode="indeterminate">
+          </mat-progress-spinner>
 
-          <!-- icono tipo switch -->
-          <span class="switch-icon" *ngIf="!isLoadingUbigeo(d.codigoUbigeo)">
-            <span class="switch-track"></span>
-            <span class="switch-knob"></span>
-          </span>
+          <!-- Icono dinámico -->
+          <mat-icon *ngIf="!isLoadingUbigeo(d.codigoUbigeo)">
+            {{ isLimiteOn(d.codigoUbigeo) ? 'location_on' : 'location_off' }}
+          </mat-icon>
         </button>
+
       </label>
     </div>
   </div>

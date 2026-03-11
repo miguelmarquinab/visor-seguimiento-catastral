@@ -132,7 +132,18 @@
   transform: translateY(-1px);
   color:#fff;
 }
-
+.new-componet-img{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+.new-img-map {
+    border-radius: 50px;
+    width: 40px;
+    height: 40px;
+    border: 1px solid #b0b0b0;
+}
 
 
 /* Estilo para asegurar que el icono se vea bien */

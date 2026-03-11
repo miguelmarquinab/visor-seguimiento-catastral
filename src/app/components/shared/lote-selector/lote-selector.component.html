@@ -1,0 +1,65 @@
+<div class="select-group">
+  <span class="label">Lotes:</span>
+  <div class="lote-trigger-wrap">
+    <button type="button" class="lote-trigger" (click)="onTriggerClick()">
+      <span class="lote-label">{{ labelSummary }}</span>
+      <span class="lote-caret">▾</span>
+    </button>
+    @if (open) {
+      @if (variant === 'inicio') {
+        <!-- Modal centrado para INICIO -->
+        <div class="lote-modal-backdrop" (click)="closeModal()" (keydown.escape)="closeModal()">
+          <div class="lote-modal-box" (click)="$event.stopPropagation()" (keydown.escape)="closeModal()" (focusout)="onModalFocusOut($event)">
+            <div class="lote-modal-header">
+              <span class="lote-modal-title">Seleccionar todos</span>
+              <button type="button" class="lote-modal-close" (click)="closeModal()" aria-label="Cerrar">✕</button>
+            </div>
+            <div class="lote-modal-body">
+              <label class="lote-row lote-select-all">
+                <input
+                  #selectAllCb
+                  type="checkbox"
+                  [checked]="allSelected"
+                  (change)="$any($event.target).checked ? selectAll() : clearSelection()"
+                />
+                <span>{{ allSelected ? 'Deseleccionar todos' : 'Seleccionar todos' }}</span>
+              </label>
+              @for (lote of lotes(); track lote.codigo) {
+                <label class="lote-row">
+                  <input
+                    type="checkbox"
+                    [checked]="isSelected(lote.codigo)"
+                    (change)="toggleLote(lote.codigo)"
+                  />
+                  <span>{{ lote.descripcion }}</span>
+                </label>
+              }
+            </div>
+          </div>
+        </div>
+      } @else {
+        <div class="lote-panel">
+          <label class="lote-row lote-select-all">
+            <input
+              #selectAllCb
+              type="checkbox"
+              [checked]="allSelected"
+              (change)="$any($event.target).checked ? selectAll() : clearSelection()"
+            />
+            <span>{{ allSelected ? 'Deseleccionar todos' : 'Seleccionar todos' }}</span>
+          </label>
+          @for (lote of lotes(); track lote.codigo) {
+            <label class="lote-row">
+              <input
+                type="checkbox"
+                [checked]="isSelected(lote.codigo)"
+                (change)="toggleLote(lote.codigo)"
+              />
+              <span>{{ lote.descripcion }}</span>
+            </label>
+          }
+        </div>
+      }
+    }
+  </div>
+</div>

@@ -5,10 +5,10 @@ import { Option, UbigeoItemDto } from '../../interfaces/UbigeoItemDto';
 
 @Injectable({ providedIn: 'root' })
 export class UbigeoFacade {
-  private dataSubject = new BehaviorSubject<UbigeoItemDto[]>([]);
+  private readonly dataSubject = new BehaviorSubject<UbigeoItemDto[]>([]);
   data$ = this.dataSubject.asObservable();
 
-  constructor(private api: UbigeoService) {}
+  constructor(private readonly api: UbigeoService) {}
 
   preload(): void {
     if (this.dataSubject.value.length > 0) return;

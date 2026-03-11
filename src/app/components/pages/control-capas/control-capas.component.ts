@@ -13,10 +13,15 @@ import { MapService } from '../../../services/map.service';
 import { UiStateService } from '../../../services/ui-state.service';
 import { DistritoSelected } from '../../../interfaces/DistritoSelected';
 import { DistritoMultiselectComponent } from '../../shared/distrito-multiselect/distrito-multiselect.component';
+import { LoteSelectorComponent } from '../../shared/lote-selector/lote-selector.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatMenuModule } from '@angular/material/menu';
 import { DemoLayersService } from '../../../services/demo-layers.service';
+import { environment } from './../../../../environments/environment';
+import { ManzanaReporteService } from '../../../services/manzana-reporte.service';
+import { PoligonoReporteService } from '../../../services/poligono-reporte.service';
+import { ModoFiltro } from '../../../enums/ModoFiltro';
 
 type LayerItem = { id: string; label: string; checked: boolean };
 
@@ -26,6 +31,7 @@ type LayerItem = { id: string; label: string; checked: boolean };
   imports: [
     CommonModule,
     DistritoMultiselectComponent,
+    LoteSelectorComponent,
     FormsModule,
     MatIconModule,
     MatTooltipModule,
@@ -36,6 +42,8 @@ type LayerItem = { id: string; label: string; checked: boolean };
 })
 export class ControlCapasComponent implements OnInit, OnDestroy {
   private readonly demoLayers = inject(DemoLayersService);
+  private readonly poligonoService = inject(PoligonoReporteService);
+  private readonly manzanaService = inject(ManzanaReporteService);
   @Input() embedded = false;
   expandedManzana = true;
   expandedPoligono = false;
@@ -43,7 +51,6 @@ export class ControlCapasComponent implements OnInit, OnDestroy {
   mostrarDiv = false;
 
   allDistritos: DistritoSelected[] = [];
-  selectedDistritos: DistritoSelected[] = [];
 
   private readonly sub = new Subscription();
 
@@ -90,10 +97,7 @@ export class ControlCapasComponent implements OnInit, OnDestroy {
       .forEach((x) => this.mapService.addLayer(x.id));
 
     this.sub.add(
-      this.ui.distritos$.subscribe((ds: DistritoSelected[]) => {
-        this.selectedDistritos = ds ?? [];
-        this.aplicarFiltros();
-      }),
+      this.ui.distritos$.subscribe(() => this.aplicarFiltros()),
     );
 
     this.sub.add(
@@ -114,14 +118,15 @@ export class ControlCapasComponent implements OnInit, OnDestroy {
 
   construirFiltroCombinado(): string {
     const condiciones: string[] = [];
-    let campo_ubigeo = 'cod_ubigeo';
+    const selected = this.distritosSeleccionados();
+    const campo_ubigeo = 'cod_ubigeo';
 
-    if (this.selectedDistritos.length > 1) {
-      const ubigeos = this.selectedDistritos.map((d) => d.codigoUbigeo);
+    if (selected.length > 1) {
+      const ubigeos = selected.map((d) => d.codigoUbigeo);
       condiciones.push(`${campo_ubigeo} IN (${ubigeos.join(',')})`);
-    } else if (this.selectedDistritos.length == 1) {
+    } else if (selected.length === 1) {
       condiciones.push(
-        `${campo_ubigeo} = '${this.selectedDistritos[0].codigoUbigeo}'`,
+        `${campo_ubigeo} = '${selected[0].codigoUbigeo}'`,
       );
     }
 
@@ -147,6 +152,18 @@ export class ControlCapasComponent implements OnInit, OnDestroy {
     this.loadDistritosAsync(next);
   }
 
+  onLoteChange(ubigeos: string[]): void {
+    if (ubigeos.length === 0) {
+      this.ui.setDistritos([]);
+      this.loadDistritosAsync([]);
+      return;
+    }
+    const set = new Set(ubigeos);
+    const filtered = this.allDistritos.filter((d) => set.has(d.codigoUbigeo ?? ''));
+    this.ui.setDistritos(filtered);
+    this.loadDistritosAsync(filtered);
+  }
+
   openDistritoModal(): void {
     this.filtroDistrito = '';
     this.showDistritoModal = true;
@@ -165,6 +182,13 @@ export class ControlCapasComponent implements OnInit, OnDestroy {
         (d.provincia ?? '').toLowerCase().includes(q) ||
         (d.departamento ?? '').toLowerCase().includes(q),
     );
+  }
+
+  /** Ubigeos de todos los distritos permitidos (para filtro de ubigeos no asignados a lote). */
+  get allUbigeos(): string[] {
+    return this.allDistritos
+      .map((d) => d.codigoUbigeo)
+      .filter((u): u is string => !!u);
   }
 
   isDistritoSelected(d: DistritoSelected): boolean {
@@ -198,12 +222,31 @@ export class ControlCapasComponent implements OnInit, OnDestroy {
   }
 
   toggleExpandManzana(): void {
+
+    const modo = this.uiService.modoFiltro$();  
+    if (modo === ModoFiltro.AREA) {
+      const payload = this.uiService.getFiltroGeometrico();
+      this.manzanaService
+            .getConteoGeoJson(this.selectedUbigeos(), payload)
+            .subscribe((data: any) => {
+              this.uiService.updateConteoManzanas(data);
+            });
+    }else{
+      const coords = this.mapService.getBoundsCoords();
+      this.manzanaService
+            .getConteoEstados(coords, this.selectedUbigeos())
+            .subscribe((data: any) => {
+              this.uiService.updateConteoManzanas(data);
+            });
+    }
+
     this.expandedManzana = !this.expandedManzana;
     if (this.expandedManzana) {
       this.selectedCapa = 1;
       this.expandedPoligono = false;
       this.ui.setPanelActivo('manzana');
       this.mapService.removeSelectedWmsLayer();
+      
       if (!this.mapService.hasSelectedWms()) {
         let capaInicial = this.demoLayers.capas[0];
         this.mapService.addWmsLayer(
@@ -216,10 +259,29 @@ export class ControlCapasComponent implements OnInit, OnDestroy {
       this.manzana
         .filter((m) => m.checked)
         .forEach((m) => this.mapService.addLayer(m.id));
+
     }
   }
 
   toggleExpandPoligonoPanel(): void {
+     const modo = this.uiService.modoFiltro$();  
+    if (modo === ModoFiltro.AREA) {
+      const payload = this.uiService.getFiltroGeometrico();
+       this.poligonoService
+            .getConteoGeoJson(this.selectedUbigeos(), payload)
+            .subscribe((data: any) => {
+              this.uiService.updateConteoManzanas(data);
+            });
+    }else{
+      const coords = this.mapService.getBoundsCoords();
+      this.poligonoService
+          .getConteoEstados(coords, this.selectedUbigeos())
+          .subscribe((data: any) => {
+            this.uiService.updateConteoPoligonos(data);
+          });
+
+    }
+ 
     this.expandedPoligono = !this.expandedPoligono;
     if (this.expandedPoligono) {
       this.selectedCapa = 2;
@@ -308,7 +370,7 @@ export class ControlCapasComponent implements OnInit, OnDestroy {
         return;
       }
       const cql = `cod_ubigeo IN (${ubigeos.map((u: string) => "'" + u + "'").join(',')})`;
-      this.mapService.addSectorLayer('dashboard', 'tg_sector', cql, 1);
+      this.mapService.addSectorLayer(environment.espacioTrabajoDashboardGeoserver, 'tg_sector', cql, 10);
     } else {
       this.mapService.removeSectorLayer();
     }

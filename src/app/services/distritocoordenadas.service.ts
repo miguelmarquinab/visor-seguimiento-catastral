@@ -25,7 +25,7 @@ export interface DistritoGeoData {
 })
 export class DistritocoordenadasService {
 
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
   obtenerGeometria(codigoUbigeo: string): Observable<StatusResponse<DistritoGeoData>> {
     const params = new HttpParams().set('codigoUbigeo', codigoUbigeo);

@@ -21,7 +21,7 @@ export class AuthService {
     const HTTP_OPTIONS = {
       headers: new HttpHeaders({
         'Content-Type': 'application/x-www-form-urlencoded',
-        'Authorization': 'Basic ' + window.btoa(`${clientId}:${clientSecrect}`),
+        'Authorization': 'Basic ' + globalThis.btoa(`${clientId}:${clientSecrect}`),
       })
     };
 

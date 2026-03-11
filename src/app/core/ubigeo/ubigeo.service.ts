@@ -10,10 +10,9 @@ import {UbigeoItemDto, UbigeoResponse} from '../../interfaces/UbigeoItemDto';
 export class UbigeoService {
 
   private cache$?: Observable<UbigeoItemDto[]>;
-  constructor(private http : HttpClient) { }
+  constructor(private readonly http : HttpClient) { }
 
   listar() : Observable<UbigeoItemDto[]>{
-    //return this.http.get<UbigeoItemDto>(`${environment.urlWebApiSecurity}consultaDatosUsuarioPorNomb`);
     this.cache$ ??= this.http
       .get<UbigeoResponse>(`${environment.urlWebApiSecurity}ubigeo/listar`)
       .pipe(

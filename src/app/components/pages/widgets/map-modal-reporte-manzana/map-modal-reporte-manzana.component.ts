@@ -5,84 +5,21 @@ import { switchMap, map } from 'rxjs';
 import { UiStateService } from '../../../../services/ui-state.service';
 import { ManzanaReporteService } from '../../../../services/manzana-reporte.service';
 import { Chart, registerables } from 'chart.js';
+import { registerReportChartPlugins } from '../../../../core/chart-plugins';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { UbigeoComponent } from '../../../shared/ubigeo/ubigeo.component';
+import { LoteSelectorComponent } from '../../../shared/lote-selector/lote-selector.component';
 import { DistritoSelected } from '../../../../interfaces/DistritoSelected';
 import type { ManzanaReportePorEstadoMapeado } from '../../../../interfaces/ReporteManzanaPorEstado.interface';
 import type { ReporteManzanaPorDistritoItem } from '../../../../interfaces/ReporteManzanaPorDistrito.interface';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatCardModule} from '@angular/material/card';
 
-
 Chart.register(...registerables);
+registerReportChartPlugins();
 
-const BAR_CHART_COLORS = ['#eb5757a6', '#7d7a7ac2', '#9b51e0c0', '#f2984ac8', '#27ae5fd0', '#17753edd'];
-const BAR_LABEL_MIN_HEIGHT_PX = 22;
-const STACKED_SEGMENT_LABEL_MIN_HEIGHT_PX = 24;
-
-// Plugin: etiqueta numérica dentro de cada barra (Total de Manzanas)
-const barCountLabelPlugin = {
-  id: 'barCountLabel',
-  afterDatasetsDraw(chart: Chart) {
-    const counts = (chart.options.plugins as Record<string, { counts?: number[] }>)?.['barCountLabel']?.counts;
-    if (!counts?.length || !chart.getDatasetMeta(0)) return;
-    const ctx = chart.ctx;
-    chart.data.datasets?.[0]?.data?.forEach((_, i) => {
-      const meta = chart.getDatasetMeta(0).data[i] as unknown as { x: number; y: number; base: number };
-      if (!meta) return;
-      const count = counts[i] ?? 0;
-      const barHeightPx = Math.abs(meta.base - meta.y);
-      const topY = Math.min(meta.base, meta.y);
-      const centerY = (meta.base + meta.y) / 2;
-      ctx.save();
-      ctx.textAlign = 'center';
-      ctx.font = '600 12px sans-serif';
-      ctx.fillStyle = '#333';
-      if (barHeightPx < BAR_LABEL_MIN_HEIGHT_PX) {
-        ctx.textBaseline = 'middle';
-        ctx.fillText(String(count), meta.x, centerY);
-      } else {
-        ctx.textBaseline = 'top';
-        ctx.fillText(String(count), meta.x, topY + 4);
-      }
-      ctx.restore();
-    });
-  }
-};
-Chart.register(barCountLabelPlugin);
-
-/** Plugin: total en la parte superior de cada segmento del gráfico apilado (Estado por distrito). */
-const stackedBarSegmentLabelPlugin = {
-  id: 'stackedBarSegmentLabel',
-  afterDatasetsDraw(chart: Chart) {
-    const datasets = chart.data.datasets;
-    if (!datasets?.length || datasets.length <= 1) return;
-    const ctx = chart.ctx;
-    ctx.save();
-    ctx.font = '11px sans-serif';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    for (let i = 0; i < datasets.length; i++) {
-      const meta = chart.getDatasetMeta(i);
-      const data = datasets[i]?.data ?? [];
-      for (let j = 0; j < meta.data.length; j++) {
-        const value = data[j];
-        const num = typeof value === 'number' ? value : Number(value);
-        if (num === 0) continue;
-        const el = meta.data[j] as unknown as { x: number; y: number; base: number };
-        const segmentHeightPx = Math.abs(el.base - el.y);
-        if (segmentHeightPx < STACKED_SEGMENT_LABEL_MIN_HEIGHT_PX) continue;
-        const topY = Math.min(el.base, el.y);
-        ctx.textBaseline = 'top';
-        ctx.fillStyle = '#1a1a1a';
-        ctx.fillText(String(num), el.x, topY + 4);
-      }
-    }
-    ctx.restore();
-  }
-};
-Chart.register(stackedBarSegmentLabelPlugin);
+const BAR_CHART_COLORS = ['#eb5757a6', '#7d7a7ac2', '#9b51e0c0', '#f2984ac8', '#27ae5fd0', '#055b98d1'];
 
 const SUMMARY_CARD_KEYS = [
   { key: 'total', label: 'Total de Manzanas', class: 'total' },
@@ -97,13 +34,13 @@ const SUMMARY_CARD_KEYS = [
 @Component({
   selector: 'app-map-modal-reporte-manzana',
   standalone: true,
-  imports: [CommonModule, MatIconModule, MatButtonModule, UbigeoComponent, MatMenuModule, MatCardModule],
+  imports: [CommonModule, MatIconModule, MatButtonModule, UbigeoComponent, LoteSelectorComponent, MatMenuModule, MatCardModule],
   templateUrl: './map-modal-reporte-manzana.component.html',
   styleUrl: './map-modal-reporte-manzana.component.css'
 })
 export class MapModalReporteManzanaComponent implements AfterViewInit {
-  private uiService = inject(UiStateService);
-  private manzanaReporteService = inject(ManzanaReporteService);
+  private readonly uiService = inject(UiStateService);
+  private readonly manzanaReporteService = inject(ManzanaReporteService);
 
   distritosSeleccionados = this.uiService.distritosSeleccionados;
 
@@ -113,6 +50,9 @@ export class MapModalReporteManzanaComponent implements AfterViewInit {
     { initialValue: [] as string[] }
   );
   selectedUbigeos = computed(() => this.distritosSeleccionados().map(d => d.codigoUbigeo));
+
+  /** Lista completa de distritos permitidos (para filtrar por lote). */
+  allDistritos = toSignal(this.uiService.allDistritos$, { initialValue: [] as DistritoSelected[] });
 
   isMaximized = signal(true);
   /** Panel lateral izquierdo (filtros) plegado */
@@ -142,9 +82,7 @@ export class MapModalReporteManzanaComponent implements AfterViewInit {
   summaryCards = computed(() => {
     const data = this.reporteData();
     return SUMMARY_CARD_KEYS.map(({ key, label, class: c }) => {
-      const value = key === 'total'
-        ? (data?.totalManzanas ?? 0)
-        : (data ? (data[key as keyof ManzanaReportePorEstadoMapeado] as number) : 0);
+      const value = this.getSummaryValue(data, key);
       return { label, value, class: c };
     });
   });
@@ -201,20 +139,17 @@ export class MapModalReporteManzanaComponent implements AfterViewInit {
     if (existingChart) existingChart.destroy();
 
     const data = this.reporteData();
-    const barValuesPct = data
-      ? [data.pctPendiente, data.pctLevantamiento, data.pctEdicion, data.pctCalidad, data.pctTerminada, data.pctPoligono]
-      : [0, 0, 0, 0, 0, 0];
     const barCounts = data
       ? [data.pendiente, data.levantamiento, data.edicion, data.calidad, data.terminada, data.poligono]
       : [0, 0, 0, 0, 0, 0];
 
-    new Chart(ctx, {
+    const chart = new Chart(ctx, {
       type: 'bar',
       data: {
         labels: ['Pendiente', 'Levantamiento', 'Edición', 'Calidad', 'Terminada', 'Polígono'],
         datasets: [{
           label: 'Manzanas',
-          data: barValuesPct,
+          data: barCounts,
           backgroundColor: BAR_CHART_COLORS
         }]
       },
@@ -227,16 +162,16 @@ export class MapModalReporteManzanaComponent implements AfterViewInit {
         } as Record<string, unknown>,
         scales: {
           x: {
-            display: false
+            display: true
           },
           y: {
             min: 0,
-            max: 100,
-            ticks: { callback: (v) => (typeof v === 'number' ? v + '%' : v) }
+            ticks: { callback: (v) => (typeof v === 'number' && Number.isInteger(v) ? String(v) : '') }
           }
         }
       }
     });
+    chart.update();
   }
 
   private initStackedChart() {
@@ -259,7 +194,7 @@ export class MapModalReporteManzanaComponent implements AfterViewInit {
       { label: estadoLabels[5].label, data: data.map(d => d.estado06), backgroundColor: BAR_CHART_COLORS[5] }
     ];
 
-    new Chart(ctx, {
+    const chart = new Chart(ctx, {
       type: 'bar',
       data: {
         labels,
@@ -269,12 +204,18 @@ export class MapModalReporteManzanaComponent implements AfterViewInit {
         plugins: { legend: { display: false } },
         scales: {
           x: { stacked: true },
-          y: { stacked: true, beginAtZero: true }
+          y: {
+            stacked: true,
+            beginAtZero: true,
+            min: 0,
+            ticks: { callback: (v) => (typeof v === 'number' && Number.isInteger(v) ? String(v) : '') }
+          }
         },
         responsive: true,
         maintainAspectRatio: false
       }
     });
+    chart.update();
   }
 
   onDistritoSeleccionado(event: { ubigeo: string; distrito: string }): void {
@@ -287,6 +228,13 @@ export class MapModalReporteManzanaComponent implements AfterViewInit {
       nombreOrganizacion: ''
     };
     this.uiService.addDistritos(nuevoDistrito as DistritoSelected);
+  }
+
+  onLoteChange(ubigeos: string[]): void {
+    if (ubigeos.length === 0) return;
+    const set = new Set(ubigeos);
+    const filtered = this.allDistritos().filter((d) => set.has(d.codigoUbigeo ?? ''));
+    this.uiService.setDistritos(filtered);
   }
 
   quitarDistrito(codigoUbigeo: string): void {
@@ -353,7 +301,7 @@ export class MapModalReporteManzanaComponent implements AfterViewInit {
         return { icon: "check_circle", color: "#5dc98a" }; // verde
 
       case "En polígono":
-        return { icon: "pie_chart", color: "#458961" }; // verde ocuro
+        return { icon: "pie_chart", color: "#1b6dbf" }; // verde ocuro
 
       case "Total de Manzanas":
         return { icon: "insert_chart", color: "#003366" }; // azul
@@ -361,6 +309,28 @@ export class MapModalReporteManzanaComponent implements AfterViewInit {
       default:
         return { icon: "insert_chart_outlined", color: "#7f8c8d" };
     }
+  }
+
+  private getSummaryValue(
+    data: ManzanaReportePorEstadoMapeado | null,
+    key: (typeof SUMMARY_CARD_KEYS)[number]['key']
+  ): number {
+    if (!data) return 0;
+
+    if (key === 'total') {
+      return data.totalManzanas;
+    }
+
+    const estados = {
+      pendiente: data.pendiente,
+      levantamiento: data.levantamiento,
+      edicion: data.edicion,
+      calidad: data.calidad,
+      terminada: data.terminada,
+      poligono: data.poligono
+    } as const;
+
+    return estados[key];
   }
 
 

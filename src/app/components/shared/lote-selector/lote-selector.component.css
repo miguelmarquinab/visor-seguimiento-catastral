@@ -1,0 +1,215 @@
+/* Contenedor: por defecto columna (como Departamento/Provincia/Distrito), en inicio fila */
+.select-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+:host.lote-selector-inicio {
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Etiqueta: mismo estilo que ubigeo en variante default */
+.label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #555;
+  white-space: nowrap;
+}
+
+:host.lote-selector-inicio .label {
+  color: #ffffff;
+  text-transform: none;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* Trigger: misma altura que los select de ubigeo (padding 8px, border, etc.) */
+.lote-trigger-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.lote-trigger {
+  width: 100%;
+  min-height: 36px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 13px;
+  background-color: white;
+  outline: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  text-align: left;
+}
+
+.lote-trigger:focus {
+  border-color: #1E3A8A;
+}
+
+.lote-label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lote-caret {
+  opacity: 0.7;
+  margin-left: 6px;
+}
+
+/* Variante INICIO: trigger con fondo claro sobre fondo oscuro y misma altura que el botón "Seleccionar todos" */
+:host.lote-selector-inicio .lote-trigger {
+  border-color: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.95);
+  color: #1e293b;
+  min-height: 38px;
+  height: 38px;
+  padding: 8px 16px;
+  border-radius: 8px;
+}
+
+/* Panel desplegable */
+.lote-panel {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 4px;
+  z-index: 1000;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+/* INICIO: abrir hacia arriba y por encima del resto del contenido */
+:host.lote-selector-inicio .lote-trigger-wrap {
+  width: auto;
+  min-width: 180px;
+}
+
+/* Modal para INICIO: overlay y caja centrada */
+.lote-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 100000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.lote-modal-box {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  min-width: 280px;
+  max-width: 90vw;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.lote-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  background: linear-gradient(90deg, #11478a, #194a8b);
+  color: #fff;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.lote-modal-title {
+  letter-spacing: 0.02em;
+}
+
+.lote-modal-close {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 20px;
+  cursor: pointer;
+  padding: 0 4px;
+  line-height: 1;
+}
+
+.lote-modal-close:hover {
+  color: #fff;
+}
+
+.lote-modal-body {
+  padding: 8px 0;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.lote-modal-body .lote-row {
+  padding: 10px 16px;
+}
+
+.lote-modal-body .lote-clear {
+  border-bottom: 1px solid #e2e8f0;
+  margin-bottom: 4px;
+}
+
+:host.lote-selector-inicio .lote-panel {
+  top: auto;
+  bottom: 100%;
+  margin-top: 0;
+  margin-bottom: 4px;
+  z-index: 10000;
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+.lote-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  cursor: pointer;
+  border: none;
+  background: none;
+  width: 85%;
+  font-size: 13px;
+  text-align: left;
+}
+
+.lote-row:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.lote-row input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: #1E3A8A;
+}
+
+.lote-select-all {
+  font-weight: 600;
+}
+
+.lote-modal-body .lote-select-all {
+  border-bottom: 1px solid #e2e8f0;
+  margin-bottom: 4px;
+}
+
+.lote-clear {
+  color: #64748b;
+  font-weight: 500;
+}

@@ -19,6 +19,7 @@ export class SidebarComponent {
 
   public uiService = inject(UiStateService);
 
+
   /** Muestra pantalla de inicio (selección de distritos) */
   abrirInicio(): void {
     this.uiService.setView('distritos');

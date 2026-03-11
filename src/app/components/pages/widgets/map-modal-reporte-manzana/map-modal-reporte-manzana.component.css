@@ -157,7 +157,7 @@
   gap: 8px;
   font-weight: bold;
   font-size: 13px;
-  color: var(--text-dark);
+  color:  #244a86;
 }
 
 .form-container { padding: 15px; background: #f8fafc; }
@@ -210,7 +210,7 @@
 }
 
 .status-value {
-  font-size: 32px;
+  font-size: 26px;
   font-weight: 500;
   display: flex;
   font-family: "Montserrat", sans-serif;
@@ -218,7 +218,7 @@
 }
 .status-label {
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 500;
   display: block;
   padding: 0;
   font-family: 'Montserrat', sans-serif;
@@ -404,7 +404,7 @@
     transform: translateY(-4px);
 }
 .status-box.poligono {
-   background: linear-gradient( 226deg,rgb(10, 169, 76) 0%,rgb(5, 103, 47) 100%);
+  background: linear-gradient(226deg, rgb(0 108 197) 0%, rgb(5 90 152) 100%);
   color: #fff;
   transition: all 0.3s ease;
  }

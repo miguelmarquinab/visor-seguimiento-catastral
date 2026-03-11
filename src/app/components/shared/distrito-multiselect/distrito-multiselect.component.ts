@@ -1,17 +1,21 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnChanges, SimpleChanges, ChangeDetectorRef, inject } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import * as L from 'leaflet';
 
 import { Distrito } from '../../../interfaces/Distrito';
 import { DistritoSelected } from '../../../interfaces/DistritoSelected';
 import { MapService } from '../../../services/map.service';
 import { DistritocoordenadasService } from '../../../services/distritocoordenadas.service';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTooltip } from "@angular/material/tooltip";
+import { extractDistritoGeoJson, fitGeoBounds } from '../../../utils/distrito-geo.utils';
 
 @Component({
   selector: 'app-distrito-multiselect',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, MatProgressSpinnerModule, MatButtonModule, MatIconModule, MatTooltip],
   templateUrl: './distrito-multiselect.component.html',
   styleUrls: ['./distrito-multiselect.component.css'],
 })
@@ -27,6 +31,7 @@ export class DistritoMultiselectComponent implements OnChanges {
 
   private readonly loadingUbigeos = new Set<string>();
   private readonly limitesOn = new Set<string>();
+  private readonly cdr = inject(ChangeDetectorRef);
 
   constructor(
     private readonly distritoCoordenadasService: DistritocoordenadasService,
@@ -36,6 +41,7 @@ export class DistritoMultiselectComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['selected']) {
       this.syncLimitesOnFromSelected();
+      this.cdr.markForCheck();
     }
   }
 
@@ -49,7 +55,7 @@ export class DistritoMultiselectComponent implements OnChanges {
     ubigeos.forEach(u => this.limitesOn.add(u));
 
     // aplicar WMS al mapa cuando "selected" llega desde afuera (pantalla buscar/cargar)
-    this.mapService.setDistritoBoundaries(Array.from(this.limitesOn));
+    this.updateBoundariesOnMap();
   }
 
   private toSelected(d: Distrito): DistritoSelected {
@@ -66,6 +72,20 @@ export class DistritoMultiselectComponent implements OnChanges {
 
   get selectedIds(): Set<number> {
     return new Set((this.selected ?? []).map(x => x.idOrganizacion));
+  }
+
+  /** Ubigeos seleccionados (para marcar check aunque idOrganizacion difiera entre selected y all). */
+  get selectedUbigeos(): Set<string> {
+    return new Set(
+      (this.selected ?? [])
+        .map(x => x.codigoUbigeo)
+        .filter((u): u is string => !!u)
+    );
+  }
+
+  /** True si el distrito está seleccionado (por id o por codigoUbigeo para sync con Manzanas/Polígonos). */
+  isDistrictSelected(d: Distrito): boolean {
+    return this.selectedIds.has(d.idOrganizacion) || this.selectedUbigeos.has(d.codigoUbigeo ?? '');
   }
 
   get filtered(): Distrito[] {
@@ -88,20 +108,19 @@ export class DistritoMultiselectComponent implements OnChanges {
   }
 
   toggleDistrict(d: Distrito): void {
-    const id = d.idOrganizacion;
     const ubigeo = d.codigoUbigeo;
-    const isOn = this.selectedIds.has(id);
+    const isOn = this.isDistrictSelected(d);
 
     const next = isOn
-      ? (this.selected ?? []).filter(x => x.idOrganizacion !== id)
-      : [...(this.selected ?? []), this.toSelected(d)];
+      ? (this.selected ?? []).filter(x => (x.codigoUbigeo ?? '') !== ubigeo)
+      : [...(this.selected ?? []).filter(x => (x.codigoUbigeo ?? '') !== ubigeo), this.toSelected(d)];
 
     if (ubigeo) {
       // Mantengo tu lógica: checkbox también administra limitesOn
       if (isOn) this.limitesOn.delete(ubigeo);
       else this.limitesOn.add(ubigeo);
 
-      this.mapService.setDistritoBoundaries(Array.from(this.limitesOn));
+      this.updateBoundariesOnMap();
     }
 
     this.selectedChange.emit(next);
@@ -119,13 +138,13 @@ export class DistritoMultiselectComponent implements OnChanges {
       .filter((u): u is string => !!u);
 
     ubigeos.forEach(u => this.limitesOn.add(u));
-    this.mapService.setDistritoBoundaries(Array.from(this.limitesOn));
+    this.updateBoundariesOnMap();
   }
 
   clear(): void {
     this.selectedChange.emit([]);
     this.limitesOn.clear();
-    this.mapService.setDistritoBoundaries([]);
+    this.updateBoundariesOnMap();
   }
 
   labelSummary(): string {
@@ -141,8 +160,7 @@ export class DistritoMultiselectComponent implements OnChanges {
   }
 
   onToggleLimiteDistrito(d: Distrito, ev: MouseEvent): void {
-    ev.preventDefault();
-    ev.stopPropagation();
+    this.stopEvent(ev);
 
     const ubigeo = d.codigoUbigeo;
     if (!ubigeo) return;
@@ -152,13 +170,13 @@ export class DistritoMultiselectComponent implements OnChanges {
     if (estabaOn) {
       // apagar límite
       this.limitesOn.delete(ubigeo);
-      this.mapService.setDistritoBoundaries(Array.from(this.limitesOn));
+      this.updateBoundariesOnMap();
       return;
     }
 
     // prender límite
     this.limitesOn.add(ubigeo);
-    this.mapService.setDistritoBoundaries(Array.from(this.limitesOn));
+    this.updateBoundariesOnMap();
     // llamamos tu método con un "fake" MouseEvent (solo para cumplir firma y evitar burbujas)
     this.onClickUbicarDistrito(d, ev);
   }
@@ -169,8 +187,7 @@ export class DistritoMultiselectComponent implements OnChanges {
   }
 
   onClickUbicarDistrito(d: Distrito, ev: MouseEvent): void {
-    ev.preventDefault();
-    ev.stopPropagation();
+    this.stopEvent(ev);
 
     const ubigeo = d.codigoUbigeo;
     if (!ubigeo) return;
@@ -182,19 +199,22 @@ export class DistritoMultiselectComponent implements OnChanges {
       next: (resp) => {
         if (!resp?.success || !resp.data) return;
 
-        const geoString = (resp.data as any).geojson ?? (resp.data as any).geoson;
-        if (!geoString) return;
-
-        const geo = typeof geoString === 'string' ? JSON.parse(geoString) : geoString;
-
-        const tmp = L.geoJSON(geo);
-        const bounds = tmp.getBounds();
-
+        const geo = extractDistritoGeoJson(resp.data);
+        if (!geo) return;
         const map = this.mapService.getMap();
-        map.fitBounds(bounds, { padding: [24, 24] });
+        fitGeoBounds(map, geo);
       },
       error: (e) => console.error('Error obteniendo geometría distrito:', e),
       complete: () => this.loadingUbigeos.delete(ubigeo),
     });
+  }
+
+  private stopEvent(ev: MouseEvent): void {
+    ev.preventDefault();
+    ev.stopPropagation();
+  }
+
+  private updateBoundariesOnMap(): void {
+    this.mapService.setDistritoBoundaries(Array.from(this.limitesOn));
   }
 }

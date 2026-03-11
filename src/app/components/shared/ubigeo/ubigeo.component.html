@@ -1,7 +1,7 @@
 <div class="ubigeo-container" [formGroup]="form">
 
   <div class="select-group">
-    <span class="label">Departamento</span>
+    <span class="label">Departamento:</span>
     <select formControlName="departamento">
       <option value="">{{ showTodos ? 'TODOS' : 'Seleccione' }}</option>
       @for (d of departamentos(); track d.value) {
@@ -11,7 +11,7 @@
   </div>
 
   <div class="select-group">
-    <span class="label">Provincia</span>
+    <span class="label">Provincia:</span>
     <select formControlName="provincia">
       <option value="">{{ showTodos ? 'TODOS' : 'Seleccione' }}</option>
       @for (p of provincias(); track p.value) {
@@ -21,7 +21,7 @@
   </div>
 
   <div class="select-group">
-    <span class="label">Distrito</span>
+    <span class="label">Distrito:</span>
     <select formControlName="distrito">
       <option value="">{{ showTodos ? 'TODOS' : 'Seleccione' }}</option>
       @for (dist of distritos(); track dist.value) {

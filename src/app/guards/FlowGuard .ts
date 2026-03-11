@@ -8,15 +8,12 @@ import { AppFlowStep} from '../enums/AppFlowStep';
 export class FlowGuard implements CanActivate {
 
   constructor(
-    private sesionState: SessionstateServiceService,
-    private router: Router
+    private readonly sesionState: SessionstateServiceService,
+    private readonly router: Router
   ) {}
 
   canActivate(): boolean {
-    switch (this.sesionState.current) {
-      case AppFlowStep.LOGIN:
-        this.router.navigate(['/login']);
-        return false;
+    switch (this.sesionState.current) {  
 
       case AppFlowStep.BUSCADOR:
         this.router.navigate(['/distritos']);

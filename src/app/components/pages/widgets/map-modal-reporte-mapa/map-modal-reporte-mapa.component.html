@@ -14,15 +14,34 @@
 
   <br><br>
 
-  <div class="stats-widget shadow-lg"  [style.display]="uiService.panelActivo() === 'manzana' ? 'block' : 'none'">
-    <div class="widget-body">
+  <div class="stats-widget shadow-lg">
+    <div class="draw-actions">
+      <div class="conten-header-btn">
+        <button matMiniFab class="content-btn-dibujo" matTooltip="Dibujar área" matTooltipClass = "class-tooltip"
+              (click)="activarDibujo()">
+          <mat-icon class="material-symbols-outlined">
+           edit_location
+          </mat-icon>
+        </button>
+
+        <button matMiniFab class="content-btn-dibujo" matTooltip="Quitar dibujo" matTooltipClass = "class-tooltip"
+                (click)="limpiarDibujo()">
+          <mat-icon class="material-symbols-outlined" style="margin: 0;">
+          wrong_location
+          </mat-icon>
+        </button>
+      </div>
+      <br>
+      <span class="lblDibujo">{{mensajeDibujo() }}</span>
+    </div>
+    <div class="widget-body" [style.display]="uiService.panelActivo() === 'manzana' ? 'block' : 'none'">
       <h3 class="layer-name">Manzana</h3>
 
       <div class="chart-container">
         @if (uiService.datosConteoManzanas().length === 0) {
         <div class="no-data-msg">Mueva el mapa para cargar datos</div>
         }
-        <canvas #statsChart></canvas>
+        <canvas class="w-100" #statsChart></canvas>
       </div>
 
       <section class="section">
@@ -40,15 +59,13 @@
 
       <hr class="divider">
     </div>
-  </div>
 
-  <div class="stats-widget shadow-lg" [style.display]="uiService.panelActivo() === 'poligono' ? 'block' : 'none'">
-    <div class="widget-body">
+    <div class="widget-body" [style.display]="uiService.panelActivo() === 'poligono' ? 'block' : 'none'">
       <h3 class="layer-name">Polígono</h3>
 
       <div class="chart-container">
         @if (uiService.datosConteoPoligonos().length === 0) {
-          <div class="no-data-msg">Mueva el mapa para cargar datos</div>
+        <div class="no-data-msg">Mueva el mapa para cargar datos</div>
         }
         <canvas #statsChartPoligono></canvas>
       </div>
@@ -57,19 +74,17 @@
         <h4 class="section-title">Leyenda</h4>
         <div class="legend-list">
           @for (item of uiService.datosConteoPoligonos(); track item.estado) {
-            <div class="legend-item">
-              <span class="label-text">{{ item.nombreEstado }}</span>
-              <span class="count-badge">({{ item.nroPoligonos }})</span>
-              <span class="color-box" [style.background-color]="getColorPoligono(item.estado)">
-              </span>
-            </div>
+          <div class="legend-item">
+            <span class="label-text">{{ item.nombreEstado }}</span>
+            <span class="count-badge">({{ item.nroPoligonos }})</span>
+            <span class="color-box" [style.background-color]="getColorPoligono(item.estado)">
+            </span>
+          </div>
           }
         </div>
       </section>
 
     </div>
   </div>
-
-
 
 </aside>

@@ -4,8 +4,11 @@
   <div class="panel-body" style="padding: 0;">
 
     <div class="row">
-     <span class="label">Distritos seleccionados:</span>
-      <app-distrito-multiselect  [all]="allDistritos"  [selected]="selectedDistritos"  (selectedChange)="onDistritosChange($event)"></app-distrito-multiselect>
+      <app-lote-selector [allUbigeos]="allUbigeos" (loteChange)="onLoteChange($event)"></app-lote-selector>
+    </div>
+    <div class="row">
+     <span class="label">Distritos:</span>
+      <app-distrito-multiselect  [all]="allDistritos"  [selected]="distritosSeleccionados()"  (selectedChange)="onDistritosChange($event)"></app-distrito-multiselect>
     </div>
 
     <div class="group">
@@ -72,7 +75,7 @@
     <div class="modal-body">
       <app-distrito-multiselect
         [allDistritos]="allDistritos"
-        [selected]="selectedDistritos"
+        [selected]="distritosSeleccionados()"
         (selectedChange)="onDistritosChange($event)">
       </app-distrito-multiselect>
     </div>

@@ -1,6 +1,6 @@
 .stats-widget {
   position: absolute;
-  top: 70px; /* Debajo del header azul */
+  top: 70px;
   right: 15px;
   width: 230px;
   background: white;
@@ -9,10 +9,11 @@
   box-shadow: 0 4px 15px rgba(0,0,0,0.2);
   display: flex;
   flex-direction: column;
+  max-height: calc(100dvh - 150px);
+  overflow: hidden;
 }
-
 .widget-header {
-  background: linear-gradient(90deg, #0b3d91 0%, #1e5bb9 100%);
+  background: linear-gradient(90deg, rgb(0 40 91) 0%, rgb(0 63 147) 35%, rgb(27 97 191) 100%);
   color: white;
   padding: 10px 15px;
   display: flex;
@@ -63,7 +64,18 @@
   margin-bottom: 6px;
   font-size: 11px;
 }
-
+.conten-label-data{
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  width: 75%;
+}
+.conten-label-dat-p{
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  width: 75%;
+}
 .color-box {
   width: 24px;
   height: 24px;
@@ -162,10 +174,6 @@
   right: 0px;
 }
 
-.edge-toggle-btn mat-icon {
-  font-size: 28px;
-}
-
 ::ng-deep .mat-mdc-menu-content {
     background: #FFF;
     color: #194A8B;
@@ -174,4 +182,31 @@
 
 .hidden {
   display: none !important;
+}
+
+.lblDibujo{
+  padding: 0px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #204d8c;
+}
+
+.conten-header-btn{
+  gap: 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    padding: 5px;
+}
+.content-btn-dibujo{
+    background-color: #194A8B;
+    color: #fff;
+    border-radius: 20px;
+    border: none;
+    width: 32px!important;
+    height: 32px!important;
+    padding: 4px;
+}
+.w-100{
+  width: 100%;
 }

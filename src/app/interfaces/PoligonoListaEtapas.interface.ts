@@ -11,6 +11,7 @@ export interface PoligonoListaEtapasItem {
   ubigeo: string;
   lote: string;
   poligono: string;
+  resultadoPoligono?: string | null;
   uucc: number;
   qa1: boolean;
   qa2: boolean;

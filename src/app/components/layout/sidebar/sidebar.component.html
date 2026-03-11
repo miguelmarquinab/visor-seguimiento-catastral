@@ -22,6 +22,9 @@
        style="cursor: pointer;">
       <mat-icon class="icon-header">home</mat-icon>
     </a>
+
+
+
     <a mat-button class="btnLogout" matTooltip="Dashboard" matTooltipClass = "class-tooltip"
        (click)="abrirEstadisticas()"
        [class.active]="(uiService.showStatsWidget$ | async)"
@@ -33,7 +36,7 @@
        (click)="abrirReporteManzanas()"
        [class.active]="(uiService.showManzanaPanel$ | async)"
        style="cursor: pointer;">
-      <mat-icon class="icon-header">format_shapes</mat-icon>
+      <mat-icon class="icon-header material-symbols-outlined">file_map_stack</mat-icon>
     </a>
 
     <a mat-button class="btnLogout" matTooltip="Poligono" matTooltipClass = "class-tooltip"
@@ -63,7 +66,7 @@
       <span>Dashboard</span>
     </button>
     <button mat-menu-item (click)="abrirReporteManzanas()">
-      <mat-icon>format_shapes</mat-icon>
+      <mat-icon class="material-symbols-outlined">file_map_stack</mat-icon>
       <span>Manzana</span>
     </button>
     <button mat-menu-item (click)="abrirReportePoligonos()">

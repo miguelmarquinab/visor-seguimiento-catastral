@@ -9,7 +9,7 @@ import {UsuarioOrganizacionesResponse} from '../interfaces/UsuarioOrganizaciones
 })
 export class DistritosService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private readonly http: HttpClient) { }
 
   buscar(nombre: string, page: number = 0, size: number = 6): Observable<UsuarioOrganizacionesResponse> {
     const params = new HttpParams()
@@ -19,7 +19,7 @@ export class DistritosService {
 
 
     return this.http.get<UsuarioOrganizacionesResponse>(
-      `${environment.urlWebApiSecurity}consultaDatosUsuarioPorNombre`,
+      `${environment.urlWebApiSecurity}buscarDistritosPorUsuario`,
       { params }
     );
   }

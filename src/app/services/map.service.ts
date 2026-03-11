@@ -51,6 +51,9 @@ export class MapService {
       maxZoom: 22,
       cql_filter: filtro ?? '',
       zIndex: zIndex,
+      tiled: false, 
+      buffer: 128,     
+      styles: ''
     };
 
     this.selectedLayer = L.tileLayer.wms(url, wmsOptions);
@@ -59,7 +62,7 @@ export class MapService {
 
   removeLayer(id: string) {
     const layer = this.overlays.get(id);
-    if (layer && this.map && this.map.hasLayer(layer)) layer.remove();
+    if (layer && this.map?.hasLayer(layer)) layer.remove();
   }
 
   removeLayerAndUnregister(id: string) {
@@ -102,40 +105,54 @@ export class MapService {
     this.selectedLayer = undefined;
   }
 
-  setDistritoBoundaries(
-    ubigeos: string[],
-    workspace: string = 'dashboard',
-    layerName: string = 'tg_distrito',
-  ): void {
-    if (!ubigeos || ubigeos.length === 0) {
-      this.removeLayerAndUnregister(this.DISTRITO_WMS_ID);
-      return;
-    }
+  private readonly DISTRITO_LABELS_WMS_ID = 'distrito_labels_wms';
 
-    const url = `${this.urlGeoserver}/${workspace}/wms`;
-    const cql = `cod_ubigeo IN (${ubigeos.map((u) => `'${u}'`).join(',')})`;
+setDistritoBoundaries(
+  ubigeos: string[],
+  workspace: string = environment.espacioTrabajoDashboardGeoserver,
+  layerName: string = 'tg_distrito',
+): void {
+  if (!ubigeos || ubigeos.length === 0) {
+    this.removeLayerAndUnregister(this.DISTRITO_WMS_ID);
+    this.removeLayerAndUnregister(this.DISTRITO_LABELS_WMS_ID);
+    return;
+  }
 
-    const existing = this.getLayer(this.DISTRITO_WMS_ID) as any;
+  const url = `${this.urlGeoserver}/${workspace}/wms`;
+  const cql = `cod_ubigeo IN (${ubigeos.map(u => "'" + u + "'").join(',')})`;
 
+  // Configuramos las dos capas: una para el fondo y otra para etiquetas
+  const layersToHandle = [
+    { id: this.DISTRITO_WMS_ID, z: 9 },
+    { id: this.DISTRITO_LABELS_WMS_ID, z: 100 }
+  ];
+
+  layersToHandle.forEach(config => {
+    const existing = this.getLayer(config.id) as any;
+    const style =
+      config.id === this.DISTRITO_LABELS_WMS_ID
+        ? 'distrito_label'
+        : 'distrito_poligono';
     if (existing && typeof existing.setParams === 'function') {
       existing.setParams({ cql_filter: cql }, false);
       if (typeof existing.redraw === 'function') existing.redraw();
-      return;
+    } else {
+      const params  = {
+        layers: `${workspace}:${layerName}`,
+        format: 'image/png',
+        transparent: true,
+        maxNativeZoom: 22,
+        maxZoom: 22,
+        cql_filter: cql,
+        styles: style,
+        zIndex: config.z // Aquí es donde ocurre la magia del orden
+      }
+      const wms = L.tileLayer.wms(url, params);
+      this.registerLayer(config.id, wms);
+      this.addLayer(config.id);
     }
-
-    const wmsOptions: any = {
-      layers: `${workspace}:${layerName}`,
-      format: 'image/png',
-      transparent: true,
-      maxNativeZoom: 22,
-      maxZoom: 22,
-      cql_filter: cql,
-    };
-
-    const wms = L.tileLayer.wms(url, wmsOptions);
-    this.registerLayer(this.DISTRITO_WMS_ID, wms);
-    this.addLayer(this.DISTRITO_WMS_ID);
-  }
+  });
+}
 
   sectorLayer: any;
   addSectorLayer(
@@ -163,5 +180,28 @@ export class MapService {
       this.getMap().removeLayer(this.sectorLayer);
       this.sectorLayer = undefined;
     }
+  }
+
+  getBoundsCoords() {
+    const bounds = this.getMap().getBounds();
+    return {
+      xmin: bounds.getWest(),
+      ymin: bounds.getSouth(),
+      xmax: bounds.getEast(),
+      ymax: bounds.getNorth(),
+    };
+  }
+
+  private baseLayer?: L.TileLayer;
+
+  setBaseLayer(layer: L.TileLayer) {
+    if (!this.map) return;
+
+    if (this.baseLayer && this.map.hasLayer(this.baseLayer)) {
+      this.map.removeLayer(this.baseLayer);
+    }
+
+    this.baseLayer = layer;
+    this.baseLayer.addTo(this.map);
   }
 }

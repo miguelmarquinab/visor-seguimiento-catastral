@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, AfterViewInit, inject, OnInit, HostListener, effect } from '@angular/core';
+import { Component, ViewChild, ElementRef, AfterViewInit, inject, OnInit, HostListener, effect,computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -6,6 +6,10 @@ import { MatMenuModule } from '@angular/material/menu';
 import { Chart, registerables } from 'chart.js';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { UiStateService } from '../../../../services/ui-state.service';
+import { ModoFiltro } from '../../../../enums/ModoFiltro';
+import { MapService } from '../../../../services/map.service';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MapaConteoService } from '../../../../services/mapa-conteo.service';
 
 Chart.register(...registerables);
 
@@ -18,6 +22,7 @@ Chart.register(...registerables);
     MatButtonModule,
     MatMenuModule,
     MatIconModule,
+    MatTooltip
   ],
   templateUrl: './map-modal-reporte-mapa.component.html',
   styleUrl: './map-modal-reporte-mapa.component.css'
@@ -27,20 +32,25 @@ export class MapModalReporteMapaComponent implements OnInit, AfterViewInit {
   private chart: Chart | null = null;
   private chartPoligono: Chart | null = null;
   public uiService = inject(UiStateService);
-
+  mensajeDibujo = this.uiService.mensajeDibujo$;
+  private readonly mapaConteoService = inject(MapaConteoService);
+  private readonly mapService = inject(MapService);
+  distritosSeleccionados = this.uiService.distritosSeleccionados;
+  selectedUbigeos = computed(() =>
+    this.distritosSeleccionados().map((d) => d.codigoUbigeo),
+  );
   //para manzana
   @ViewChild('statsChart', { static: false }) statsChart!: ElementRef<HTMLCanvasElement>;
   //para poligono
   @ViewChild('statsChartPoligono', { static: false }) statsChartPoligono!: ElementRef<HTMLCanvasElement>;
 
-  // Colores fijos para los estados conocidos (01 - 06)
   private readonly COLORES_ESTADOS: { [key: string]: string } = {
     "01": '#E55645', // Pendiente
     "02": '#868686', // Levantamiento
     "03": '#B55AF0', // Edición gráfica
     "04": '#E79314', // Control de calidad interno
     "05": '#20B320', // Terminada
-    "06": '#20B320', // En Polígono
+    "06": '#055a98', // En Polígono
   };
 
     private readonly COLORES_ESTADOS_POLIGONO: { [key: string]: string } = {
@@ -54,19 +64,11 @@ export class MapModalReporteMapaComponent implements OnInit, AfterViewInit {
   };
   constructor() {
 
-    /*effect(() => {
-      const nuevosDatos = this.uiService.datosConteoManzanas();
-      if (this.chart) {
-        this.updateChart(nuevosDatos);
-      }
-    });*/
+  
     this.uiService.setPanelActivo('manzana');
     effect(() => {
       const estadosActivos = this.uiService.estadosManzana();
       const nuevosDatos = this.uiService.datosConteoManzanas();
-      //console.log('effect', estadosActivos)
-      //console.log('effect', nuevosDatos)
-      // filtramos aquí
       const filtrados = nuevosDatos.filter(d => estadosActivos.includes(d.estado));
 
       if (this.chart) {
@@ -76,11 +78,8 @@ export class MapModalReporteMapaComponent implements OnInit, AfterViewInit {
 
     effect(() => {
 
-      //const data = this.uiService.datosConteoPoligonos();
       const estadosActivos = this.uiService.estadosPoligono();
       const nuevosDatos = this.uiService.datosConteoPoligonos();
-      console.log('effect', estadosActivos)
-      console.log('effect', nuevosDatos)
       // filtramos aquí
       const filtrados = nuevosDatos.filter(d => estadosActivos.includes(d.estado));
 
@@ -96,7 +95,6 @@ export class MapModalReporteMapaComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    // Timeout para asegurar que el @if de Angular haya renderizado el canvas
     setTimeout(() => {
       this.initChart();
       this.initChartPoligono();
@@ -112,9 +110,6 @@ export class MapModalReporteMapaComponent implements OnInit, AfterViewInit {
     this.sidebarOpen = window.innerWidth > 600;
   }
 
-  /**
-   * Inicializa la instancia de Chart.js
-   */
   private initChart() {
     if (!this.statsChart) return;
 
@@ -143,7 +138,6 @@ export class MapModalReporteMapaComponent implements OnInit, AfterViewInit {
             const index = elements[0].index;
             const dataActual = this.uiService.datosConteoManzanas()[index];
             this.uiService.selectCategory(dataActual.nombreEstado);
-            console.log('Filtrando por:', dataActual.nombreEstado);
           } else {
             this.uiService.selectCategory(null);
           }
@@ -154,7 +148,8 @@ export class MapModalReporteMapaComponent implements OnInit, AfterViewInit {
         scales: {
           y: { 
             beginAtZero: true, 
-            grid: { color: '#f0f0f0' } 
+            grid: { color: '#f0f0f0' },
+            ticks: { callback: (v) => (typeof v === 'number' && Number.isInteger(v) ? String(v) : '') }
           },
           x: { 
             grid: { display: false },
@@ -167,49 +162,45 @@ export class MapModalReporteMapaComponent implements OnInit, AfterViewInit {
 
   private initChartPoligono() {
 
-  if (!this.statsChartPoligono) return;
+    if (!this.statsChartPoligono) return;
 
-  const ctx = this.statsChartPoligono.nativeElement.getContext('2d');
-  if (!ctx) return;
+    const ctx = this.statsChartPoligono.nativeElement.getContext('2d');
+    if (!ctx) return;
 
-  const data = this.uiService.datosConteoPoligonos();
-  console.log("datos en initChartPoligono:", data);
+    const data = this.uiService.datosConteoPoligonos();
 
-  this.chartPoligono = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: data.map(d => d.nombreEstado),
-      datasets: [{
-        label: 'Cantidad de Polígonos',
-        data: data.map(d => d.nroPoligonos),
-        backgroundColor: data.map(d => this.getColorPoligono(d.estado)),
-        borderRadius: 5,
-        barThickness: 20
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
-      scales: {
-        y: { beginAtZero: true },
-        x: { 
-          grid: { display: false },
-          ticks: { display: false }
+    this.chartPoligono = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: data.map(d => d.nombreEstado),
+        datasets: [{
+          label: 'Cantidad de Polígonos',
+          data: data.map(d => d.nroPoligonos),
+          backgroundColor: data.map(d => this.getColorPoligono(d.estado)),
+          borderRadius: 5,
+          barThickness: 20
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { 
+            beginAtZero: true,
+            ticks: { callback: (v) => (typeof v === 'number' && Number.isInteger(v) ? String(v) : '') } 
+          },
+          x: { 
+            grid: { display: false },
+            ticks: { display: false }
+          }
         }
       }
-    }
-  });
-}
+    });
+  }
 
-
-  /**
-   * Actualiza los datos del gráfico sin destruir la instancia
-   */
   private updateChart(data: any[]) {
     if (!this.chart) return;
-    console.log("datos en updateChart:", data);
-    // Sincronizamos labels (nombreEstado), valores y colores
     this.chart.data.labels = data.map(d => d.nombreEstado);
     this.chart.data.datasets[0].data = data.map(d => d.nroManzanas);
     this.chart.data.datasets[0].backgroundColor = data.map(d => this.getColor(d.estado));
@@ -219,8 +210,6 @@ export class MapModalReporteMapaComponent implements OnInit, AfterViewInit {
 
   private updateChartPoligono(data: any[]) {
     if (!this.chartPoligono) return;
-    console.log("datos en updateChartPoligono:", data);
-    // Sincronizamos labels (nombreEstado), valores y colores
     this.chartPoligono.data.labels = data.map(d => d.nombreEstado);
     this.chartPoligono.data.datasets[0].data = data.map(d => d.nroPoligonos);
     this.chartPoligono.data.datasets[0].backgroundColor = data.map(d => this.getColorPoligono(d.estado));
@@ -228,11 +217,6 @@ export class MapModalReporteMapaComponent implements OnInit, AfterViewInit {
     this.chartPoligono.update();
   }
 
-
-  /**
-   * Retorna el color asignado. Si el estado es nuevo (>06), 
-   * genera un color dinámico para no dejar la barra vacía.
-   */
   public getColor(estado: string): string {
     if (this.COLORES_ESTADOS[estado]) {
       return this.COLORES_ESTADOS[estado];
@@ -247,18 +231,13 @@ export class MapModalReporteMapaComponent implements OnInit, AfterViewInit {
     return this.generateDynamicColor(estado);
   }
 
-
-  /**
-   * Genera un color hexadecimal basado en el código del estado
-   */
   private generateDynamicColor(str: string): string {
     let hash = 0;
     for (let i = 0; i < str.length; i++) {
-      hash = str.charCodeAt(i) + ((hash << 5) - hash);
+      hash = (str.codePointAt(i) ?? 0) + ((hash << 5) - hash);
     }
     const color = (hash & 0x00FFFFFF).toString(16).toUpperCase();
     return '#' + '00000'.substring(0, 6 - color.length) + color;
-    console.log('color generado para estado', str, ':', color);
   }
 
   toggleSidebar(): void {
@@ -267,6 +246,16 @@ export class MapModalReporteMapaComponent implements OnInit, AfterViewInit {
 
   exportar(formato: string) {
     console.log('Exportando reporte de manzanas a:', formato);
-    // Aquí podrías implementar la lógica de descarga usando this.uiService.datosConteoManzanas()
+  }
+
+  activarDibujo() {
+    this.uiService.setDrawPolygon(true);
+    this.uiService.setModoFiltro(ModoFiltro.DIBUJANDO);
+  }
+
+  limpiarDibujo() {
+    this.uiService.setDrawPolygon(false);
+    this.uiService.setModoFiltro(ModoFiltro.PANTALLA);
+    this.mapaConteoService.actualizarConteoEstados(this.selectedUbigeos());
   }
 }

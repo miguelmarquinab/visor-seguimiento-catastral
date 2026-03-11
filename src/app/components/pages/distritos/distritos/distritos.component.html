@@ -14,15 +14,18 @@
       </div>
 
       <div class="title-row">
-        <h2 class="title">Seleccionar Distrito:</h2>
-        <button type="button" class="btn-seleccionar-todos" *ngIf="!loading && items.length > 0"
-          (click)="todosSeleccionados ? deseleccionarTodos() : seleccionarTodos()">
-          {{ todosSeleccionados ? 'Deseleccionar todos' : 'Seleccionar todos' }}
-        </button>
+        <app-lote-selector variant="inicio" [allUbigeos]="allUbigeosForLote" (loteChange)="onLoteChange($event)"></app-lote-selector>
+        <div class="content-distrito">
+          <h2 class="title">Distrito:</h2>
+          <button type="button" class="btn-seleccionar-todos" *ngIf="!loading && itemsToDisplay.length > 0"
+            (click)="todosSeleccionados ? deseleccionarTodos() : seleccionarTodos()">
+            {{ todosSeleccionados ? 'Deseleccionar todos' : 'Seleccionar todos' }}
+          </button>
+        </div>
       </div>
 
       <div class="grid" *ngIf="!loading; else loadingTpl">
-        <button type="button" class="card" *ngFor="let d of items" (click)="toggle(d)" [class.selected]="isSelected(d)">
+        <button type="button" class="card" *ngFor="let d of itemsToDisplay" (click)="toggle(d)" [class.selected]="isSelected(d)">
           <span class="check" [class.on]="isSelected(d)">✓</span>
 
           <div class="logoCircle" fxFlex="20" style="align-items: center;">
@@ -50,15 +53,13 @@
     </div>
   </div>
 </section>
-
+<app-mapa></app-mapa>
+  
 <section *ngIf="(ui.view$ | async) === 'mapa'" class="map-shell">
 
-  <app-mapa></app-mapa>
-
   <button class="fab-control" (click)="ui.toggleControl()" type="button" aria-label="Capas">
-    <mat-icon fontIcon="menu"></mat-icon>
+    <mat-icon class="icon-color-left" fontIcon="menu"></mat-icon>
   </button>
-
 
   <div class="control-modal" [class.hidden]="!(ui.showControl$ | async)">
     <div class="control-header">
@@ -75,5 +76,52 @@
     <app-map-modal-reporte-mapa></app-map-modal-reporte-mapa>
   </div>
 
+<button mat-button class="fab-control-2" matTooltip="Catálogo de Imágenes" matTooltipClass = "class-tooltip"
+       style="cursor: pointer;" [matMenuTriggerFor]="menuCatalogo">
+    <mat-icon class="icon-color-left material-symbols-outlined">globe_uk</mat-icon>
+</button>
+  <mat-menu #menuCatalogo="matMenu" class="mat-mdc-menu-panel menu-catalogo">
+      <button mat-menu-item (click)="cambiarMapa('Satelital')">
+        <span class="new-componet-img">
+            <img class="new-img-map" alt="Mapa Open Street Map" data-mapa="OSM"
+                title="Mapa Open Street Map" src="assets/images/maps/esrisatellite.png">
+            <span>Mapa Satelital</span>
+        </span>
+      </button>
+
+      <button mat-menu-item (click)="cambiarMapa('OSM')">
+        <span class="new-componet-img">
+            <img class="new-img-map" alt="Mapa Open Street Map" data-mapa="OSM"
+                title="Mapa Open Street Map" src="assets/images/maps/osmmapnik.png">
+            <span>Mapa Calles</span>
+        </span>
+      </button>
+
+      <button mat-menu-item (click)="cambiarMapa('Topo')">
+        <span class="new-componet-img">
+            <img class="new-img-map" alt="Topográfico" data-mapa="Topo" 
+            title="Topográfico" src="assets/images/maps/esriroad.png">
+            <span>Mapa Topográfico</span>
+        </span>
+      </button>
+
+      <button mat-menu-item disabled="true" style="display: none;">
+        <span class="new-componet-img">
+            <img class="new-img-map" alt="Topográfico" data-mapa="Topo" 
+            title="Topográfico" src="assets/images/maps/vuelo.png">
+            <span>Vuelo Aerofogramétrico</span>
+        </span>
+      </button>
+
+      <button mat-menu-item disabled="true" style="display: none;">
+        <span class="new-componet-img">
+            <img class="new-img-map" alt="Topográfico" data-mapa="Topo" 
+            title="Topográfico" src="assets/images/maps/map-blanco.png">
+            <span>Blanco</span>
+        </span>
+      </button>
+    </mat-menu>
 
 </section>
+
+

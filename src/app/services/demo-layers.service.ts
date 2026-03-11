@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as L from 'leaflet';
 import { MapService } from './map.service';
-
+import { environment } from './../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class DemoLayersService {
@@ -15,14 +15,14 @@ export class DemoLayersService {
       id: 1,
       descripcion: "Manzana",
       estados: ['01', '02', '03', '04', '05', '06'],
-      workspace: "dashboard",
+      workspace: environment.espacioTrabajoDashboardGeoserver,
       layerName: "dashboard_manzanas"
     },
     {
       id: 2,
       descripcion: "Polígono",
       estados: ['QA1', 'QA2', 'CIC', 'QA3', 'QA4', 'MUNI'],
-      workspace: "dashboard",
+      workspace: environment.espacioTrabajoDashboardGeoserver,
       layerName: "dashboard_poligonos"
     },
   ]

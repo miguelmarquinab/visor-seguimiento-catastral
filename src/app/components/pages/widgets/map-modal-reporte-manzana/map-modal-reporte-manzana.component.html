@@ -9,7 +9,16 @@
           @for (dist of distritosSeleccionados(); track dist.codigoUbigeo) {
             <span class="custom-chip">
               {{ dist.distrito }}
-              <mat-icon class="close-chip" (click)="quitarDistrito(dist.codigoUbigeo)">close</mat-icon>
+              <mat-icon
+                class="close-chip"
+                role="button"
+                tabindex="0"
+                aria-label="Quitar distrito"
+                (click)="quitarDistrito(dist.codigoUbigeo)"
+                (keydown.enter)="quitarDistrito(dist.codigoUbigeo)"
+                (keydown.space)="$event.preventDefault(); quitarDistrito(dist.codigoUbigeo)">
+                close
+              </mat-icon>
             </span>
           }
         </div>
@@ -25,11 +34,12 @@
 
           <div class="card-body">
             <div class="expansion-header">
-              <mat-icon>grid_view</mat-icon>
+              <mat-icon class="material-symbols-outlined">file_map_stack</mat-icon>
               <span>Total de Manzanas</span>
               <mat-icon>expand_less</mat-icon>
             </div>
             <div class="form-container">
+               <app-lote-selector [allUbigeos]="allowedUbigeos()" (loteChange)="onLoteChange($event)"></app-lote-selector>
                <app-ubigeo-selector
                   [showTodos]="true"
                   [allowedUbigeos]="allowedUbigeos()"
@@ -67,12 +77,13 @@
       </div>
 
       <div class="vertical-charts-container">
+        <!-- Grafico 1 -->
         <mat-card class="dashboard-card chart-section-wrapper">
           <div class="card-header">
             <div class="title-section conten-icon-infor" >
               <mat-icon class="header-icon">insert_chart</mat-icon>
               <h3>
-                Total de Manzanas:
+                Total de manzanas por estado
                 <span class="total-value">{{ reporteData()?.totalManzanas ?? 0 }}</span>
               </h3>
             </div>
@@ -115,12 +126,13 @@
 
         <div class="divider-line"></div>
 
+        <!-- Grafico 2 -->
         <mat-card class="dashboard-card chart-section-wrapper">
           <div class="card-header">
             <div class="title-section conten-icon-infor" >
               <mat-icon class="header-icon">account_tree</mat-icon>
               <h3>
-                Estado de Manzanas por distrito
+                Total de manzanas por distrito y estado
               </h3>
             </div>
 
