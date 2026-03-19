@@ -42,7 +42,10 @@
   line-height: 1.1;
   width: 210px;
 }
-
+.brand-version{
+  width: 55px;
+  font-size: 12px;
+}
 /* TITULO PRINCIPAL */
 .brand-title {
   font-size: 14px;

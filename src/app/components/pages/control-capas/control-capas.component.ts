@@ -351,9 +351,6 @@ export class ControlCapasComponent implements OnInit, OnDestroy {
       'Cargando data para distritos:',
       distritos.map((d) => d.codigoUbigeo),
     );
-    setTimeout(() => {
-      console.log('Data cargada OK (hardcode)');
-    }, 600);
   }
 
   cerrarDistritos() {
@@ -373,6 +370,21 @@ export class ControlCapasComponent implements OnInit, OnDestroy {
       this.mapService.addSectorLayer(environment.espacioTrabajoDashboardGeoserver, 'tg_sector', cql, 10);
     } else {
       this.mapService.removeSectorLayer();
+    }
+  }
+  flagIntervencion = false;
+  onToggleIntervencion(): void {
+    this.flagIntervencion = !this.flagIntervencion;
+    if (this.flagIntervencion) {
+      const ubigeos = this.selectedUbigeos();
+      if (!ubigeos || ubigeos.length === 0) {
+        console.warn('No hay ubigeos seleccionados');
+        return;
+      }
+      const cql = `ubigeo IN (${ubigeos.map((u: string) => "'" + u + "'").join(',')})`;
+      this.mapService.addIntervencionLayer(environment.espacioTrabajoDashboardGeoserver, 'tg_area_intervencion', cql, 110);
+    } else {
+      this.mapService.removeIntervencionLayer();
     }
   }
 }

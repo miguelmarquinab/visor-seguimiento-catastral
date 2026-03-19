@@ -1,9 +1,9 @@
 export const environment = {
   production: false,
 
-  urlWebApiSecurity: 'http://172.16.16.33:8086/',
-  urlWebApiAuthenticate: 'http://172.16.16.33:8095/',
-  apiSicuVisorSeguimiento: 'http://172.16.16.33:8238/',
+  urlWebApiSecurity: 'http://172.16.16.71:8086/',
+  urlWebApiAuthenticate: 'http://172.16.16.71:8095/',
+  apiSicuVisorSeguimiento: 'http://172.16.16.71:8238/',
   urlGeoserver: "https://geoserver.ue003cofopri.gob.pe/geoserver/",
 
   localStorageKey: 'accessVisorSeg',
@@ -13,11 +13,11 @@ export const environment = {
 
   visibleBusqueda: true,
   version: 'V. 1.0.0',
-  ambiente: 'Desarrollo',
-  name: 'development',
+  ambiente: 'Calidad',
+  name: 'qa',
   code: 1001,
   MAX_FILE_SIZE: 1024 * 1024,
   urlGoogleAnalytics: 'https://www.googletagmanager.com/gtag/js?id=G-E1GCDTNJD5',
   googleAnalyticsActivo: false,
-  espacioTrabajoDashboardGeoserver: 'dashboard_dev',
+  espacioTrabajoDashboardGeoserver: 'dashboard_qa',
 };

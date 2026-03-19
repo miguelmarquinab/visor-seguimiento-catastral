@@ -1,4 +1,20 @@
 <div class="body form map">
+  <div class="brand">
+    <img
+      src="../../../../assets/images/logo-sicun.png"
+      alt="Logo SICUN"
+      class="brand-logo"
+    />
+    <div class="brand-divider"></div>
+    <div class="brand-text">
+      <span class="brand-title">VISOR DE SEGUIMIENTO DE</span>
+      <span class="brand-subtitle">LEVANTAMIENTO CATASTRAL</span>
+    </div>
+
+    <div class="brand-version">
+      <span class="v-label">{{version}}</span>
+    </div>
+  </div>
 
   <form class="form__content" [formGroup]="form" (ngSubmit)="submit()">
     <div class="content-logos">
@@ -38,15 +54,18 @@
             {{ hidePassword ? 'visibility_off' : 'visibility' }}
           </mat-icon>
         </button>
+
       </mat-form-field>
 
-      <re-captcha [siteKey]="keysite" formControlName="recaptcha"></re-captcha>
+      <re-captcha [siteKey]="keysite"
+                  formControlName="recaptcha"
+      ></re-captcha>
 
     </div>
 
     <div class="form__field form__submit" style="margin-top: 5px;">
-      <button class="btnAdd" type="submit" [disabled]="loading||form.invalid" >
-        {{loading ? 'Ingresando....' : 'Ingresar'}}
+      <button class="btnAdd full-width" type="submit" [disabled]="loading||form.invalid" >
+        {{loading ? 'Ingresando....' : 'Iniciar sesión'}}
       </button>
     </div>
 
@@ -54,4 +73,25 @@
       {{error}}
     </p>
   </form>
+  <div class="content_footer-login">
+    <div class="form__footer">
+        Navegadores recomendados
+    </div>
+    <div class="conten-img-footer">
+        <div class="navegador">
+            <div class="firefox">
+            </div>
+            <div class="nav-texto">
+                firefox
+            </div>
+        </div>
+        <div class="navegador">
+            <div class="chrome">
+            </div> 
+            <div class="nav-texto">
+                Chrome
+            </div>
+        </div>
+    </div>
+  </div>
 </div>

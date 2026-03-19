@@ -14,7 +14,7 @@ export const environment = {
   visibleBusqueda: true,
   version: 'V. 1.0.0',
   ambiente: 'Desarrollo',
-  name: 'development',
+  name: 'dev',
   code: 1001,
   MAX_FILE_SIZE: 1024 * 1024,
   urlGoogleAnalytics: 'https://www.googletagmanager.com/gtag/js?id=G-E1GCDTNJD5',

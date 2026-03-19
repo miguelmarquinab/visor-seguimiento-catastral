@@ -182,7 +182,10 @@ export class MapaComponent implements OnDestroy, OnInit {
       if (modo === ModoFiltro.AREA) {
         return;
       }
-      this.mapaConteoService.actualizarConteoEstados(this.selectedUbigeos());
+      const ubigeos = this.selectedUbigeos();
+      if (ubigeos.length > 0) {
+        this.mapaConteoService.actualizarConteoEstados(ubigeos);
+      }
     });
 
     this.map.on('click', () => {

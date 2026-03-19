@@ -204,4 +204,33 @@ setDistritoBoundaries(
     this.baseLayer = layer;
     this.baseLayer.addTo(this.map);
   }
+
+  intervencioLayer: any;
+  addIntervencionLayer(
+    workspace: string,
+    nombre: string,
+    filtro?: string,
+    zIndex?: number,
+  ) {
+    const url = `${this.urlGeoserver}/${workspace}/wms`;
+
+    const options: any = {
+      layers: `${workspace}:${nombre}`,
+      format: 'image/png',
+      transparent: true,
+      cql_filter: filtro ?? '',
+      zIndex: zIndex,
+    };
+
+    this.intervencioLayer = L.tileLayer.wms(url, options);
+    this.intervencioLayer.addTo(this.getMap());
+  }
+
+  removeIntervencionLayer() {
+    if (this.intervencioLayer) {
+      this.getMap().removeLayer(this.intervencioLayer);
+      this.intervencioLayer = undefined;
+    }
+  }
+
 }

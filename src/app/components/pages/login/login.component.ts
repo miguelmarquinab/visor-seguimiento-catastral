@@ -7,6 +7,8 @@ import { SessionstateServiceService} from '../../../services/sessionstate.servic
 import { environment} from '../../../../environments/environment';
 import { RecaptchaModule, RecaptchaFormsModule } from 'ng-recaptcha';
 
+
+// Angular Material
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
@@ -34,7 +36,7 @@ export class LoginComponent implements OnInit {
   form!: FormGroup;
   hidePassword = true;
   keysite: string = "";
-
+  version : string = '';
   constructor (
     private readonly fb: FormBuilder,
     private readonly auth: AuthService,
@@ -49,8 +51,9 @@ export class LoginComponent implements OnInit {
       recaptcha: ['', Validators.required],
     });
   }
-
+  
   ngOnInit(): void {
+    this.version = `${environment.version} ${environment.ambiente}`;
     if (this.auth.isLoggedIn()) {
       this.router.navigate(['/distritos']);
       return;
@@ -61,6 +64,7 @@ export class LoginComponent implements OnInit {
       this.error = 'Sesión expirada, debes iniciar sesión.';
     }
   }
+
 
   submit() : void {
     this.error = '';
@@ -82,6 +86,7 @@ export class LoginComponent implements OnInit {
     };
 
     this.loading = true;
+
 
     this.auth.login(credentials).subscribe({
       next: () => {
